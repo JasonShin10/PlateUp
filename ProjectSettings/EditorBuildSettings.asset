@@ -4,5 +4,20 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/April/Scenes/Main.unity
+    guid: 1426621ca9847cf42a37d45c6ec0fbef
+  - enabled: 1
+    path: Assets/April/Scenes/Empty.unity
+    guid: 0da71fb9cfece3242a598ee7f28ae790
+  - enabled: 1
+    path: Assets/April/Scenes/StartUp.unity
+    guid: 724332170431327419c71f8cdb4501d7
+  - enabled: 1
+    path: Assets/April/Scenes/Game.unity
+    guid: c81d1ed8e4e6a6d48846aa354ae2466b
+  - enabled: 1
+    path: Assets/April/Scenes/Title.unity
+    guid: e2d32a6a7a48121458b445f10746f9b8
   m_configObjects: {}

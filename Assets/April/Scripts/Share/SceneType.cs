@@ -9,7 +9,7 @@ namespace April
         None = 0,
         Empty,
         Startup,
-
         Title,
+        Game,
     }
 }

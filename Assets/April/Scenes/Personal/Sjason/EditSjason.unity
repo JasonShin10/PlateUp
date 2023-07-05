@@ -498,6 +498,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DummyUI
       objectReference: {fileID: 0}
+    - target: {fileID: 8659654834370103401, guid: edd20bc1e6ce3f14f9a19e2adae4f04a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

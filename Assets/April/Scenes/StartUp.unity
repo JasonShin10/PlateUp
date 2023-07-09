@@ -196,6 +196,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: April.InputManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6132936379997053383, guid: 7cdd932c9e4b946428e663cb87fe924a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6412545286858744013, guid: 7cdd932c9e4b946428e663cb87fe924a, type: 3}
       propertyPath: m_RootOrder
       value: 1

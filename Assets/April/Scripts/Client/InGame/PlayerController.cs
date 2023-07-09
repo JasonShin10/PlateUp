@@ -8,66 +8,22 @@ namespace April
 {
     public class PlayerController : MonoBehaviour
     {
-        #region v1
-        //public float speed;
-        //private Vector2 move;
+        public InteractionBase currentInteractionObject;
 
-        //public void OnMove(InputAction.CallbackContext context)
-        //{
-
-        //    move = context.ReadValue<Vector2>();
-        //    new InputMaster(); 
-        //}
-
-        //private void Update()
-        //{
-        //    movePlayer();
-        //}
-
-        //public void movePlayer()
-        //{
-        //    Vector3 movement = new Vector3(move.x, 0f, move.y);
-        //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), 0.15f);
-        //    var pos = transform.position + movement * speed * Time.deltaTime;
-
-        //    transform.position = pos;
-        //}
-        #endregion
-        private Rigidbody capshuleRigidbody;
-        private InputMaster inputMaster;
-        public GameObject escapeUI;
-        private void Awake()
-        {
-            capshuleRigidbody = GetComponent<Rigidbody>();
-
-
-            inputMaster = new InputMaster();
-            inputMaster.PlayerControl.Enable();
-            inputMaster.PlayerControl.Escaping.performed += Escaping_performed;
-        }
+        public float interactionOffsetHeight = 0.8f;
+        public LayerMask interactionObjectLayerMask;
 
         private void Update()
         {
-            Vector2 inputVector = inputMaster.PlayerControl.Movement.ReadValue<Vector2>();
-            float speed = 1f;
-            capshuleRigidbody.AddForce(new Vector3(inputVector.x, 0, inputVector.y) * speed, ForceMode.Force);
-        }
-
-        private void Escaping_performed(InputAction.CallbackContext context)
-        {
-            Debug.Log(context);
-            if (context.performed)
+            currentInteractionObject = null;
+            Ray ray = new Ray(transform.position - (Vector3.up * interactionOffsetHeight), Vector3.down);
+            if (Physics.Raycast(ray, out var hitInfo, 1f, interactionObjectLayerMask, QueryTriggerInteraction.Collide))
             {
-
+                if (hitInfo.transform.TryGetComponent<InteractionBase>(out var interaction))
+                {
+                    currentInteractionObject = interaction;
+                }
             }
-        }
-
-        private void Movement_performed(InputAction.CallbackContext context)
-        {
-            Debug.Log(context);
-            Vector2 inputVector = context.ReadValue<Vector2>();
-            float speed = 5f;
-            capshuleRigidbody.AddForce(new Vector3(inputVector.x, 0, inputVector.y) * speed, ForceMode.Force);
         }
     }
 }

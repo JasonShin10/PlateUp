@@ -12,6 +12,8 @@ namespace April
         {
             var async = SceneManager.LoadSceneAsync(SceneType.Game.ToString(), IsAdditiveScene ? LoadSceneMode.Additive : LoadSceneMode.Single);
             yield return new WaitUntil(() => async.isDone);
+
+            UIManager.Show<IngameUI>(UIList.IngameUI);
         }
 
         public override IEnumerator OnEnd()

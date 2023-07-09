@@ -14,7 +14,6 @@ namespace April
         SCENE_POPUP,
 
         TitleUI,
-
         DummyUI,
 
         MAX_SCENE_POPUP,
@@ -22,11 +21,12 @@ namespace April
         //===========================================================
         // 2D Panel UI
         //===========================================================
-        SCENE_PANEL, 
-        
-        
-        
-        
+        SCENE_PANEL,
+
+        IngameUI,
+
+
+
         MAX_SCENE_PANEL,
         //===========================================================
     }

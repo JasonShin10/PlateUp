@@ -10,7 +10,7 @@ namespace April
 {
     public class InputManager : SingletonBase<InputManager>
     {
-        public InputMaster InputMaster { get; private set; }       
+        public InputMaster InputMaster { get; private set; }
 
         protected override void Awake()
         {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8790684965602654510}
   - component: {fileID: 6669710016489454560}
   m_Layer: 0
-  m_Name: April.Ingame.IngameInputSystem
+  m_Name: April.Ingame.InputSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   escapeUI: {fileID: 0}
   player: {fileID: 0}
+  playerSpeed: 5

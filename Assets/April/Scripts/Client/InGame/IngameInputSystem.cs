@@ -11,28 +11,45 @@ namespace April
         public GameObject escapeUI;
         public GameObject player;
 
-        private Rigidbody capshuleRigidbody;
+        public float playerSpeed = 5f;
+        public float playerTurnSmoothTime;
+
+        private CharacterController characterController;
+        private Vector2 movementInput;
+        private float playerTurningCurrentVelocity;
+
 
         private void Awake()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Enable();
             InputManager.Singleton.InputMaster.PlayerControl.Escaping.performed += Escaping_performed;
-            capshuleRigidbody = player.GetComponent<Rigidbody>();
-
             InputManager.Singleton.InputMaster.PlayerControl.Movement.performed += OnMovementPerform;
+            InputManager.Singleton.InputMaster.PlayerControl.Movement.canceled += OnMovementCanceled;
+
+            characterController = player.GetComponent<CharacterController>();
+        }
+
+        private void OnMovementCanceled(InputAction.CallbackContext context)
+        {
+            movementInput = Vector2.zero;
         }
 
         private void OnMovementPerform(InputAction.CallbackContext context)
         {
-            var movement = context.ReadValue<Vector2>();
-            Debug.Log(movement);
+            movementInput = context.ReadValue<Vector2>();
         }
 
         private void Update()
         {
-            Vector2 inputVector = InputManager.Singleton.InputMaster.PlayerControl.Movement.ReadValue<Vector2>();
-            float speed = 1f;
-            capshuleRigidbody.AddForce(new Vector3(inputVector.x, 0, inputVector.y) * speed, ForceMode.Force);
+            if (movementInput.magnitude > 0.1f)
+            {
+                float targetAngle = Mathf.Atan2(movementInput.x, movementInput.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
+                float angle = Mathf.SmoothDampAngle(characterController.transform.eulerAngles.y, targetAngle, ref playerTurningCurrentVelocity, playerTurnSmoothTime);
+                characterController.transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+                Vector3 moveDir = Quaternion.Euler(0f, angle, 0f) * Vector3.forward;
+                characterController.Move(moveDir.normalized * playerSpeed * Time.deltaTime);
+            }
         }
 
         private void Escaping_performed(InputAction.CallbackContext context)

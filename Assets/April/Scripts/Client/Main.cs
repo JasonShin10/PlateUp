@@ -26,7 +26,7 @@ namespace April
             // 1.. UIManager 클래스의 싱글턴 인스턴스의 Initialize 메서드를 호출합니다. 
             // UIManager.Singleton이 싱글턴 인스턴스를 참조하고, Initialize()를 실행시킵니다.
             UIManager.Singleton.Initialize();
-
+            
             // 2.. ChangeScene 메서드를 호출하여 Title 씬으로 이동합니다. 
             // 이것은 초기화가 완료된 후 게임의 첫 번째 씬을 로드하는 것을 시작합니다.
             ChangeScene(SceneType.Game);

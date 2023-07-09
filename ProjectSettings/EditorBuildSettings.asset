@@ -20,4 +20,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/April/Scenes/Title.unity
     guid: e2d32a6a7a48121458b445f10746f9b8
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: ed0fdff943cde964c9007893e2e16421, type: 2}

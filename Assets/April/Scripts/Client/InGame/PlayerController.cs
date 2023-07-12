@@ -21,23 +21,24 @@ namespace April
             Ray ray = new Ray(transform.position, transform.forward);
             if (Physics.Raycast(ray, out var hitInfo, 1f, interactionObjectLayerMask, QueryTriggerInteraction.Collide))
             {
-                if (hitInfo.transform.TryGetComponent<FoodContainer>(out var interactionFoodContainer) && item == null)
+                if (hitInfo.transform.TryGetComponent<InteractionBase>(out var interaction))
                 {
-                    currentInteractionObject = interactionFoodContainer;
-
-
-                    item = currentInteractionObject.Interact(this.gameObject.transform);
-
-
+                    interaction.Interact(this);
                 }
-                if (hitInfo.transform.TryGetComponent<Stove>(out var interactionStove) && item != null)
-                {
-                    currentInteractionObject = interactionStove;
-                    currentInteractionObject.foodPrefab = item;
-                    Destroy(item);
-                    item = currentInteractionObject.Interact(hitInfo.transform);
-                    item = null;
-                }
+
+                //if (hitInfo.transform.TryGetComponent<FoodContainer>(out var interactionFoodContainer) && item == null)
+                //{
+                //    currentInteractionObject = interactionFoodContainer;
+                //    item = currentInteractionObject.Interact(this.gameObject.transform);
+                //}
+                //if (hitInfo.transform.TryGetComponent<Stove>(out var interactionStove) && item != null)
+                //{
+                //    currentInteractionObject = interactionStove;
+                //    currentInteractionObject.foodPrefab = item;
+                //    Destroy(item);
+                //    item = currentInteractionObject.Interact(hitInfo.transform);
+                //    item = null;
+                //}
             }
         }
     }

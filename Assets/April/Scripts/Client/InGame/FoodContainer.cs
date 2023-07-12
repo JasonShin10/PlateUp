@@ -5,8 +5,16 @@ using UnityEngine;
 
 public class FoodContainer : InteractionBase
 {
-    public override GameObject Interact(Transform playerTransform)
+    public GameObject foodPrefab;
+
+    public override void Interact(PlayerController player)
     {
-        return base.Interact(playerTransform);
+        if (player.item == null)
+        {
+            var newFoodItem = Instantiate(foodPrefab, player.transform);
+            newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
+            newFoodItem.gameObject.SetActive(true);
+            player.item = newFoodItem;
+        }
     }
 }

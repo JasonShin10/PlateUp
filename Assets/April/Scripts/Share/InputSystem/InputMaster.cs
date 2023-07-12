@@ -114,6 +114,34 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI Control"",
+            ""id"": ""f1c8f31d-3230-4324-80cd-e5850b6d7eed"",
+            ""actions"": [
+                {
+                    ""name"": ""InteractionShortcut"",
+                    ""type"": ""Button"",
+                    ""id"": ""cb351774-1a46-4479-b7d4-68cb823b8b37"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""28a59235-1045-4a54-acf3-e610080c8199"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractionShortcut"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -122,6 +150,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_PlayerControl = asset.FindActionMap("PlayerControl", throwIfNotFound: true);
         m_PlayerControl_Movement = m_PlayerControl.FindAction("Movement", throwIfNotFound: true);
         m_PlayerControl_Escaping = m_PlayerControl.FindAction("Escaping", throwIfNotFound: true);
+        // UI Control
+        m_UIControl = asset.FindActionMap("UI Control", throwIfNotFound: true);
+        m_UIControl_InteractionShortcut = m_UIControl.FindAction("InteractionShortcut", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -233,9 +264,59 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         }
     }
     public PlayerControlActions @PlayerControl => new PlayerControlActions(this);
+
+    // UI Control
+    private readonly InputActionMap m_UIControl;
+    private List<IUIControlActions> m_UIControlActionsCallbackInterfaces = new List<IUIControlActions>();
+    private readonly InputAction m_UIControl_InteractionShortcut;
+    public struct UIControlActions
+    {
+        private @InputMaster m_Wrapper;
+        public UIControlActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @InteractionShortcut => m_Wrapper.m_UIControl_InteractionShortcut;
+        public InputActionMap Get() { return m_Wrapper.m_UIControl; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIControlActions set) { return set.Get(); }
+        public void AddCallbacks(IUIControlActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIControlActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIControlActionsCallbackInterfaces.Add(instance);
+            @InteractionShortcut.started += instance.OnInteractionShortcut;
+            @InteractionShortcut.performed += instance.OnInteractionShortcut;
+            @InteractionShortcut.canceled += instance.OnInteractionShortcut;
+        }
+
+        private void UnregisterCallbacks(IUIControlActions instance)
+        {
+            @InteractionShortcut.started -= instance.OnInteractionShortcut;
+            @InteractionShortcut.performed -= instance.OnInteractionShortcut;
+            @InteractionShortcut.canceled -= instance.OnInteractionShortcut;
+        }
+
+        public void RemoveCallbacks(IUIControlActions instance)
+        {
+            if (m_Wrapper.m_UIControlActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IUIControlActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIControlActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIControlActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public UIControlActions @UIControl => new UIControlActions(this);
     public interface IPlayerControlActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnEscaping(InputAction.CallbackContext context);
+    }
+    public interface IUIControlActions
+    {
+        void OnInteractionShortcut(InputAction.CallbackContext context);
     }
 }

@@ -16,29 +16,32 @@ namespace April
 
         private void Update()
         {
-            currentInteractionObject = null;
             // Ray의 시작점을 플레이어의 발 아래가 아니라, 약간 위에서 시작하게 하는것
             Ray ray = new Ray(transform.position, transform.forward);
             if (Physics.Raycast(ray, out var hitInfo, 1f, interactionObjectLayerMask, QueryTriggerInteraction.Collide))
             {
                 if (hitInfo.transform.TryGetComponent<InteractionBase>(out var interaction))
                 {
-                    interaction.Interact(this);
+                    if (currentInteractionObject != null && currentInteractionObject != interaction)
+                    {
+                        currentInteractionObject = interaction;
+                        interaction.Interact(this);
+                    }
+                    else if (currentInteractionObject == null)
+                    {
+                        currentInteractionObject = interaction;
+                        interaction.Interact(this);
+                    }
+                    else
+                    {
+                        // Same Interaction Object -> Do Nothing                        
+                    }
                 }
-
-                //if (hitInfo.transform.TryGetComponent<FoodContainer>(out var interactionFoodContainer) && item == null)
-                //{
-                //    currentInteractionObject = interactionFoodContainer;
-                //    item = currentInteractionObject.Interact(this.gameObject.transform);
-                //}
-                //if (hitInfo.transform.TryGetComponent<Stove>(out var interactionStove) && item != null)
-                //{
-                //    currentInteractionObject = interactionStove;
-                //    currentInteractionObject.foodPrefab = item;
-                //    Destroy(item);
-                //    item = currentInteractionObject.Interact(hitInfo.transform);
-                //    item = null;
-                //}
+            }
+            else
+            {
+                UIManager.Hide<InteractionUI>(UIList.InteractionUI);
+                currentInteractionObject = null;
             }
         }
     }

@@ -15,6 +15,9 @@ namespace April
 
         TitleUI,
         DummyUI,
+        InteractionUI,
+
+
 
         MAX_SCENE_POPUP,
 

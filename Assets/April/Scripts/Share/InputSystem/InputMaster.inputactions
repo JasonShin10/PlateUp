@@ -92,6 +92,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI Control",
+            "id": "f1c8f31d-3230-4324-80cd-e5850b6d7eed",
+            "actions": [
+                {
+                    "name": "InteractionShortcut",
+                    "type": "Button",
+                    "id": "cb351774-1a46-4479-b7d4-68cb823b8b37",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "28a59235-1045-4a54-acf3-e610080c8199",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InteractionShortcut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

@@ -12,6 +12,9 @@ public class FoodContainer : InteractionBase
 
     private void Awake()
     {
+        //var actionData = new InteractActionData();
+        //actionData.callback += Execute;
+
         interactActionDatas.Add(new InteractActionData()
         {
             actionName = "Container Interact",
@@ -24,6 +27,9 @@ public class FoodContainer : InteractionBase
             callback = FoodContainerDestory
         });
     }
+
+    void Execute() { }
+
 
     void FoodContainerInteract()
     {

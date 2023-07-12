@@ -18,13 +18,25 @@ namespace April
         {
             currentInteractionObject = null;
             // Ray의 시작점을 플레이어의 발 아래가 아니라, 약간 위에서 시작하게 하는것
-            Ray ray = new Ray(transform.position - (Vector3.up * interactionOffsetHeight), Vector3.down);
-            if (Physics.Raycast(ray, out var hitInfo, 1f, interactionObjectLayerMask, QueryTriggerInteraction.Collide) && item == null)
+            Ray ray = new Ray(transform.position, transform.forward);
+            if (Physics.Raycast(ray, out var hitInfo, 1f, interactionObjectLayerMask, QueryTriggerInteraction.Collide))
             {
-                if (hitInfo.transform.TryGetComponent<InteractionBase>(out var interaction))
+                if (hitInfo.transform.TryGetComponent<FoodContainer>(out var interactionFoodContainer) && item == null)
                 {
-                   currentInteractionObject = interaction;
+                    currentInteractionObject = interactionFoodContainer;
+
+
                     item = currentInteractionObject.Interact(this.gameObject.transform);
+
+
+                }
+                if (hitInfo.transform.TryGetComponent<Stove>(out var interactionStove) && item != null)
+                {
+                    currentInteractionObject = interactionStove;
+                    currentInteractionObject.foodPrefab = item;
+                    Destroy(item);
+                    item = currentInteractionObject.Interact(hitInfo.transform);
+                    item = null;
                 }
             }
         }

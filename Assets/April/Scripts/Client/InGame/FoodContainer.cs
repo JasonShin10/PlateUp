@@ -12,6 +12,9 @@ public class FoodContainer : InteractionBase
 
     private void Awake()
     {
+        //var actionData = new InteractActionData();
+        //actionData.callback += Execute;
+
         interactActionDatas.Add(new InteractActionData()
         {
             actionName = "Meat Interact",
@@ -25,7 +28,14 @@ public class FoodContainer : InteractionBase
         });
     }
 
+<<<<<<< HEAD
     void MeatInteract()
+=======
+    void Execute() { }
+
+
+    void FoodContainerInteract()
+>>>>>>> 9630c032f13bdd3f1c88a479d5e0c0278c5ec80d
     {
         if (player.item == null)
         {

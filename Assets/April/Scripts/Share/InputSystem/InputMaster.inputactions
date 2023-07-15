@@ -94,7 +94,7 @@
             ]
         },
         {
-            "name": "UI Control",
+            "name": "Act",
             "id": "f1c8f31d-3230-4324-80cd-e5850b6d7eed",
             "actions": [
                 {
@@ -116,6 +116,54 @@
                     "processors": "",
                     "groups": "",
                     "action": "InteractionShortcut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UIControl",
+            "id": "b46753a4-61b2-49b4-8d29-cb95f745f435",
+            "actions": [
+                {
+                    "name": "Navigate",
+                    "type": "PassThrough",
+                    "id": "18763b3f-1004-4ee0-bfb6-59d0df12d561",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "f995fd73-2823-4b54-bcba-ffca8986bd49",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ea760900-90f4-46eb-860f-9843178af945",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "30db3128-f2a5-4a82-89b6-ebee4e6aa017",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,41 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &561353847 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5552572263965809374, guid: 4f7ae216a927d0945b1abf4b2403e0f8, type: 3}
+  m_PrefabInstance: {fileID: 5308920840044868107}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &561353851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561353847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 8991e3cde36f9aa448e30cdd1c4b0b1b, type: 3}
+  m_PointAction: {fileID: 0}
+  m_MoveAction: {fileID: -5410577115269103933, guid: 8991e3cde36f9aa448e30cdd1c4b0b1b, type: 3}
+  m_SubmitAction: {fileID: -2134263023412389487, guid: 8991e3cde36f9aa448e30cdd1c4b0b1b, type: 3}
+  m_CancelAction: {fileID: 0}
+  m_LeftClickAction: {fileID: 0}
+  m_MiddleClickAction: {fileID: 0}
+  m_RightClickAction: {fileID: 0}
+  m_ScrollWheelAction: {fileID: 0}
+  m_TrackedDevicePositionAction: {fileID: 0}
+  m_TrackedDeviceOrientationAction: {fileID: 0}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!1001 &5308920840044868107
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -183,8 +218,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2780540359605733246, guid: 4f7ae216a927d0945b1abf4b2403e0f8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5552572263965809374, guid: 4f7ae216a927d0945b1abf4b2403e0f8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 561353851}
   m_SourcePrefab: {fileID: 100100000, guid: 4f7ae216a927d0945b1abf4b2403e0f8, type: 3}

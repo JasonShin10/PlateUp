@@ -26,15 +26,15 @@ namespace April
         private void OnEnable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Disable();
-            InputManager.Singleton.InputMaster.UIControl.Enable();
-            InputManager.Singleton.InputMaster.UIControl.InteractionShortcut.performed += InteractionShortcut_performed;
+            InputManager.Singleton.InputMaster.Act.Enable();
+            InputManager.Singleton.InputMaster.Act.InteractionShortcut.performed += InteractionShortcut_performed;
         }
 
         private void OnDisable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Enable();
-            InputManager.Singleton.InputMaster.UIControl.Disable();
-            InputManager.Singleton.InputMaster.UIControl.InteractionShortcut.performed -= InteractionShortcut_performed;
+            InputManager.Singleton.InputMaster.Act.Disable();
+            InputManager.Singleton.InputMaster.Act.InteractionShortcut.performed -= InteractionShortcut_performed;
         }
 
         private void InteractionShortcut_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)

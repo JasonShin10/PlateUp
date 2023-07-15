@@ -116,7 +116,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""UI Control"",
+            ""name"": ""Act"",
             ""id"": ""f1c8f31d-3230-4324-80cd-e5850b6d7eed"",
             ""actions"": [
                 {
@@ -142,6 +142,54 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UIControl"",
+            ""id"": ""b46753a4-61b2-49b4-8d29-cb95f745f435"",
+            ""actions"": [
+                {
+                    ""name"": ""Navigate"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""18763b3f-1004-4ee0-bfb6-59d0df12d561"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""f995fd73-2823-4b54-bcba-ffca8986bd49"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ea760900-90f4-46eb-860f-9843178af945"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30db3128-f2a5-4a82-89b6-ebee4e6aa017"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -150,9 +198,13 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_PlayerControl = asset.FindActionMap("PlayerControl", throwIfNotFound: true);
         m_PlayerControl_Movement = m_PlayerControl.FindAction("Movement", throwIfNotFound: true);
         m_PlayerControl_Escaping = m_PlayerControl.FindAction("Escaping", throwIfNotFound: true);
-        // UI Control
-        m_UIControl = asset.FindActionMap("UI Control", throwIfNotFound: true);
-        m_UIControl_InteractionShortcut = m_UIControl.FindAction("InteractionShortcut", throwIfNotFound: true);
+        // Act
+        m_Act = asset.FindActionMap("Act", throwIfNotFound: true);
+        m_Act_InteractionShortcut = m_Act.FindAction("InteractionShortcut", throwIfNotFound: true);
+        // UIControl
+        m_UIControl = asset.FindActionMap("UIControl", throwIfNotFound: true);
+        m_UIControl_Navigate = m_UIControl.FindAction("Navigate", throwIfNotFound: true);
+        m_UIControl_Select = m_UIControl.FindAction("Select", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -265,15 +317,63 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     }
     public PlayerControlActions @PlayerControl => new PlayerControlActions(this);
 
-    // UI Control
+    // Act
+    private readonly InputActionMap m_Act;
+    private List<IActActions> m_ActActionsCallbackInterfaces = new List<IActActions>();
+    private readonly InputAction m_Act_InteractionShortcut;
+    public struct ActActions
+    {
+        private @InputMaster m_Wrapper;
+        public ActActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @InteractionShortcut => m_Wrapper.m_Act_InteractionShortcut;
+        public InputActionMap Get() { return m_Wrapper.m_Act; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ActActions set) { return set.Get(); }
+        public void AddCallbacks(IActActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ActActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ActActionsCallbackInterfaces.Add(instance);
+            @InteractionShortcut.started += instance.OnInteractionShortcut;
+            @InteractionShortcut.performed += instance.OnInteractionShortcut;
+            @InteractionShortcut.canceled += instance.OnInteractionShortcut;
+        }
+
+        private void UnregisterCallbacks(IActActions instance)
+        {
+            @InteractionShortcut.started -= instance.OnInteractionShortcut;
+            @InteractionShortcut.performed -= instance.OnInteractionShortcut;
+            @InteractionShortcut.canceled -= instance.OnInteractionShortcut;
+        }
+
+        public void RemoveCallbacks(IActActions instance)
+        {
+            if (m_Wrapper.m_ActActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IActActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ActActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ActActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ActActions @Act => new ActActions(this);
+
+    // UIControl
     private readonly InputActionMap m_UIControl;
     private List<IUIControlActions> m_UIControlActionsCallbackInterfaces = new List<IUIControlActions>();
-    private readonly InputAction m_UIControl_InteractionShortcut;
+    private readonly InputAction m_UIControl_Navigate;
+    private readonly InputAction m_UIControl_Select;
     public struct UIControlActions
     {
         private @InputMaster m_Wrapper;
         public UIControlActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
-        public InputAction @InteractionShortcut => m_Wrapper.m_UIControl_InteractionShortcut;
+        public InputAction @Navigate => m_Wrapper.m_UIControl_Navigate;
+        public InputAction @Select => m_Wrapper.m_UIControl_Select;
         public InputActionMap Get() { return m_Wrapper.m_UIControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -283,16 +383,22 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIControlActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIControlActionsCallbackInterfaces.Add(instance);
-            @InteractionShortcut.started += instance.OnInteractionShortcut;
-            @InteractionShortcut.performed += instance.OnInteractionShortcut;
-            @InteractionShortcut.canceled += instance.OnInteractionShortcut;
+            @Navigate.started += instance.OnNavigate;
+            @Navigate.performed += instance.OnNavigate;
+            @Navigate.canceled += instance.OnNavigate;
+            @Select.started += instance.OnSelect;
+            @Select.performed += instance.OnSelect;
+            @Select.canceled += instance.OnSelect;
         }
 
         private void UnregisterCallbacks(IUIControlActions instance)
         {
-            @InteractionShortcut.started -= instance.OnInteractionShortcut;
-            @InteractionShortcut.performed -= instance.OnInteractionShortcut;
-            @InteractionShortcut.canceled -= instance.OnInteractionShortcut;
+            @Navigate.started -= instance.OnNavigate;
+            @Navigate.performed -= instance.OnNavigate;
+            @Navigate.canceled -= instance.OnNavigate;
+            @Select.started -= instance.OnSelect;
+            @Select.performed -= instance.OnSelect;
+            @Select.canceled -= instance.OnSelect;
         }
 
         public void RemoveCallbacks(IUIControlActions instance)
@@ -315,8 +421,13 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnEscaping(InputAction.CallbackContext context);
     }
-    public interface IUIControlActions
+    public interface IActActions
     {
         void OnInteractionShortcut(InputAction.CallbackContext context);
+    }
+    public interface IUIControlActions
+    {
+        void OnNavigate(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
     }
 }

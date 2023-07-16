@@ -83,6 +83,8 @@ namespace April
 
             createdActionItems.Add(closeActionItem);
             createdActionItems[0].ActionToggle.SetIsOnWithoutNotify(true);
+            currentSelectedItemIndex = 0;
+            currentSelectedItem = createdActionItems[0];
         }
 
         public void ClearActions()

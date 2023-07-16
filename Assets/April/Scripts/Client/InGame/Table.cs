@@ -44,12 +44,12 @@ public class Table : InteractionBase
 
     private void OnEnable()
     {
-        //InputManager.Singleton.InputMaster.Act.InteractionShortcut.performed += OnInteractionShortcut;
+        InputManager.Singleton.InputMaster.PlayerControl.Interact.performed += OnInteractionShortcut;
     }
 
     private void OnDisable()
     {
-        //InputManager.Singleton.InputMaster.Act.InteractionShortcut.performed -= OnInteractionShortcut;
+        InputManager.Singleton.InputMaster.PlayerControl.Interact.performed -= OnInteractionShortcut;
     }
 
     private void OnInteractionShortcut(UnityEngine.InputSystem.InputAction.CallbackContext context)

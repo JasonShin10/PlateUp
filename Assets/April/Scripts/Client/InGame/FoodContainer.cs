@@ -1,12 +1,16 @@
 using April;
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FoodContainer : InteractionBase
 {
+    public CinemachineVirtualCamera containerCamera;
     public GameObject beefPrefab;
-    public GameObject chickenPrefab;
+    public GameObject chickenPrefab;   
+    
+    
     private PlayerController player;
     private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
 
@@ -26,6 +30,8 @@ public class FoodContainer : InteractionBase
             actionName = "Vegetable Interact",
             callback = VegetableInteract
         });
+
+        containerCamera.gameObject.SetActive(false);
     }
 
 
@@ -61,5 +67,13 @@ public class FoodContainer : InteractionBase
         this.player = player;
         var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
         interactUI.InitActions(interactActionDatas);
+
+
+        containerCamera.gameObject.SetActive(true);
+    }
+
+    public override void Exit()
+    {
+        containerCamera.gameObject.SetActive(false);
     }
 }

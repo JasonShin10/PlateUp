@@ -8,11 +8,23 @@ namespace April
 {
     public class PlayerController : MonoBehaviour
     {
+        public static PlayerController Instance { get; private set; }
+
         public InteractionBase currentInteractionObject;
         public GameObject item;
 
         public float interactionOffsetHeight = 0.8f;
         public LayerMask interactionObjectLayerMask;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
+        }
 
         private void Update()
         {
@@ -44,6 +56,14 @@ namespace April
             {
                 UIManager.Hide<InteractionUI>(UIList.InteractionUI);
                 currentInteractionObject = null;
+            }
+        }
+
+        public void ExitInteractionObject()
+        {
+            if (currentInteractionObject != null)
+            {
+                currentInteractionObject.Exit();
             }
         }
     }

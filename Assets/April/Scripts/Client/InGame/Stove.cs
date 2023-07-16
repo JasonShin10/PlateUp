@@ -87,4 +87,9 @@ public class Stove : InteractionBase
 
 
     }
+
+    public override void Exit()
+    {
+
+    }
 }

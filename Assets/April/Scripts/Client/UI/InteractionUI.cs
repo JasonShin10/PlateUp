@@ -99,6 +99,7 @@ namespace April
         public void CloseActionUI()
         {
             UIManager.Hide<InteractionUI>(UIList.InteractionUI);
+            PlayerController.Instance.ExitInteractionObject();
         }
 
         public void SetSelectedItem(InteractionUI_ActionItem selectedItem)

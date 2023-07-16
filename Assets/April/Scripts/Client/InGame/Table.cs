@@ -56,4 +56,9 @@ public class Table : InteractionBase
     {
         TableInteract();
     }
+
+    public override void Exit()
+    {
+
+    }
 }

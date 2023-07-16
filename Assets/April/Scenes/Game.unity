@@ -3765,7 +3765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodPrefab: {fileID: 3844536129544050871, guid: 99fe7abb6894a7c43bef203d7c644fe2, type: 3}
-  timePerState: 1
+  burningPower: 5
 --- !u!1 &2050984838
 GameObject:
   m_ObjectHideFlags: 0

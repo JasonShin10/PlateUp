@@ -21,24 +21,36 @@ public class Stove : InteractionBase
         });
     }
 
-    float currentTime;
-    [SerializeField] float timePerState = 1f;
+    //float currentTime;
+    //[SerializeField] float timePerState = 1f;
+
+    public float burningPower = 3f;
+
     void Update()
     {
         if (newFoodItem != null)
         {
-            // 고기가 Burned 상태가 아닌 경우에만 처리
-            if (meatComponent.currentState != Meat.MeatState.Burned)
+            if (meatComponent)
             {
-                currentTime += Time.deltaTime;
-
-                if (currentTime > timePerState)
+                if (meatComponent.State != Meat.MeatState.Burned)
                 {
-                    meatComponent.currentState++;
-                    Debug.Log(meatComponent.currentState);
-                    currentTime = 0f;
+                    meatComponent.progressValue += burningPower * Time.deltaTime;
                 }
             }
+
+
+            // 고기가 Burned 상태가 아닌 경우에만 처리
+            //if (meatComponent.currentState != Meat.MeatState.Burned)
+            //{
+            //    currentTime += Time.deltaTime;
+
+            //    if (currentTime > timePerState)
+            //    {
+            //        meatComponent.currentState++;
+            //        Debug.Log(meatComponent.currentState);
+            //        currentTime = 0f;
+            //    }
+            //}
         }
     }
 

@@ -28,14 +28,9 @@ public class FoodContainer : InteractionBase
         });
     }
 
-<<<<<<< HEAD
+
     void MeatInteract()
-=======
-    void Execute() { }
 
-
-    void FoodContainerInteract()
->>>>>>> 9630c032f13bdd3f1c88a479d5e0c0278c5ec80d
     {
         if (player.item == null)
         {

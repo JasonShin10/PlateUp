@@ -40,6 +40,7 @@ namespace April
         private void InteractionShortcut_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
             createdActionItems[0].OnExecuteAction();
+            CloseActionUI();
         }
 
         public void InitActions(List<InteractActionData> actions)

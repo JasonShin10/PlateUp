@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "a64a9db3-ead6-4efc-8596-614610a04bba",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -90,32 +99,15 @@
                     "action": "Escaping",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Act",
-            "id": "f1c8f31d-3230-4324-80cd-e5850b6d7eed",
-            "actions": [
-                {
-                    "name": "InteractionShortcut",
-                    "type": "Button",
-                    "id": "cb351774-1a46-4479-b7d4-68cb823b8b37",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "28a59235-1045-4a54-acf3-e610080c8199",
+                    "id": "2fa04869-befa-4068-923b-b8cc0e275e11",
                     "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "InteractionShortcut",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -126,9 +118,18 @@
             "id": "b46753a4-61b2-49b4-8d29-cb95f745f435",
             "actions": [
                 {
-                    "name": "Navigate",
+                    "name": "SelectionUp",
                     "type": "Button",
-                    "id": "18763b3f-1004-4ee0-bfb6-59d0df12d561",
+                    "id": "98e622a8-546e-46f4-9f59-ef407c939c39",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectionDown",
+                    "type": "Button",
+                    "id": "bcc0d87c-a73b-4cae-9201-48842cdb9b46",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -144,7 +145,41 @@
                     "initialStateCheck": false
                 }
             ],
-            "bindings": []
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5cfbe7e0-5485-4c2e-b774-c24346c18bdc",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0934406-f171-4118-a73a-853a05d2ce75",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectionUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "107478e6-5e58-4e59-a1bc-5e9f4cdfa579",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectionDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

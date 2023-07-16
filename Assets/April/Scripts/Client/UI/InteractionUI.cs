@@ -17,6 +17,8 @@ namespace April
         [SerializeField] private InteractionUI_ActionItem actionItemPrefab;
 
         private List<InteractionUI_ActionItem> createdActionItems = new List<InteractionUI_ActionItem>();
+        private InteractionUI_ActionItem currentSelectedItem = null;
+        private int currentSelectedItemIndex = 0;
 
         private void Awake()
         {
@@ -26,20 +28,40 @@ namespace April
         private void OnEnable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Disable();
-            InputManager.Singleton.InputMaster.Act.Enable();
-            InputManager.Singleton.InputMaster.Act.InteractionShortcut.performed += InteractionShortcut_performed;
+            InputManager.Singleton.InputMaster.UIControl.Enable();
+            InputManager.Singleton.InputMaster.UIControl.SelectionUp.performed += SelectionUp;
+            InputManager.Singleton.InputMaster.UIControl.SelectionDown.performed += SelectionDown;
+            InputManager.Singleton.InputMaster.UIControl.Select.performed += Select;
         }
 
         private void OnDisable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Enable();
-            InputManager.Singleton.InputMaster.Act.Disable();
-            InputManager.Singleton.InputMaster.Act.InteractionShortcut.performed -= InteractionShortcut_performed;
+            InputManager.Singleton.InputMaster.UIControl.Disable();
+            InputManager.Singleton.InputMaster.UIControl.Select.performed -= Select;
         }
 
-        private void InteractionShortcut_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        private void SelectionUp(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
-            createdActionItems[0].OnExecuteAction();
+            currentSelectedItemIndex--;
+            currentSelectedItemIndex = Mathf.Clamp(currentSelectedItemIndex, 0, createdActionItems.Count - 1);
+
+            createdActionItems[currentSelectedItemIndex].ActionToggle.SetIsOnWithoutNotify(true);
+            currentSelectedItem = createdActionItems[currentSelectedItemIndex];
+        }
+
+        private void SelectionDown(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        {
+            currentSelectedItemIndex++;
+            currentSelectedItemIndex = Mathf.Clamp(currentSelectedItemIndex, 0, createdActionItems.Count - 1);
+
+            createdActionItems[currentSelectedItemIndex].ActionToggle.SetIsOnWithoutNotify(true);
+            currentSelectedItem = createdActionItems[currentSelectedItemIndex];
+        }
+
+        private void Select(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        {
+            currentSelectedItem?.OnExecuteAction();
             CloseActionUI();
         }
 
@@ -60,10 +82,14 @@ namespace April
             closeActionItem.gameObject.SetActive(true);
 
             createdActionItems.Add(closeActionItem);
+            createdActionItems[0].ActionToggle.SetIsOnWithoutNotify(true);
         }
 
         public void ClearActions()
         {
+            currentSelectedItem = null;
+            currentSelectedItemIndex = 0;
+
             createdActionItems.ForEach(x => Destroy(x.gameObject));
             createdActionItems.Clear();
         }
@@ -71,6 +97,11 @@ namespace April
         public void CloseActionUI()
         {
             UIManager.Hide<InteractionUI>(UIList.InteractionUI);
+        }
+
+        public void SetSelectedItem(InteractionUI_ActionItem selectedItem)
+        {
+            currentSelectedItem = selectedItem;
         }
     }
 }

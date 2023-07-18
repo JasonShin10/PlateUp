@@ -17,22 +17,22 @@ public class Table : InteractionBase
     {
         if (player.item != null)
         {
-            Destroy(player.item);
-            player.item = null;
-            newFoodItem = Instantiate(foodPrefab);
+            newFoodItem = player.item;
+            
             meatComponent = newFoodItem.GetComponent<Meat>();
             newFoodItem.transform.SetParent(this.transform);
             newFoodItem.transform.localPosition = Vector3.up;
             newFoodItem.gameObject.SetActive(true);
-            Debug.Log("Item Insert To Stove!");
+            player.item = null;
+            Debug.Log("Item Insert To Table!");
         }
         else if (player.item == null)
         {
-            player.item = Instantiate(foodPrefab);
+            player.item = newFoodItem;
             meatComponent = newFoodItem.GetComponent<Meat>();
             player.item.transform.SetParent(player.transform);
             player.item.transform.localPosition = Vector3.up + Vector3.forward;
-            Destroy(newFoodItem);
+            
             newFoodItem = null;
         }
     }

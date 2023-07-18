@@ -38,13 +38,13 @@ namespace April
                     {
                         currentInteractionObject = interaction;
                         interaction.Interact(this);
-                        Debug.Log("1");
+                        
                     }
                     else if (currentInteractionObject == null)
                     {
                         currentInteractionObject = interaction;
                         interaction.Interact(this);
-                        Debug.Log("2");
+                        
                     }
                     else
                     {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using System;
 using static UnityEditor.Progress;
 
 public class Stove : InteractionBase
@@ -12,6 +13,8 @@ public class Stove : InteractionBase
     private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
     private GameObject newFoodItem;
     private Meat meatComponent;
+
+    public static event Action<Meat> OnMeatCreated;
     private void Awake()
     {
         interactActionDatas.Add(new InteractActionData()
@@ -20,9 +23,6 @@ public class Stove : InteractionBase
             callback = StoveInteract
         });
     }
-
-    //float currentTime;
-    //[SerializeField] float timePerState = 1f;
 
     public float burningPower = 3f;
 
@@ -37,43 +37,31 @@ public class Stove : InteractionBase
                     meatComponent.progressValue += burningPower * Time.deltaTime;
                 }
             }
-
-
-            // 고기가 Burned 상태가 아닌 경우에만 처리
-            //if (meatComponent.currentState != Meat.MeatState.Burned)
-            //{
-            //    currentTime += Time.deltaTime;
-
-            //    if (currentTime > timePerState)
-            //    {
-            //        meatComponent.currentState++;
-            //        Debug.Log(meatComponent.currentState);
-            //        currentTime = 0f;
-            //    }
-            //}
         }
     }
 
     void StoveInteract()
     {
+        // 플레이어가 아이템을 가지고 있다면
         if (player.item != null)
         {
-            Destroy(player.item);
-            player.item = null;
-            newFoodItem = Instantiate(foodPrefab);
+            
+            newFoodItem = player.item;
             meatComponent = newFoodItem.GetComponent<Meat>();
+            OnMeatCreated?.Invoke(meatComponent);
             newFoodItem.transform.SetParent(this.transform);
             newFoodItem.transform.localPosition = Vector3.up;
             newFoodItem.gameObject.SetActive(true);
+            // 참조를 없애겠다.
+            player.item = null;
             Debug.Log("Item Insert To Stove!");
         }
         else if (player.item == null)
         {
-            player.item = Instantiate(foodPrefab);
+            player.item = newFoodItem;
             meatComponent = newFoodItem.GetComponent<Meat>();
             player.item.transform.SetParent(player.transform);
             player.item.transform.localPosition = Vector3.up + Vector3.forward;
-            Destroy(newFoodItem);
             newFoodItem = null;
         }
     }
@@ -84,8 +72,6 @@ public class Stove : InteractionBase
 
         var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
         interactUI.InitActions(interactActionDatas);
-
-
     }
 
     public override void Exit()

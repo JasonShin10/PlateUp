@@ -27,8 +27,8 @@ public class FoodContainer : InteractionBase
 
         interactActionDatas.Add(new InteractActionData()
         {
-            actionName = "Vegetable Interact",
-            callback = VegetableInteract
+            actionName = "Chicken Interact",
+            callback = ChickenInteract
         });
 
         containerCamera.gameObject.SetActive(false);
@@ -49,7 +49,7 @@ public class FoodContainer : InteractionBase
         }
     }
 
-    void VegetableInteract()
+    void ChickenInteract()
     {
         if (player.item == null)
         {

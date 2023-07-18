@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Meat : MonoBehaviour
 {
+    public Slider slider;
+    public float progressValue;
+
     public enum MeatState
     {
         Raw,
@@ -11,8 +14,6 @@ public class Meat : MonoBehaviour
         WellDone,
         Burned
     }
-
-    // public MeatState currentState = MeatState.Raw;
 
     public MeatState State 
     {
@@ -37,5 +38,11 @@ public class Meat : MonoBehaviour
         }
     }
 
-    public float progressValue;
+    public void Update()
+    {
+        if (slider != null)
+        {
+            slider.value = progressValue;
+        }
+    }
 }

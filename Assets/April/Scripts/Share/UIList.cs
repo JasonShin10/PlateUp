@@ -16,6 +16,7 @@ namespace April
         TitleUI,
         DummyUI,
         InteractionUI,
+        WorldUI,
 
 
 

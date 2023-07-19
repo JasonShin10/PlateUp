@@ -346,7 +346,7 @@ GameObject:
   - component: {fileID: 105386899}
   - component: {fileID: 105386898}
   m_Layer: 0
-  m_Name: KitchenTable
+  m_Name: CustomerTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -360,13 +360,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105386896}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -30.09, y: 0.3, z: -11.809999}
+  m_LocalPosition: {x: -23.62, y: 0.81, z: -3.6099997}
   m_LocalScale: {x: 4.582577, y: 0.22265452, z: 4.582577}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 444147889}
-  m_Father: {fileID: 295111437}
-  m_RootOrder: -1
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &105386898
 CapsuleCollider:
@@ -577,7 +577,6 @@ Transform:
   - {fileID: 1504426537}
   - {fileID: 1052631666}
   - {fileID: 352656306}
-  - {fileID: 1090048756}
   - {fileID: 1497348839}
   - {fileID: 2078723937}
   - {fileID: 779543837}
@@ -585,8 +584,6 @@ Transform:
   - {fileID: 1180833015}
   - {fileID: 806783658}
   - {fileID: 472794937}
-  - {fileID: 105386897}
-  - {fileID: 1310670667}
   - {fileID: 2137793235}
   - {fileID: 369412669}
   - {fileID: 1408577117}
@@ -1122,7 +1119,7 @@ Transform:
   m_Children:
   - {fileID: 725722116}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &716245336
 MonoBehaviour:
@@ -2014,12 +2011,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1090048752}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.660696, y: 0.58000004, z: -1.9507446}
+  m_LocalPosition: {x: -5.1906962, y: 1.09, z: 6.249255}
   m_LocalScale: {x: 2.1491, y: 2.1491, z: 2.1491}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 295111437}
-  m_RootOrder: -1
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1090048757
 MonoBehaviour:
@@ -2033,7 +2030,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 678ad5df90743784cb4c952945babf3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodPrefab: {fileID: 3844536129544050871, guid: 99fe7abb6894a7c43bef203d7c644fe2, type: 3}
 --- !u!1 &1143385494
 GameObject:
   m_ObjectHideFlags: 0
@@ -2596,8 +2592,9 @@ GameObject:
   - component: {fileID: 1310670670}
   - component: {fileID: 1310670669}
   - component: {fileID: 1310670668}
+  - component: {fileID: 1310670671}
   m_Layer: 0
-  m_Name: KitchenTable
+  m_Name: CustomerTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2611,13 +2608,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310670666}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -19.69, y: 0.3, z: -5.32}
+  m_LocalPosition: {x: -13.220001, y: 0.81, z: 2.8799996}
   m_LocalScale: {x: 4.582577, y: 0.22265452, z: 4.582577}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1068562965}
-  m_Father: {fileID: 295111437}
-  m_RootOrder: -1
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1310670668
 CapsuleCollider:
@@ -2692,6 +2689,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310670666}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1310670671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310670666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d296f78488ef2b24696d76492f8f9cc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1408577116
 GameObject:
   m_ObjectHideFlags: 0
@@ -2951,7 +2960,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1481945717
 Transform:
   m_ObjectHideFlags: 0
@@ -3749,7 +3758,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2019928488
 GameObject:
@@ -3869,7 +3878,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b3c203119d61a4fb654e980c0be18f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodPrefab: {fileID: 3844536129544050871, guid: 99fe7abb6894a7c43bef203d7c644fe2, type: 3}
   burningPower: 5
 --- !u!1 &2050984838
 GameObject:
@@ -4089,7 +4097,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2054275343
 Transform:
   m_ObjectHideFlags: 0
@@ -4299,7 +4307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2090398528
 Transform:
   m_ObjectHideFlags: 0
@@ -5031,7 +5039,7 @@ RectTransform:
   - {fileID: 3900123327069684099}
   - {fileID: 480984533008185025}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5272,11 +5280,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8311146832482861526, guid: 8a8251839cf73d84d89b1dcb5ddd611b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.68968225
+      value: 0.68968236
       objectReference: {fileID: 0}
     - target: {fileID: 8311146832482861526, guid: 8a8251839cf73d84d89b1dcb5ddd611b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.12147479
+      value: 0.121474765
       objectReference: {fileID: 0}
     - target: {fileID: 8311146832482861526, guid: 8a8251839cf73d84d89b1dcb5ddd611b, type: 3}
       propertyPath: m_LocalRotation.y
@@ -5284,7 +5292,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8311146832482861526, guid: 8a8251839cf73d84d89b1dcb5ddd611b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.12382553
+      value: -0.123825505
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

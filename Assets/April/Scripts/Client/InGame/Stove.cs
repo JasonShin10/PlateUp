@@ -8,7 +8,7 @@ using static UnityEditor.Progress;
 
 public class Stove : InteractionBase
 {
-    public GameObject foodPrefab;
+
     private PlayerController player;
     private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
     private GameObject newFoodItem;

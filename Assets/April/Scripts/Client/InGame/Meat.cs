@@ -7,6 +7,11 @@ public class Meat : MonoBehaviour
     public Slider slider;
     public float progressValue;
 
+    private void Start()
+    {
+        slider = GetComponentInChildren<Slider>(true);
+        slider.maxValue = 90f;
+    }
     public enum MeatState
     {
         Raw,
@@ -38,7 +43,16 @@ public class Meat : MonoBehaviour
         }
     }
 
-    public void Update()
+    public void ShowUI()
+    {
+        slider.gameObject.SetActive(true);
+    }
+
+    public void HideUI()
+    {
+        slider.gameObject.SetActive(false);
+    }
+    void Update()
     {
         if (slider != null)
         {

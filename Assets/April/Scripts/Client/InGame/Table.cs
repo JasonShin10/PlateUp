@@ -7,7 +7,7 @@ using UnityEngine;
 public class Table : InteractionBase
 {
 
-    private PlayerController player;
+    public PlayerController player;
 
     private GameObject newFoodItem;
     private Meat meatComponent;
@@ -40,24 +40,7 @@ public class Table : InteractionBase
     public override void Interact(PlayerController player)
     {
         this.player = player;
-    }
-
-    private void OnEnable()
-    {
-        InputManager.Singleton.InputMaster.PlayerControl.Interact.performed += OnInteractionShortcut;
-    }
-
-    private void OnDisable()
-    {
-        InputManager.Singleton.InputMaster.PlayerControl.Interact.performed -= OnInteractionShortcut;
-    }
-
-    private void OnInteractionShortcut(UnityEngine.InputSystem.InputAction.CallbackContext context)
-    {
-        if (player.currentInteractionObject != null && player.currentInteractionObject is Table)
-        {
-            TableInteract();
-        }
+        TableInteract();
     }
 
     public override void Exit()

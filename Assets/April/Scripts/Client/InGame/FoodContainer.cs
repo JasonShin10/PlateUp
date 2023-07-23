@@ -6,12 +6,11 @@ using UnityEngine;
 
 public class FoodContainer : InteractionBase
 {
+    private PlayerController player;
     public CinemachineVirtualCamera containerCamera;
     public GameObject beefPrefab;
     public GameObject chickenPrefab;   
     
-    
-    private PlayerController player;
     private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
 
     private void Awake()
@@ -65,6 +64,7 @@ public class FoodContainer : InteractionBase
     public override void Interact(PlayerController player)
     {
         this.player = player;
+
         var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
         interactUI.InitActions(interactActionDatas);
 

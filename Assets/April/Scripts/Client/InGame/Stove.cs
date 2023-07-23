@@ -48,7 +48,8 @@ public class Stove : InteractionBase
             
             newFoodItem = player.item;
             meatComponent = newFoodItem.GetComponent<Meat>();
-            OnMeatCreated?.Invoke(meatComponent);
+            // meat에 붙어있는 slider을 켜라
+            meatComponent.ShowUI();
             newFoodItem.transform.SetParent(this.transform);
             newFoodItem.transform.localPosition = Vector3.up;
             newFoodItem.gameObject.SetActive(true);
@@ -60,6 +61,7 @@ public class Stove : InteractionBase
         {
             player.item = newFoodItem;
             meatComponent = newFoodItem.GetComponent<Meat>();
+            meatComponent.HideUI();
             player.item.transform.SetParent(player.transform);
             player.item.transform.localPosition = Vector3.up + Vector3.forward;
             newFoodItem = null;

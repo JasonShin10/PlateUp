@@ -32,24 +32,11 @@ public class CustomerTable : InteractionBase
             newFoodItem = null;
         }
     }
-    private void OnEnable()
-    {       InputManager.Singleton.InputMaster.PlayerControl.Interact.performed += OnInteractionShortcut;
-    }
-
-    private void OnDisable()
-    {        InputManager.Singleton.InputMaster.PlayerControl.Interact.performed -= OnInteractionShortcut;
-    }
-
-    private void OnInteractionShortcut(UnityEngine.InputSystem.InputAction.CallbackContext context)
-    {
-        if(player.currentInteractionObject != null && player.currentInteractionObject is CustomerTable )
-        {
-        CustomerTableInteract();
-        }
-    }
+ 
     public override void Interact(PlayerController player)
     {
         this.player = player;
+        CustomerTableInteract();
     }
 
     public override void Exit()

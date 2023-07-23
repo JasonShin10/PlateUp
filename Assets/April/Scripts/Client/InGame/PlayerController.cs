@@ -21,9 +21,12 @@ namespace April
         public string playerName;
         public TMPro.TextMeshProUGUI playerNameText;
 
+        private CharacterController characterController;
+
         private void Awake()
         {
             Instance = this;
+            characterController = GetComponent<CharacterController>();
         }
 
         private void OnDestroy()
@@ -88,6 +91,13 @@ namespace April
             {
                 UIManager.Hide<InteractionUI>(UIList.InteractionUI);
                 currentInteractionObject = null;
+            }
+
+
+            if (!characterController.isGrounded)
+            {
+                Vector3 gravity = Physics.gravity;
+                characterController.Move(gravity * Time.deltaTime);
             }
         }
 

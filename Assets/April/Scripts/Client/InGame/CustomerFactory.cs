@@ -2,20 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CustomerFactory : MonoBehaviour
+namespace April
 {
-    public GameObject customer;
-
-    float currentTime;
-    [SerializeField] private float spawnTime = 3f;
-    void Update()
+    public class CustomerFactory : MonoBehaviour
     {
-        currentTime += Time.deltaTime;
-        if (currentTime > spawnTime)
-        {
-        GameObject customerInstance = Instantiate(customer,transform.position, Quaternion.identity);
-            currentTime =0;
+        public static CustomerFactory Instance { get; private set; }
 
+
+        public int limitCount = 1;
+        public Customer customerPrefab;
+
+        [SerializeField] private float spawnTime = 3f;
+
+        private float currentTime;
+        private List<Customer> createdCustomers = new List<Customer>();
+
+        private void Awake()
+        {
+            Instance = this;
+            customerPrefab.gameObject.SetActive(false);
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
+        }
+
+        void Update()
+        {
+            if (createdCustomers.Count < limitCount)
+            {
+                currentTime += Time.deltaTime;
+                if (currentTime > spawnTime)
+                {
+                    Customer customerInstance = Instantiate(customerPrefab, transform.position, Quaternion.identity);
+                    customerInstance.gameObject.SetActive(true);
+
+                    var randomColor = new Color();
+                    randomColor.r = Random.Range(0, 256) / 255f;
+                    randomColor.g = Random.Range(0, 256) / 255f;
+                    randomColor.b = Random.Range(0, 256) / 255f;
+                    randomColor.a = Random.Range(0, 256) / 255f;
+                    customerInstance.GraphicColor = randomColor;
+
+                    createdCustomers.Add(customerInstance);
+                    currentTime = 0;
+                }
+            }
         }
     }
 }
+

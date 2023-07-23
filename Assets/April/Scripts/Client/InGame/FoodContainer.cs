@@ -1,79 +1,84 @@
-using April;
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodContainer : InteractionBase
+namespace April
 {
-    private PlayerController player;
-    public CinemachineVirtualCamera containerCamera;
-    public GameObject beefPrefab;
-    public GameObject chickenPrefab;   
-    
-    private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
-
-    private void Awake()
+    public class FoodContainer : InteractionBase
     {
-        //var actionData = new InteractActionData();
-        //actionData.callback += Execute;
+        public override bool IsAutoInteractable => true;
 
-        interactActionDatas.Add(new InteractActionData()
+        private PlayerController player;
+        public CinemachineVirtualCamera containerCamera;
+        public GameObject beefPrefab;
+        public GameObject chickenPrefab;
+
+        private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
+
+
+        private void Awake()
         {
-            actionName = "Meat Interact",
-            callback = MeatInteract
-        });
+            //var actionData = new InteractActionData();
+            //actionData.callback += Execute;
 
-        interactActionDatas.Add(new InteractActionData()
-        {
-            actionName = "Chicken Interact",
-            callback = ChickenInteract
-        });
+            interactActionDatas.Add(new InteractActionData()
+            {
+                actionName = "Meat Interact",
+                callback = MeatInteract
+            });
 
-        containerCamera.gameObject.SetActive(false);
-    }
+            interactActionDatas.Add(new InteractActionData()
+            {
+                actionName = "Chicken Interact",
+                callback = ChickenInteract
+            });
 
-
-    void MeatInteract()
-
-    {
-        if (player.item == null)
-        {
-            var newFoodItem = Instantiate(beefPrefab);
-            newFoodItem.transform.localScale = beefPrefab.transform.localScale;
-            newFoodItem.transform.SetParent(player.transform);
-            newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
-            newFoodItem.gameObject.SetActive(true);
-            player.item = newFoodItem;
+            containerCamera.gameObject.SetActive(false);
         }
-    }
 
-    void ChickenInteract()
-    {
-        if (player.item == null)
+
+        void MeatInteract()
+
         {
-            var newFoodItem = Instantiate(chickenPrefab);
-            newFoodItem.transform.localScale = chickenPrefab.transform.localScale;
-            newFoodItem.transform.SetParent(player.transform);
-            newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
-            newFoodItem.gameObject.SetActive(true);
-            player.item = newFoodItem;
+            if (player.item == null)
+            {
+                var newFoodItem = Instantiate(beefPrefab);
+                newFoodItem.transform.localScale = beefPrefab.transform.localScale;
+                newFoodItem.transform.SetParent(player.transform);
+                newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
+                newFoodItem.gameObject.SetActive(true);
+                player.item = newFoodItem;
+            }
         }
-    }
 
-    public override void Interact(PlayerController player)
-    {
-        this.player = player;
+        void ChickenInteract()
+        {
+            if (player.item == null)
+            {
+                var newFoodItem = Instantiate(chickenPrefab);
+                newFoodItem.transform.localScale = chickenPrefab.transform.localScale;
+                newFoodItem.transform.SetParent(player.transform);
+                newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
+                newFoodItem.gameObject.SetActive(true);
+                player.item = newFoodItem;
+            }
+        }
 
-        var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
-        interactUI.InitActions(interactActionDatas);
+        public override void Interact(PlayerController player)
+        {
+            this.player = player;
+
+            var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
+            interactUI.InitActions(interactActionDatas);
 
 
-        containerCamera.gameObject.SetActive(true);
-    }
+            containerCamera.gameObject.SetActive(true);
+        }
 
-    public override void Exit()
-    {
-        containerCamera.gameObject.SetActive(false);
+        public override void Exit()
+        {
+            containerCamera.gameObject.SetActive(false);
+        }
     }
 }

@@ -401,7 +401,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6353631934806683628}
-  m_LocalRotation: {x: 0.121474795, y: 0.70302874, z: -0.12382553, w: 0.6896823}
+  m_LocalRotation: {x: 0.121474765, y: 0.7030288, z: -0.123825505, w: 0.68968236}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -554,8 +554,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7704507479631649649}
-  m_LocalRotation: {x: 0.14117816, y: 0.6991939, z: -0.14391021, w: 0.68592024}
-  m_LocalPosition: {x: -1.7690816, y: 3.3, z: -0.09417778}
+  m_LocalRotation: {x: 0.009363108, y: 0.97344804, z: -0.2251041, w: 0.04049016}
+  m_LocalPosition: {x: 2.8000002, y: 3.33, z: 4.9700003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -595,7 +595,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 60
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -804,6 +804,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7424441453434616610}
+  - component: {fileID: 407372122748660178}
   m_Layer: 0
   m_Name: April.Ingame.CameraSystem
   m_TagString: Untagged
@@ -829,6 +830,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &407372122748660178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8190726712943011964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4225d6757fe931f43814418b789a292b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Cameras:
+    keys: 0100000002000000
+    values:
+    - {fileID: 8116010448470748037}
+    - {fileID: 1966970390848481584}
 --- !u!1 &8759287739695510090
 GameObject:
   m_ObjectHideFlags: 0
@@ -980,7 +998,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9036018808972908375}
-  m_LocalRotation: {x: 0.16089559, y: 0.69475406, z: -0.16400918, w: 0.6815647}
+  m_LocalRotation: {x: 0.1608956, y: 0.69475406, z: -0.1640092, w: 0.6815647}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

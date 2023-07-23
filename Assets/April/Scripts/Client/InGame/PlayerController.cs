@@ -63,8 +63,7 @@ namespace April
                         if (currentInteractionObject != null && currentInteractionObject != interaction)
                         {
                             currentInteractionObject = interaction;
-
-                            if (currentInteractionObject is Stove || currentInteractionObject is FoodContainer)
+                            if (currentInteractionObject.IsAutoInteractable)
                             {
                                 interaction.Interact(this);
                             }
@@ -74,7 +73,7 @@ namespace April
                     else if (currentInteractionObject == null)
                     {
                         currentInteractionObject = interaction;
-                        if (currentInteractionObject is Stove || currentInteractionObject is FoodContainer)
+                        if (currentInteractionObject.IsAutoInteractable)
                         {
                             interaction.Interact(this);
                         }

@@ -8,6 +8,7 @@ using static UnityEditor.Progress;
 
 public class Stove : InteractionBase
 {
+    public override bool IsAutoInteractable => true;
 
     private PlayerController player;
     private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
@@ -25,6 +26,7 @@ public class Stove : InteractionBase
     }
 
     public float burningPower = 3f;
+
 
     void Update()
     {

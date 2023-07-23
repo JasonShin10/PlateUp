@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Table : InteractionBase
 {
+    public override bool IsAutoInteractable => false;
 
     public PlayerController player;
 

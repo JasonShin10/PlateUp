@@ -32,6 +32,11 @@ namespace April
             Instance = this;
         }
 
+        private void Start()
+        {
+            ChangeCamera(CameraModeType.Camera_PlayerFocus);    
+        }
+
         private void OnDestroy()
         {
             Instance = null;

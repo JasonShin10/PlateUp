@@ -15,7 +15,7 @@ public class Stove : InteractionBase
     private GameObject newFoodItem;
     private Meat meatComponent;
 
-    public static event Action<Meat> OnMeatCreated;
+    //public static event Action<Meat> OnMeatCreated;
     private void Awake()
     {
         interactActionDatas.Add(new InteractActionData()

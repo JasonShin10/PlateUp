@@ -17,6 +17,8 @@ namespace April
         private float currentTime;
         private List<Customer> createdCustomers = new List<Customer>();
 
+        [SerializeField] List<CustomerTable> tables = new List<CustomerTable>();
+
         private void Awake()
         {
             Instance = this;
@@ -37,7 +39,7 @@ namespace April
                 {
                     Customer customerInstance = Instantiate(customerPrefab, transform.position, Quaternion.identity);
                     customerInstance.gameObject.SetActive(true);
-
+                    customerInstance.tables = tables;
                     var randomColor = new Color();
                     randomColor.r = Random.Range(0, 256) / 255f;
                     randomColor.g = Random.Range(0, 256) / 255f;

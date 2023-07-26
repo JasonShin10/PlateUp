@@ -12,13 +12,14 @@ namespace April
         private GameObject newFoodItem;
         private Meat meatComponent;
 
+        public bool customerVisted;
+        [SerializeField] public List<Chair> chiars = new List<Chair>();
 
         void CustomerTableInteract()
         {
             if (player.item != null)
             {
                 newFoodItem = player.item;
-
                 meatComponent = newFoodItem.GetComponent<Meat>();
                 newFoodItem.transform.SetParent(this.transform);
                 newFoodItem.transform.localPosition = Vector3.up;

@@ -7,6 +7,7 @@ namespace April
     public class CustomerTable : InteractionBase
     {
         public override bool IsAutoInteractable => false;
+        public override InteractionObjectType InterationObjectType => InteractionObjectType.CustomerTable;
 
         private PlayerController player;
         private GameObject newFoodItem;

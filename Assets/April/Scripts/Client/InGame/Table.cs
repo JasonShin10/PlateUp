@@ -7,6 +7,8 @@ using UnityEngine;
 public class Table : InteractionBase
 {
     public override bool IsAutoInteractable => false;
+    public override InteractionObjectType InterationObjectType => InteractionObjectType.Table;
+
 
     public PlayerController player;
 

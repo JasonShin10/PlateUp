@@ -264,8 +264,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6494a259571a394687ca041e0c46b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  runtimeCollection: {fileID: 11400000, guid: dd273e323e8be4045b205ce50f021a70, type: 2}
+  interactionObjects: {fileID: 0}
+  tables: []
+  target: {fileID: 0}
   last: 0
-  targetPositoin: {fileID: 0}
+  targetPosition: {fileID: 0}
   orderImageDisplay: {fileID: 4784079631931004134}
   graphicRenderer: {fileID: 0}
 --- !u!1 &3532819161959344332

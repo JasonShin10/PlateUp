@@ -9,6 +9,7 @@ using static UnityEditor.Progress;
 public class Stove : InteractionBase
 {
     public override bool IsAutoInteractable => true;
+    public override InteractionObjectType InterationObjectType => InteractionObjectType.Stove;
 
     private PlayerController player;
     private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
@@ -16,8 +17,10 @@ public class Stove : InteractionBase
     private Meat meatComponent;
 
     //public static event Action<Meat> OnMeatCreated;
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         interactActionDatas.Add(new InteractActionData()
         {
             actionName = "Stove Action",

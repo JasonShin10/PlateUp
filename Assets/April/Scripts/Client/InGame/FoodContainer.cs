@@ -8,6 +8,7 @@ namespace April
     public class FoodContainer : InteractionBase
     {
         public override bool IsAutoInteractable => true;
+        public override InteractionObjectType InterationObjectType => InteractionObjectType.Container;
 
         private PlayerController player;
         public CinemachineVirtualCamera containerCamera;
@@ -17,8 +18,9 @@ namespace April
         private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
 
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             //var actionData = new InteractActionData();
             //actionData.callback += Execute;
 

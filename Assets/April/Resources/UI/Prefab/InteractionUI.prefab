@@ -407,7 +407,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &3609586756920186402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,6 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d74331cd22048eb49ab0f2652f87b40a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <IsMouseCursorVisible>k__BackingField: 1
   actionItemRoot: {fileID: 7833388710119909365}
   actionItemPrefab: {fileID: 5593496708688192788}
 --- !u!1 &8521013520108284984

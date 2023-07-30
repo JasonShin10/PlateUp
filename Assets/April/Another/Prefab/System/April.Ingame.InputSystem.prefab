@@ -46,4 +46,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   escapeUI: {fileID: 0}
   player: {fileID: 0}
-  playerSpeed: 5

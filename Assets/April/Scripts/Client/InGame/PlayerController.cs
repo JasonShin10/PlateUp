@@ -7,6 +7,7 @@ using TMPro;
 using System.Xml.Serialization;
 using System;
 using UnityEngine.EventSystems;
+using Sirenix.OdinInspector;
 
 namespace April
 {
@@ -14,17 +15,27 @@ namespace April
     {
         public static PlayerController Instance { get; private set; }
 
+        [Title("Components")]
         public InteractionBase currentInteractionObject;
         public Food item;
         public Dish dish;
         public float interactionOffsetHeight = 0.8f;
         public LayerMask interactionObjectLayerMask;
 
+        [Title("Settings")]
+        public float playerSpeed = 5f;
+        public float playerTurnSmoothTime;
+
+        [Title("UI")]
         public string playerName;
         public TMPro.TextMeshProUGUI playerNameText;
 
+        [Title("Visualization")]
+        public VisualizationCharacter visualization;
+
         private CharacterController characterController;
         private bool isMouseOverGUI;
+        private float playerTurningCurrentVelocity;
 
         private void Awake()
         {
@@ -142,6 +153,23 @@ namespace April
                 Vector3 gravity = Physics.gravity;
                 characterController.Move(gravity * Time.deltaTime);
             }
+        }
+
+        public void Move(Vector2 movementInput)
+        {
+            float targetAngle = Mathf.Atan2(movementInput.x, movementInput.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(characterController.transform.eulerAngles.y, targetAngle, ref playerTurningCurrentVelocity, playerTurnSmoothTime);
+            characterController.transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            Vector3 moveDir = Quaternion.Euler(0f, angle, 0f) * Vector3.forward;
+            characterController.Move(moveDir.normalized * playerSpeed * Time.deltaTime);
+
+            visualization.SetMovement(movementInput.magnitude);
+        }
+
+        public void MoveStop()
+        {
+            visualization.SetMovement(0);
         }
 
         public void ExitInteractionObject()

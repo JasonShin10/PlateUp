@@ -103,7 +103,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &6869529833720076563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,14 +264,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6494a259571a394687ca041e0c46b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runtimeCollection: {fileID: 11400000, guid: dd273e323e8be4045b205ce50f021a70, type: 2}
-  interactionObjects: {fileID: 0}
   tables: []
   target: {fileID: 0}
-  last: 0
+  orderFood: {fileID: 0}
   targetPosition: {fileID: 0}
   orderImageDisplay: {fileID: 4784079631931004134}
   graphicRenderer: {fileID: 0}
+  imageContainer: {fileID: 11400000, guid: f0b021598acb88a49b5777f81a4b89dc, type: 2}
 --- !u!1 &3532819161959344332
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,7 +288,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7973674794715457191
 RectTransform:
   m_ObjectHideFlags: 0

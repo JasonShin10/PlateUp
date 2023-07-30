@@ -12,8 +12,8 @@ namespace April
 
         private PlayerController player;
         public CinemachineVirtualCamera containerCamera;
-        public GameObject beefPrefab;
-        public GameObject chickenPrefab;
+        public Meat beefPrefab;
+        public Chicken chickenPrefab;
 
         private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
 

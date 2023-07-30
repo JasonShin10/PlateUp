@@ -13,8 +13,8 @@ namespace April
         public static PlayerController Instance { get; private set; }
 
         public InteractionBase currentInteractionObject;
-        public GameObject item;
-
+        public Food item;
+        public Dish dish;
         public float interactionOffsetHeight = 0.8f;
         public LayerMask interactionObjectLayerMask;
 
@@ -27,6 +27,7 @@ namespace April
         {
             Instance = this;
             characterController = GetComponent<CharacterController>();
+            
         }
 
         private void OnDestroy()
@@ -49,9 +50,22 @@ namespace April
         {
             currentInteractionObject?.Interact(this);
         }
+        bool IsMouseOverGameWindow()
+        {
+            Vector3 mousePosition = Input.mousePosition;
 
+            return mousePosition.x >= 0 && mousePosition.x <= Screen.width && mousePosition.y >= 0 && mousePosition.y <= Screen.height;
+        }
         private void Update()
         {
+            if (IsMouseOverGameWindow())
+            {
+                Cursor.visible = false;
+            }
+            else
+            {
+                Cursor.visible = true;
+            }
             // Ray의 시작점을 플레이어의 발 아래가 아니라, 약간 위에서 시작하게 하는것
             Ray ray = new Ray(transform.position, transform.forward);
             if (Physics.Raycast(ray, out var hitInfo, 1f, interactionObjectLayerMask, QueryTriggerInteraction.Collide))

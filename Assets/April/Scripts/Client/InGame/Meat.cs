@@ -1,19 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR.Haptics;
 using UnityEngine.UI;
-public class Meat : MonoBehaviour
+public class Meat : Food
 {
     public Slider slider;
-    public float progressValue;
+    
 
     private void Start()
     {
         slider = GetComponentInChildren<Slider>(true);
         slider.maxValue = 90f;
     }
+    public override int CookingState => (int)State;
+
+    //public override string CookingState
+    //{
+    //    get
+    //    {
+    //        return CurrenState.ToString();
+    //    }
+    //}
+
     public enum MeatState
-    {
+    { 
         Raw,
         Medium,
         WellDone,
@@ -43,12 +54,12 @@ public class Meat : MonoBehaviour
         }
     }
 
-    public void ShowUI()
+    public override void ShowUI()
     {
         slider.gameObject.SetActive(true);
     }
 
-    public void HideUI()
+    public override void HideUI()
     {
         slider.gameObject.SetActive(false);
     }

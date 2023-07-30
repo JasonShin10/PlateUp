@@ -11,6 +11,7 @@ namespace April
         Stove,
         Container,
         Table,
+        DishTable,
         CustomerTable,
     }
 
@@ -19,7 +20,7 @@ namespace April
         public static Dictionary<InteractionObjectType, List<InteractionBase>> SpawnedInteractionObjects
             = new Dictionary<InteractionObjectType, List<InteractionBase>>();
 
-        public RuntimeCollection_InteractionObjects runtimeCollection;
+        //public RuntimeCollection_InteractionObjects runtimeCollection;
 
         public abstract bool IsAutoInteractable { get; }
         public abstract InteractionObjectType InterationObjectType { get; }
@@ -38,15 +39,6 @@ namespace April
 
         void RegistObject()
         {
-            // 1. Runtime Collection ( Scriptable Object에 컨테이너를 선언해서 사용하는 방식)
-            if (runtimeCollection.SpawnedObjectContainer.TryGetValue(InterationObjectType, out List<InteractionBase> container2))
-            {
-                container2.Add(this);
-            }
-            else
-            {
-                runtimeCollection.SpawnedObjectContainer.Add(InterationObjectType, new List<InteractionBase>() { this });
-            }
 
             // 2. Static 변수로 제어하는 방식
             if (SpawnedInteractionObjects.TryGetValue(InterationObjectType, out List<InteractionBase> container))
@@ -70,4 +62,13 @@ namespace April
 
 
 }
+            // 1. Runtime Collection ( Scriptable Object에 컨테이너를 선언해서 사용하는 방식)
+            //if (runtimeCollection.SpawnedObjectContainer.TryGetValue(InterationObjectType, out List<InteractionBase> container2))
+            //{
+            //    container2.Add(this);
+            //}
+            //else
+            //{
+            //    runtimeCollection.SpawnedObjectContainer.Add(InterationObjectType, new List<InteractionBase>() { this });
+            //}
 

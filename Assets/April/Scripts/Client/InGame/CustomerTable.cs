@@ -10,8 +10,7 @@ namespace April
         public override InteractionObjectType InterationObjectType => InteractionObjectType.CustomerTable;
 
         private PlayerController player;
-        private GameObject newFoodItem;
-        private Meat meatComponent;
+        private Food foodComponent;
 
         public bool customerVisted;
         [SerializeField] public List<Chair> chiars = new List<Chair>();
@@ -20,21 +19,21 @@ namespace April
         {
             if (player.item != null)
             {
-                newFoodItem = player.item;
-                meatComponent = newFoodItem.GetComponent<Meat>();
-                newFoodItem.transform.SetParent(this.transform);
-                newFoodItem.transform.localPosition = Vector3.up;
-                newFoodItem.gameObject.SetActive(true);
+                foodComponent = player.item;
+                
+                foodComponent.transform.SetParent(this.transform);
+                foodComponent.transform.localPosition = Vector3.up;
+                foodComponent.gameObject.SetActive(true);
                 player.item = null;
                 Debug.Log("Item Insert To CustomerTable!");
             }
             else if (player.item == null)
             {
-                player.item = newFoodItem;
-                meatComponent = newFoodItem.GetComponent<Meat>();
+                player.item = foodComponent;
+               
                 player.item.transform.SetParent(player.transform);
                 player.item.transform.localPosition = Vector3.up + Vector3.forward;
-                newFoodItem = null;
+                foodComponent = null;
             }
         }
 

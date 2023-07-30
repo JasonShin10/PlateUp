@@ -11,32 +11,32 @@ public class Table : InteractionBase
 
 
     public PlayerController player;
+ 
+   
 
-    private GameObject newFoodItem;
-    private Meat meatComponent;
-
+    private Food foodComponent;
 
     void TableInteract()
     {
         if (player.item != null)
         {
-            newFoodItem = player.item;
+            foodComponent = player.item;
             
-            meatComponent = newFoodItem.GetComponent<Meat>();
-            newFoodItem.transform.SetParent(this.transform);
-            newFoodItem.transform.localPosition = Vector3.up;
-            newFoodItem.gameObject.SetActive(true);
+            
+            foodComponent.transform.SetParent(this.transform);
+            foodComponent.transform.localPosition = Vector3.up;
+            foodComponent.gameObject.SetActive(true);
             player.item = null;
             Debug.Log("Item Insert To Table!");
         }
         else if (player.item == null)
         {
-            player.item = newFoodItem;
-            meatComponent = newFoodItem.GetComponent<Meat>();
+            player.item = foodComponent;
+            foodComponent = foodComponent.GetComponent<Meat>();
             player.item.transform.SetParent(player.transform);
             player.item.transform.localPosition = Vector3.up + Vector3.forward;
             
-            newFoodItem = null;
+            foodComponent = null;
         }
     }
 

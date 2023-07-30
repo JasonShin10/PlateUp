@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 862970997718701497}
   - component: {fileID: 5956625682575174571}
   - component: {fileID: 6773946274984591289}
-  - component: {fileID: 7508152688808523834}
+  - component: {fileID: -251638259937326222}
   m_Layer: 0
   m_Name: Chicken
   m_TagString: Untagged
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7508152688808523834
+--- !u!114 &-251638259937326222
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3844536129544050871}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99b91b6a596a309428a4211d0c02f503, type: 3}
+  m_Script: {fileID: 11500000, guid: ccf2f6f5c20cb0f47b827c5fe94a7294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
+  progressValue: 0

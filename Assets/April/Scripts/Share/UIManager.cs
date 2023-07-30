@@ -11,6 +11,13 @@ namespace April
         {
             var newUI = Singleton.GetUI<T>(ui);
             newUI.Show(showCallback);
+
+            if (newUI.IsMouseCursorVisible)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+
             return newUI;
         }
 

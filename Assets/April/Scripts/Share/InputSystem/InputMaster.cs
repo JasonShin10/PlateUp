@@ -53,6 +53,24 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""643ca2fe-6d72-467a-ae34-913b04c6e0d7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CursorEnable"",
+                    ""type"": ""Button"",
+                    ""id"": ""e5f8c113-ca39-4c5c-94a9-7a877105cff4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -130,6 +148,39 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""df49be80-cb5e-4d5b-b50d-3ffc892b9adb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b07a9a00-e20e-48a2-b25d-682a2b4b918c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75b3a6df-5463-4bd7-b3e3-02d20a5b9348"",
+                    ""path"": ""<Keyboard>/leftAlt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CursorEnable"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -211,6 +262,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_PlayerControl_Movement = m_PlayerControl.FindAction("Movement", throwIfNotFound: true);
         m_PlayerControl_Escaping = m_PlayerControl.FindAction("Escaping", throwIfNotFound: true);
         m_PlayerControl_Interact = m_PlayerControl.FindAction("Interact", throwIfNotFound: true);
+        m_PlayerControl_Click = m_PlayerControl.FindAction("Click", throwIfNotFound: true);
+        m_PlayerControl_CursorEnable = m_PlayerControl.FindAction("CursorEnable", throwIfNotFound: true);
         // UIControl
         m_UIControl = asset.FindActionMap("UIControl", throwIfNotFound: true);
         m_UIControl_SelectionUp = m_UIControl.FindAction("SelectionUp", throwIfNotFound: true);
@@ -280,6 +333,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControl_Movement;
     private readonly InputAction m_PlayerControl_Escaping;
     private readonly InputAction m_PlayerControl_Interact;
+    private readonly InputAction m_PlayerControl_Click;
+    private readonly InputAction m_PlayerControl_CursorEnable;
     public struct PlayerControlActions
     {
         private @InputMaster m_Wrapper;
@@ -287,6 +342,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_PlayerControl_Movement;
         public InputAction @Escaping => m_Wrapper.m_PlayerControl_Escaping;
         public InputAction @Interact => m_Wrapper.m_PlayerControl_Interact;
+        public InputAction @Click => m_Wrapper.m_PlayerControl_Click;
+        public InputAction @CursorEnable => m_Wrapper.m_PlayerControl_CursorEnable;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -305,6 +362,12 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @Click.started += instance.OnClick;
+            @Click.performed += instance.OnClick;
+            @Click.canceled += instance.OnClick;
+            @CursorEnable.started += instance.OnCursorEnable;
+            @CursorEnable.performed += instance.OnCursorEnable;
+            @CursorEnable.canceled += instance.OnCursorEnable;
         }
 
         private void UnregisterCallbacks(IPlayerControlActions instance)
@@ -318,6 +381,12 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @Click.started -= instance.OnClick;
+            @Click.performed -= instance.OnClick;
+            @Click.canceled -= instance.OnClick;
+            @CursorEnable.started -= instance.OnCursorEnable;
+            @CursorEnable.performed -= instance.OnCursorEnable;
+            @CursorEnable.canceled -= instance.OnCursorEnable;
         }
 
         public void RemoveCallbacks(IPlayerControlActions instance)
@@ -402,6 +471,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnEscaping(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
+        void OnCursorEnable(InputAction.CallbackContext context);
     }
     public interface IUIControlActions
     {

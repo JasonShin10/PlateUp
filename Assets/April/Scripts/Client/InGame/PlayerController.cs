@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 using UnityEditor.UI;
 using TMPro;
 using System.Xml.Serialization;
+using System;
+using UnityEngine.EventSystems;
 
 namespace April
 {
@@ -22,12 +24,12 @@ namespace April
         public TMPro.TextMeshProUGUI playerNameText;
 
         private CharacterController characterController;
+        private bool isMouseOverGUI;
 
         private void Awake()
         {
             Instance = this;
             characterController = GetComponent<CharacterController>();
-            
         }
 
         private void OnDestroy()
@@ -38,34 +40,61 @@ namespace April
         private void OnEnable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Interact.performed += DoInteraction;
+            InputManager.Singleton.InputMaster.PlayerControl.Click.performed += MouseClick;
+            InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed += CursorEnable;
+
             playerNameText.text = playerName;
         }
 
         private void OnDisable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Interact.performed -= DoInteraction;
+            InputManager.Singleton.InputMaster.PlayerControl.Click.performed -= MouseClick;
+            InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed -= CursorEnable;
+        }
+
+        private void MouseClick(InputAction.CallbackContext context)
+        {
+            if (!isMouseOverGUI)
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+
+        private void CursorEnable(InputAction.CallbackContext context)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
 
         private void DoInteraction(InputAction.CallbackContext context)
         {
             currentInteractionObject?.Interact(this);
         }
+
         bool IsMouseOverGameWindow()
         {
             Vector3 mousePosition = Input.mousePosition;
-
             return mousePosition.x >= 0 && mousePosition.x <= Screen.width && mousePosition.y >= 0 && mousePosition.y <= Screen.height;
         }
+
         private void Update()
         {
-            if (IsMouseOverGameWindow())
-            {
-                Cursor.visible = false;
-            }
+            if (EventSystem.current != null)
+                isMouseOverGUI = EventSystem.current.IsPointerOverGameObject();
             else
-            {
-                Cursor.visible = true;
-            }
+                isMouseOverGUI = false;
+
+            //if (IsMouseOverGameWindow())
+            //{
+            //    Cursor.visible = false;
+            //}
+            //else
+            //{
+            //    Cursor.visible = true;
+            //}
+
             // Ray의 시작점을 플레이어의 발 아래가 아니라, 약간 위에서 시작하게 하는것
             Ray ray = new Ray(transform.position, transform.forward);
             if (Physics.Raycast(ray, out var hitInfo, 1f, interactionObjectLayerMask, QueryTriggerInteraction.Collide))

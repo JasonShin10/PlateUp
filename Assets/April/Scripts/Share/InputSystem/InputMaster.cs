@@ -71,6 +71,24 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraRotateHorizontal"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""34282137-bb34-471a-945b-cbeb62036e4b"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraRotateVertical"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""0e6db7ee-505f-4081-bed7-4ffe1a7a19e3"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -183,6 +201,28 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""action"": ""CursorEnable"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9d5736ab-6764-4db9-a20b-0266eb6deae1"",
+                    ""path"": ""<Mouse>/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotateHorizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7795418f-77ca-4b5f-8997-efa4f9fcf029"",
+                    ""path"": ""<Mouse>/delta/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotateVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -264,6 +304,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_PlayerControl_Interact = m_PlayerControl.FindAction("Interact", throwIfNotFound: true);
         m_PlayerControl_Click = m_PlayerControl.FindAction("Click", throwIfNotFound: true);
         m_PlayerControl_CursorEnable = m_PlayerControl.FindAction("CursorEnable", throwIfNotFound: true);
+        m_PlayerControl_CameraRotateHorizontal = m_PlayerControl.FindAction("CameraRotateHorizontal", throwIfNotFound: true);
+        m_PlayerControl_CameraRotateVertical = m_PlayerControl.FindAction("CameraRotateVertical", throwIfNotFound: true);
         // UIControl
         m_UIControl = asset.FindActionMap("UIControl", throwIfNotFound: true);
         m_UIControl_SelectionUp = m_UIControl.FindAction("SelectionUp", throwIfNotFound: true);
@@ -335,6 +377,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControl_Interact;
     private readonly InputAction m_PlayerControl_Click;
     private readonly InputAction m_PlayerControl_CursorEnable;
+    private readonly InputAction m_PlayerControl_CameraRotateHorizontal;
+    private readonly InputAction m_PlayerControl_CameraRotateVertical;
     public struct PlayerControlActions
     {
         private @InputMaster m_Wrapper;
@@ -344,6 +388,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_PlayerControl_Interact;
         public InputAction @Click => m_Wrapper.m_PlayerControl_Click;
         public InputAction @CursorEnable => m_Wrapper.m_PlayerControl_CursorEnable;
+        public InputAction @CameraRotateHorizontal => m_Wrapper.m_PlayerControl_CameraRotateHorizontal;
+        public InputAction @CameraRotateVertical => m_Wrapper.m_PlayerControl_CameraRotateVertical;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -368,6 +414,12 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @CursorEnable.started += instance.OnCursorEnable;
             @CursorEnable.performed += instance.OnCursorEnable;
             @CursorEnable.canceled += instance.OnCursorEnable;
+            @CameraRotateHorizontal.started += instance.OnCameraRotateHorizontal;
+            @CameraRotateHorizontal.performed += instance.OnCameraRotateHorizontal;
+            @CameraRotateHorizontal.canceled += instance.OnCameraRotateHorizontal;
+            @CameraRotateVertical.started += instance.OnCameraRotateVertical;
+            @CameraRotateVertical.performed += instance.OnCameraRotateVertical;
+            @CameraRotateVertical.canceled += instance.OnCameraRotateVertical;
         }
 
         private void UnregisterCallbacks(IPlayerControlActions instance)
@@ -387,6 +439,12 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @CursorEnable.started -= instance.OnCursorEnable;
             @CursorEnable.performed -= instance.OnCursorEnable;
             @CursorEnable.canceled -= instance.OnCursorEnable;
+            @CameraRotateHorizontal.started -= instance.OnCameraRotateHorizontal;
+            @CameraRotateHorizontal.performed -= instance.OnCameraRotateHorizontal;
+            @CameraRotateHorizontal.canceled -= instance.OnCameraRotateHorizontal;
+            @CameraRotateVertical.started -= instance.OnCameraRotateVertical;
+            @CameraRotateVertical.performed -= instance.OnCameraRotateVertical;
+            @CameraRotateVertical.canceled -= instance.OnCameraRotateVertical;
         }
 
         public void RemoveCallbacks(IPlayerControlActions instance)
@@ -473,6 +531,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
         void OnCursorEnable(InputAction.CallbackContext context);
+        void OnCameraRotateHorizontal(InputAction.CallbackContext context);
+        void OnCameraRotateVertical(InputAction.CallbackContext context);
     }
     public interface IUIControlActions
     {

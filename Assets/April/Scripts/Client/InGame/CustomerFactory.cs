@@ -39,6 +39,7 @@ namespace April
                 {
                     Customer customerInstance = Instantiate(customerPrefab, transform.position, Quaternion.identity);
                     customerInstance.gameObject.SetActive(true);
+                    customerInstance.exitTarget = this.transform;
                     // customerInstance.tables = tables;
 
                     var randomColor = new Color();

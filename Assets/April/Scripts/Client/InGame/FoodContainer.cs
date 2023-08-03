@@ -17,7 +17,6 @@ namespace April
 
         private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
 
-
         protected override void Awake()
         {
             base.Awake();
@@ -66,7 +65,6 @@ namespace April
                 player.item = newFoodItem;
             }
         }
-
         public override void Interact(PlayerController player)
         {
             this.player = player;

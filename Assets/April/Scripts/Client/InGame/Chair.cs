@@ -10,7 +10,8 @@ public class Chair : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.GetComponent<Customer>().target == this)
+        Customer customer = other.transform.GetComponent<Customer>();
+        if (customer != null && customer.target == this)
         {
             isVisited = true;
         }

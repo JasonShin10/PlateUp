@@ -17,8 +17,8 @@ namespace April
 
         [Title("Components")]
         public InteractionBase currentInteractionObject;
-        public Food item;
-        public Dish dish;
+        public InteractionItem item;
+
         public float interactionOffsetHeight = 0.8f;
         public LayerMask interactionObjectLayerMask;
 

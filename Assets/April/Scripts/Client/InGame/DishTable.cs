@@ -16,14 +16,14 @@ public class DishTable : InteractionBase
 
     void DishTableInteract()
     {
-      if (player.dish == null)
+      if (player.item == null)
         {
             var newDish = Instantiate(dish);
             newDish.transform.localScale = dish.transform.localScale;
             newDish.transform.SetParent(player.transform);
             newDish.transform.localPosition = Vector3.up + Vector3.forward;
             newDish.gameObject.SetActive(true);
-            player.dish = newDish;
+            player.item = newDish;
 
         }
     }

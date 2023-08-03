@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public abstract class Food : MonoBehaviour
+public abstract class Food : InteractionItem
 {
     public abstract int CookingState { get; }
     public float progressValue;

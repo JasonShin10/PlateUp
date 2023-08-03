@@ -8,7 +8,7 @@ public class SampleStatic_Controller_B : MonoBehaviour
     {
         StaticSample.StaticSampleValue = 20;        
 
-        int a = 100; // Stack - 지역 변수
+        //int a = 100; // Stack - 지역 변수
         DoAction(10);
     }
 

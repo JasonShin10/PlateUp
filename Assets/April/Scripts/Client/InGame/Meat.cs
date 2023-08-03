@@ -6,12 +6,13 @@ using UnityEngine.UI;
 public class Meat : Food
 {
     public Slider slider;
-    
-
+    private Renderer meatRenderer;
+    Color meatColor;
     private void Start()
     {
         slider = GetComponentInChildren<Slider>(true);
         slider.maxValue = 90f;
+        meatRenderer = GetComponent<Renderer>();
     }
     public override int CookingState => (int)State;
 
@@ -65,6 +66,23 @@ public class Meat : Food
     }
     void Update()
     {
+        switch (State)
+        {
+            case MeatState.Raw:
+                meatColor = Color.red;
+                break;
+            case MeatState.Medium:
+                meatColor = new Color(0.8f, 0.3f, 0.1f); 
+                break;
+            case MeatState.WellDone:
+                meatColor = new Color(0.5f, 0.2f, 0.1f); 
+                break;
+            case MeatState.Burned:
+                meatColor = Color.black;
+                break;
+        }
+        meatRenderer.material.color = meatColor;
+
         if (slider != null)
         {
             slider.value = progressValue;

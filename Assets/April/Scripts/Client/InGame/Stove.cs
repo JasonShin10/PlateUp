@@ -1,4 +1,4 @@
-using April;
+
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,82 +6,94 @@ using UnityEngine;
 using System;
 using static UnityEditor.Progress;
 
-public class Stove : InteractionBase
+namespace April
 {
-    public override bool IsAutoInteractable => true;
-    public override InteractionObjectType InterationObjectType => InteractionObjectType.Stove;
-
-    private PlayerController player;
-    private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
-
-    private Food foodComponent;
-
-    //public static event Action<Meat> OnMeatCreated;
-    protected override void Awake()
+    public class Stove : InteractionBase
     {
-        base.Awake();
+        public override bool IsAutoInteractable => true;
+        public override InteractionObjectType InterationObjectType => InteractionObjectType.Stove;
 
-        interactActionDatas.Add(new InteractActionData()
+        private PlayerController player;
+        private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
+
+        private InteractionItem item;
+        private Food foodComponent;
+        //public static event Action<Meat> OnMeatCreated;
+        protected override void Awake()
         {
-            actionName = "Stove Action",
-            callback = StoveInteract
-        });
-    }
+            base.Awake();
+            interactActionDatas.Add(new InteractActionData()
+            {
+                actionName = "Stove Action",
+                callback = StoveInteract
+            });
 
-    public float burningPower = 3f;
+        }
+
+        public float burningPower = 3f;
 
 
-    void Update()
-    {
-        if (foodComponent != null)
+        void Update()
         {
-           
+            if (foodComponent != null)
+            {
                 if (foodComponent.CookingState != (int)Meat.MeatState.Burned)
                 {
                     foodComponent.progressValue += burningPower * Time.deltaTime;
                 }
-            
+            }
         }
-    }
 
-    void StoveInteract()
-    {
-        // 플레이어가 아이템을 가지고 있다면
-        if (player.item != null)
+        void StoveInteract()
         {
-            
-            foodComponent = player.item;
-           
-            // meat에 붙어있는 slider을 켜라
-            foodComponent.ShowUI();
-            foodComponent.transform.SetParent(this.transform);
-            foodComponent.transform.localPosition = Vector3.up;
-            foodComponent.gameObject.SetActive(true);
-            // 참조를 없애겠다.
-            player.item = null;
-            Debug.Log("Item Insert To Stove!");
+            // 플레이어가 아이템을 가지고 있다면
+            if (player.item != null)
+            {
+                this.item = player.item;
+                if (player.item is Food)
+                {
+                    foodComponent = item as Food;
+                }
+                else
+                {
+                    return;
+                }
+
+                // meat에 붙어있는 slider을 켜라
+                foodComponent = foodComponent.GetComponent<Meat>();
+                foodComponent.ShowUI();
+                foodComponent.transform.SetParent(this.transform);
+                foodComponent.transform.localPosition = Vector3.up;
+                foodComponent.gameObject.SetActive(true);
+                // 참조를 없애겠다.
+                player.item = null;
+                Debug.Log("Item Insert To Stove!");
+            }
+            else if (player.item == null)
+            {
+
+                player.item = foodComponent;
+                foodComponent = foodComponent.GetComponent<Meat>();
+                foodComponent.HideUI();
+                player.item.transform.SetParent(player.transform);
+                player.item.transform.localPosition = Vector3.up + Vector3.forward;
+                foodComponent = null;
+            }
         }
-        else if (player.item == null)
+
+        public override void Interact(PlayerController player)
         {
-            player.item = foodComponent;
-            foodComponent = foodComponent.GetComponent<Meat>();
-            foodComponent.HideUI();
-            player.item.transform.SetParent(player.transform);
-            player.item.transform.localPosition = Vector3.up + Vector3.forward;
-            foodComponent = null;
+            this.player = player;
+
+            var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
+            interactUI.InitActions(interactActionDatas);
+        }
+
+        public override void Exit()
+        {
+
         }
     }
 
-    public override void Interact(PlayerController player)
-    {
-        this.player = player;
-
-        var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
-        interactUI.InitActions(interactActionDatas);
-    }
-
-    public override void Exit()
-    {
-
-    }
 }
+

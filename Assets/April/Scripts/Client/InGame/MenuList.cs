@@ -6,8 +6,8 @@ namespace April
 {
     public enum MenuList
     {
-        Meat,
-        Chicken
+        Meat = 0,
+        Chicken = 1,
     }
 
     

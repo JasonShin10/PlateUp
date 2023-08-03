@@ -47,12 +47,19 @@ namespace April
                     randomColor.g = Random.Range(0, 256) / 255f;
                     randomColor.b = Random.Range(0, 256) / 255f;
                     randomColor.a = Random.Range(0, 256) / 255f;
+
                     customerInstance.GraphicColor = randomColor;
 
                     createdCustomers.Add(customerInstance);
                     currentTime = 0;
                 }
             }
+        }
+
+        public void RemoveCustomer(Customer customer)
+        {
+            createdCustomers.Remove(customer);
+            Destroy(customer.gameObject);
         }
     }
 }

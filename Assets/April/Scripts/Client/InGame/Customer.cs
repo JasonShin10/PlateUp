@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Claims;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -8,7 +9,6 @@ using UnityEngine.AI;
 using UnityEngine.Analytics;
 using UnityEngine.UI;
 using SysRandom = System.Random;
-
 
 namespace April
 {
@@ -34,18 +34,20 @@ namespace April
         }
 
         private NavMeshAgent agent;
-        private CustomerTable myTable;
-        public Transform targetPosition;
+        private CustomerTable_InteractSlot myTableSlot;
         public Image orderImageDisplay;
 
         public Renderer graphicRenderer;
         public MenuImageContainer imageContainer;
 
+        private float distanceBetweenDestination;
+        private event Action onDestinationCallback;
+
         protected override void Awake()
         {
             base.Awake();
-            graphicRenderer = GetComponent<Renderer>();
         }
+
         public Food GetFoodByMenu(MenuList menu)
         {
             switch (menu)
@@ -65,36 +67,32 @@ namespace April
 
             MenuList randomMenu = (MenuList)values.GetValue(random.Next(values.Length));
             orderFood = GetFoodByMenu(randomMenu);
-            int randomNum = (int)randomMenu;
+
+            int randomNum = UnityEngine.Random.Range((int)Meat.MeatState.Raw, (int)Meat.MeatState.Burned);
             orderImageDisplay.sprite = imageContainer.sprites[randomNum];
             orderImageDisplay.gameObject.SetActive(false);
         }
 
 
-        private void FindTarget(List<InteractionBase> tables)
+        private void FindTarget(List<InteractionBase> tableSlots)
         {
-            foreach (InteractionBase tableEntity in tables)
+            foreach (InteractionBase tableSlotEntity in tableSlots)
             {
-                var customerTable = tableEntity as CustomerTable;
-                if (customerTable.customerVisted == true)
+                var customerTableSlot = tableSlotEntity as CustomerTable_InteractSlot;
+                if (customerTableSlot.customerAssigned == true)
                 {
                     continue;
                 }
                 else
                 {
-                    myTable = customerTable;
-                    foreach (Chair chair in customerTable.chiars)
+                    myTableSlot = customerTableSlot;
+                    myTableSlot.customerAssigned = true;
+                    MoveToTarget(customerTableSlot.transform.position, () =>
                     {
-                        if (chair.isVisited != true && chair.istargeted != true)
-
-                        {
-                            targetPosition = chair.transform;
-                            
-                            target = chair;
-                            target.istargeted = true;
-                            return;
-                        }
-                    }
+                        orderImageDisplay.gameObject.SetActive(true);
+                        transform.LookAt(myTableSlot.parentTable.transform.position, Vector3.up);
+                    });
+                    break;
                 }
             }
         }
@@ -110,32 +108,29 @@ namespace April
             {
                 FindTarget(tables);
             }
+        }
 
-            if (targetPosition != null)
+        private void Update()
+        {
+            distanceBetweenDestination = Vector3.Distance(transform.position, agent.destination);
+            if (distanceBetweenDestination <= 0.1f)
             {
-                MoveToTarget();
+                onDestinationCallback?.Invoke();
+                onDestinationCallback = null;
             }
         }
 
         // Update is called once per frame
-        void MoveToTarget()
+        void MoveToTarget(Vector3 destination, Action callbackOnDestination = null)
         {
-            agent.SetDestination(targetPosition.position);
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (target.transform == other.transform)
-            {
-                orderImageDisplay.gameObject.SetActive(true);
-            }
+            onDestinationCallback += callbackOnDestination;
+            agent.SetDestination(destination);
         }
 
         public override void Interact(PlayerController player)
         {
             this.player = player;
             CustomerInteract();
-
         }
 
         public void CustomerInteract()
@@ -150,16 +145,15 @@ namespace April
                         orderImageDisplay.gameObject.SetActive(false);
                         myFood = foodItem;
                         foodDish = player.item;
-                        
-                        player.item.transform.SetParent(myTable.transform);
+
+                        player.item.transform.SetParent(myTableSlot.transform);
                         player.item.transform.localPosition = Vector3.up;
                         player.item = null;
+
                         StartCoroutine(Eat());
                     }
                 }
-                
             }
-            
         }
 
 
@@ -167,19 +161,27 @@ namespace April
         IEnumerator Eat()
         {
             yield return new WaitForSeconds(maxTime);
+
             Destroy(myFood.gameObject);
+
             myFood = null;
-            myTable.dishes.Add(foodDish);
+            myTableSlot.customerAssigned = false;
+            myTableSlot.item = foodDish;
+
             Dish emptyDish = (Dish)foodDish;
             emptyDish.GetDirty();
+
             GoOut();
         }
 
         public void GoOut()
         {
-            targetPosition = exitTarget;
-            MoveToTarget();
+            MoveToTarget(exitTarget.transform.position, () =>
+            {
+                CustomerFactory.Instance.RemoveCustomer(this);
+            });
         }
+
         public override void Exit()
         {
 

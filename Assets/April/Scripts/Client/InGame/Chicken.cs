@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Meat;
 
-public class Chicken : Food
+namespace April
 {
-    public enum ChickenState
+    public class Chicken : Food
     {
-        Raw,
-        HalfCooked,
-        FullyCooked,
-        Burned
-    }
+        public enum ChickenState
+        {
+            Raw,
+            HalfCooked,
+            FullyCooked,
+            Burned
+        }
 
-    public ChickenState CurrentChickenState { get; set; } = ChickenState.Raw;
-    public override int CookingState => (int)CurrentChickenState;
+        public ChickenState CurrentChickenState { get; set; } = ChickenState.Raw;
+        public override int CookingState => (int)CurrentChickenState;
+    }
 }
+

@@ -51,12 +51,12 @@ public class Table : InteractionBase
                 {
                     switch (player.item)
                     {
-                        case Meat :
-                            player.item.transform.SetParent(item.transform);  
+                        case Meat:
+                            player.item.transform.SetParent(item.transform);
                             player.item.transform.localPosition = item.transform.localPosition;// world랑 local차이점 찾아서 정리
                             player.item = null;
                             break;
-                        case Chicken :
+                        case Chicken:
                             player.item.transform.SetParent(item.transform);
                             player.item.transform.localPosition = item.transform.localPosition;// world랑 local차이점 찾아서 정리
                             player.item = null;
@@ -80,10 +80,13 @@ public class Table : InteractionBase
         }
         else
         {
-            player.item = item;
-            player.item.transform.SetParent(player.transform);
-            player.item.transform.localPosition = Vector3.up + Vector3.forward;
-            item = null;
+            if (item != null)
+            {
+                player.item = item;
+                item.transform.SetParent(player.transform);
+                item.transform.localPosition = Vector3.up + Vector3.forward;
+                item = null;
+            }
         }
     }
 

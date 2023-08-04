@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 namespace April
@@ -11,6 +12,23 @@ namespace April
 
         private PlayerController player;
         public Dish dish;
+
+        public void Update()
+        {
+            if (dish != null && dish.dirty == true)
+            {
+                if (PlayerController.Instance.isButtonPressed == true)
+                {
+                    dish.progressValue += 3f * Time.deltaTime;
+                }
+                if (dish.slider.value == dish.slider.maxValue)
+                {
+                    dish.GetClean();
+                }
+            }
+        }
+
+
         void DishWasherInteract()
         {
             if (player.item != null)
@@ -21,6 +39,20 @@ namespace April
                     player.item.transform.SetParent(this.transform);
                     player.item.transform.localPosition = Vector3.up;
                     player.item = null;
+                    dish.ShowUI();
+                }
+            }
+            else
+            {
+                if (dish.dirty == false)
+                {
+                    player.item = dish;
+                    dish.HideUI();
+                    player.item.transform.SetParent(player.transform);
+                    player.item.transform.localPosition = Vector3.up + Vector3.forward;
+                    dish.progressValue = 0;
+                    dish = null;
+
                 }
             }
         }

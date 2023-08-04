@@ -15,6 +15,7 @@ namespace April
     {
         public static PlayerController Instance { get; private set; }
 
+        public bool isButtonPressed = false;
         [Title("Components")]
         public InteractionBase currentInteractionObject;
         public InteractionItem item;
@@ -51,6 +52,7 @@ namespace April
         private void OnEnable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Interact.performed += DoInteraction;
+            InputManager.Singleton.InputMaster.PlayerControl.Interact.canceled += StopInteraction;
             InputManager.Singleton.InputMaster.PlayerControl.Click.performed += MouseClick;
             InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed += CursorEnable;
 
@@ -81,9 +83,16 @@ namespace April
 
         private void DoInteraction(InputAction.CallbackContext context)
         {
+            Debug.Log("DoInteraction");
             currentInteractionObject?.Interact(this);
+            isButtonPressed = true;
         }
 
+        private void StopInteraction(InputAction.CallbackContext context)
+        {
+            Debug.Log("StopInteraction");
+            isButtonPressed = false;
+        }
         bool IsMouseOverGameWindow()
         {
             Vector3 mousePosition = Input.mousePosition;

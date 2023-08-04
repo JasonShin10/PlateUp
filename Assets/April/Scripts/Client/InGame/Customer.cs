@@ -48,13 +48,15 @@ namespace April
             base.Awake();
         }
 
-        public Food GetFoodByMenu(MenuList menu)
+        public Food GetFoodByMenu(MenuList menu, out Type menuStateType)
         {
             switch (menu)
             {
                 case MenuList.Meat:
+                    menuStateType = typeof(Meat.MeatState);
                     return new Meat();
                 case MenuList.Chicken:
+                    menuStateType = typeof(Chicken.ChickenState);
                     return new Chicken();
                 default:
                     throw new ArgumentException("Invalid menu item");
@@ -66,10 +68,14 @@ namespace April
             Array values = Enum.GetValues(typeof(MenuList));
 
             MenuList randomMenu = (MenuList)values.GetValue(random.Next(values.Length));
-            orderFood = GetFoodByMenu(randomMenu);
+            orderFood = GetFoodByMenu(randomMenu, out Type menuStateType);
 
-            int randomNum = UnityEngine.Random.Range((int)Meat.MeatState.Raw, (int)Meat.MeatState.Burned);
-            orderImageDisplay.sprite = imageContainer.sprites[randomNum];
+            Array menuStates = Enum.GetValues(menuStateType);
+            int firstState = (int)menuStates.GetValue(0);
+            int lastState = (int)menuStates.GetValue(menuStates.Length - 1);
+
+            int randomNum = UnityEngine.Random.Range(firstState, lastState);
+            orderImageDisplay.sprite = imageContainer.sprites[0];
             orderImageDisplay.gameObject.SetActive(false);
         }
 
@@ -137,9 +143,9 @@ namespace April
         {
             if (player.item != null)
             {
-                if (player.item.transform.childCount > 0 && player.item.transform.GetChild(0).GetComponent<Food>() != null)
+                if (player.item.transform.childCount > 0 && player.item.transform.GetChild(2).GetComponent<Food>() != null)
                 {
-                    Food foodItem = player.item.transform.GetChild(0).GetComponent<Food>();
+                    Food foodItem = player.item.transform.GetChild(2).GetComponent<Food>();
                     if (orderFood.GetType() == foodItem.GetType() && orderFood.CookingState == foodItem.CookingState)
                     {
                         orderImageDisplay.gameObject.SetActive(false);

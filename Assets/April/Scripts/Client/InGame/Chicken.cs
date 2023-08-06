@@ -6,6 +6,7 @@ namespace April
 {
     public class Chicken : Food
     {
+        public override MenuList MenuType => MenuList.Chicken;
         public enum ChickenState
         {
             Raw,

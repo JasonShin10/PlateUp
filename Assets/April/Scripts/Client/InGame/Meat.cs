@@ -8,6 +8,8 @@ namespace April
 {
     public class Meat : Food
     {
+        public override MenuList MenuType => MenuList.Meat;
+
         public enum MeatState
         {
             Raw,

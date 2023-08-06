@@ -22,8 +22,6 @@ namespace April
 
         public Chair target;
         public Transform exitTarget;
-
-        [SerializeField] public Food orderFood;
         public Food myFood;
 
         private InteractionItem foodDish;
@@ -42,6 +40,9 @@ namespace April
 
         private float distanceBetweenDestination;
         private event Action onDestinationCallback;
+
+        private MenuList orderedMenuType;
+        private int orderedMenuStateType;
 
         protected override void Awake()
         {
@@ -68,7 +69,7 @@ namespace April
             Array values = Enum.GetValues(typeof(MenuList));
 
             MenuList randomMenu = (MenuList)values.GetValue(random.Next(values.Length));
-            orderFood = GetFoodByMenu(randomMenu, out Type menuStateType);
+            GetFoodByMenu(randomMenu, out Type menuStateType);
 
             Array menuStates = Enum.GetValues(menuStateType);
             int firstState = (int)menuStates.GetValue(0);
@@ -77,6 +78,11 @@ namespace April
             int randomNum = UnityEngine.Random.Range(firstState, lastState);
             orderImageDisplay.sprite = imageContainer.sprites[0];
             orderImageDisplay.gameObject.SetActive(false);
+
+            //orderedMenuType = randomMenu;
+            //orderedMenuStateType = randomNum;
+            orderedMenuType = MenuList.Meat;
+            orderedMenuStateType = 0;
         }
 
 
@@ -149,7 +155,7 @@ namespace April
                 if (dish.ContainedFoodItems.Count > 0)
                 {
                     Food foodItem = dish.ContainedFoodItems[0];
-                    if (orderFood.GetType() == foodItem.GetType() && orderFood.CookingState == foodItem.CookingState)
+                    if (orderedMenuType == foodItem.MenuType && orderedMenuStateType == foodItem.CookingState)
                     {
                         orderImageDisplay.gameObject.SetActive(false);
                         myFood = foodItem;

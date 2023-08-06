@@ -24,7 +24,7 @@ namespace April
         {
             slider = GetComponentInChildren<Slider>(true);
             slider.maxValue = 90f;
-            meatRenderer = GetComponent<Renderer>();
+            meatRenderer = GetComponentInChildren<Renderer>(true);
         }
         public override int CookingState => (int)State;
 

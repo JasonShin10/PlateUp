@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Runtime Collection
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: 21300000, guid: f33fd1554687eee4e9c00a47429c5419, type: 3}
-  - {fileID: 21300000, guid: cee60912028a6d340a7ef28821563e6b, type: 3}
-  - {fileID: 21300000, guid: 3cb88484c9b0d62488518aa8dd90924d, type: 3}
-  - {fileID: 21300000, guid: aa3a68e541abb7f40bc38617d7c93e61, type: 3}
+  - {fileID: 21300000, guid: 5522f7331e98f3e4d800eb0e6bad004a, type: 3}
+  - {fileID: 21300000, guid: 0740d951755f73548ae4b65b739e4de0, type: 3}
+  - {fileID: 21300000, guid: ec761603b7c37f149abba41a39e5b808, type: 3}

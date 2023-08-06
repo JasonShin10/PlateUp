@@ -23,7 +23,7 @@ namespace April
         public Chair target;
         public Transform exitTarget;
 
-        public Food orderFood;
+        [SerializeField] public Food orderFood;
         public Food myFood;
 
         private InteractionItem foodDish;

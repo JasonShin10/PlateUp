@@ -15,7 +15,7 @@ public class Dish : InteractionItem
     // Start is called before the first frame update
     void Start()
     {
-        dishRenderer = GetComponent<Renderer>();
+        dishRenderer = GetComponentInChildren<Renderer>();
         slider = GetComponentInChildren<Slider>(true);
         slider.maxValue = 90f;
     }

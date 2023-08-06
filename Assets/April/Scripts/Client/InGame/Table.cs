@@ -1,6 +1,7 @@
 using April;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -14,12 +15,13 @@ public class Table : InteractionBase
     private InteractionItem item;
 
     float tableHeight;
-    float itemHalfHeight;
-
+    float dishHeight;
+    float foodHeight;
     private new void Start()
     {
         base.Start();
-        tableHeight = this.GetComponent<Collider>().bounds.size.y / 6;
+        tableHeight = GetComponent<Collider>().bounds.size.y;
+        
     }
 
     void TableInteract()
@@ -35,12 +37,10 @@ public class Table : InteractionBase
                 }
                 else
                 {
-                    item = player.item;
-                    itemHalfHeight = item.GetComponent<Collider>().bounds.size.y / 2f;
-                    Vector3 itemPositionAboveTable = new Vector3(0, tableHeight + itemHalfHeight, 0);
+                    item = player.item;   
+                    dishHeight = item.GetComponentInChildren<Collider>().bounds.size.y;
                     item.transform.SetParent(this.transform);
-                    item.transform.localPosition = itemPositionAboveTable;
-                    item.gameObject.SetActive(true);
+                    item.transform.localPosition = new Vector3(0, tableHeight + dishHeight/2, 0);
                     player.item = null;
                     Debug.Log("Dish Insert To Table!");
                 }
@@ -49,16 +49,17 @@ public class Table : InteractionBase
             {
                 if (item is Dish)
                 {
+                        foodHeight = player.item.GetComponentInChildren<Collider>().bounds.size.y;
                     switch (player.item)
                     {
                         case Meat:
-                            player.item.transform.SetParent(item.transform);
-                            player.item.transform.localPosition = item.transform.localPosition;// world랑 local차이점 찾아서 정리
+                            player.item.transform.SetParent(item.transform);                           
+                            player.item.transform.localPosition = new Vector3(0,dishHeight + foodHeight/2,0);
                             player.item = null;
                             break;
                         case Chicken:
                             player.item.transform.SetParent(item.transform);
-                            player.item.transform.localPosition = item.transform.localPosition;// world랑 local차이점 찾아서 정리
+                            player.item.transform.localPosition = new Vector3(0, dishHeight + foodHeight / 2, 0);
                             player.item = null;
                             break;
                     }
@@ -67,11 +68,9 @@ public class Table : InteractionBase
                 else
                 {
                     item = player.item;
-                    itemHalfHeight = item.GetComponent<Collider>().bounds.size.y / 2f;
-                    Vector3 itemPositionAboveTable = new Vector3(0, tableHeight + itemHalfHeight, 0);
+
                     item.transform.SetParent(this.transform);
-                    item.transform.localPosition = itemPositionAboveTable;
-                    item.gameObject.SetActive(true);
+                    item.transform.localPosition = new Vector3(0, tableHeight + foodHeight / 2, 0); ;
                     player.item = null;
                     Debug.Log("Food Insert To Table!");
                 }

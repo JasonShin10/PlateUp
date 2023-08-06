@@ -8,7 +8,7 @@ namespace April
     public class DishWasher : InteractionBase
     {
         public override bool IsAutoInteractable => false;
-        public override InteractionObjectType InterationObjectType => InteractionObjectType.CustomerTable;
+        public override InteractionObjectType InterationObjectType => InteractionObjectType.DishWasher;
 
         private PlayerController player;
         public Dish dish;
@@ -19,7 +19,7 @@ namespace April
             {
                 if (PlayerController.Instance.isButtonPressed == true)
                 {
-                    dish.progressValue += 3f * Time.deltaTime;
+                    dish.progressValue += 10f * Time.deltaTime;
                 }
                 if (dish.slider.value == dish.slider.maxValue)
                 {

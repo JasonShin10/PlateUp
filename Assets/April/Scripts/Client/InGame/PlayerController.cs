@@ -16,6 +16,7 @@ namespace April
         public static PlayerController Instance { get; private set; }
 
         public bool isButtonPressed = false;
+        public bool runButtonPressed = false;
         [Title("Components")]
         public InteractionBase currentInteractionObject;
         public InteractionItem item;
@@ -55,6 +56,7 @@ namespace April
             InputManager.Singleton.InputMaster.PlayerControl.Interact.canceled += StopInteraction;
             InputManager.Singleton.InputMaster.PlayerControl.Click.performed += MouseClick;
             InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed += CursorEnable;
+            
 
             playerNameText.text = playerName;
         }

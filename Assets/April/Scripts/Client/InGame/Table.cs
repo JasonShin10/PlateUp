@@ -21,7 +21,7 @@ public class Table : InteractionBase
     {
         base.Start();
         tableHeight = GetComponent<Collider>().bounds.size.y;
-        
+
     }
 
     void TableInteract()
@@ -37,10 +37,10 @@ public class Table : InteractionBase
                 }
                 else
                 {
-                    item = player.item;   
+                    item = player.item;
                     dishHeight = item.GetComponentInChildren<Collider>().bounds.size.y;
                     item.transform.SetParent(this.transform);
-                    item.transform.localPosition = new Vector3(0, tableHeight + dishHeight/2, 0);
+                    item.transform.localPosition = new Vector3(0, tableHeight + dishHeight / 2, 0);
                     player.item = null;
                     Debug.Log("Dish Insert To Table!");
                 }
@@ -49,21 +49,25 @@ public class Table : InteractionBase
             {
                 if (item is Dish)
                 {
-                        foodHeight = player.item.GetComponentInChildren<Collider>().bounds.size.y;
-                    switch (player.item)
-                    {
-                        case Meat:
-                            player.item.transform.SetParent(item.transform);                           
-                            player.item.transform.localPosition = new Vector3(0,dishHeight + foodHeight/2,0);
-                            player.item = null;
-                            break;
-                        case Chicken:
-                            player.item.transform.SetParent(item.transform);
-                            player.item.transform.localPosition = new Vector3(0, dishHeight + foodHeight / 2, 0);
-                            player.item = null;
-                            break;
-                    }
+                    //foodHeight = player.item.GetComponentInChildren<Collider>().bounds.size.y;
+                    //switch (player.item)
+                    //{
+                    //    case Meat:
+                    //        player.item.transform.SetParent(item.transform);
+                    //        player.item.transform.localPosition = new Vector3(0, dishHeight + foodHeight / 2, 0);
+                    //        player.item = null;
+                    //        break;
+                    //    case Chicken:
+                    //        player.item.transform.SetParent(item.transform);
+                    //        player.item.transform.localPosition = new Vector3(0, dishHeight + foodHeight / 2, 0);
+                    //        player.item = null;
+                    //        break;
+                    //}
 
+                    var dish = item as Dish;
+                    var food = player.item as Food;
+                    dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
+                    player.item = null;
                 }
                 else
                 {

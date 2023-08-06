@@ -5,56 +5,72 @@ using UnityEngine.UI;
 
 namespace April
 {
-public class Dish : InteractionItem
-{
-    public Renderer dishRenderer;
-    public bool dirty;
-
-    public Slider slider;
-    public float progressValue;
-    // Start is called before the first frame update
-    void Start()
+    public class Dish : InteractionItem
     {
-        dishRenderer = GetComponentInChildren<Renderer>();
-        slider = GetComponentInChildren<Slider>(true);
-        slider.maxValue = 90f;
-    }
+        public List<Food> ContainedFoodItems => mergedFoodList;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (slider != null)
+
+        public Renderer dishRenderer;
+        public bool dirty;
+
+        public Slider slider;
+        public float progressValue;
+
+        public Transform itemMergeRoot;
+        public List<Food> mergedFoodList = new List<Food>();
+
+        public void AddItem(Food item, Vector3 offset)
         {
-            slider.value = progressValue;
+            mergedFoodList.Add(item);
+            item.transform.SetParent(itemMergeRoot);
+            item.transform.localPosition = offset;
         }
-     
+
+        public void RemoveItem(Food item, Vector3 position, Transform parent = null)
+        {
+            mergedFoodList.Remove(item);
+            item.transform.SetParent(parent);
+            item.transform.position = position;
+        }
+
+        void Start()
+        {
+            dishRenderer = GetComponentInChildren<Renderer>();
+            slider = GetComponentInChildren<Slider>(true);
+            slider.maxValue = 90f;
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (slider != null)
+            {
+                slider.value = progressValue;
+            }
+        }
+
+        public void ShowUI()
+        {
+            slider.gameObject.SetActive(true);
+        }
+
+        public void HideUI()
+        {
+            slider.gameObject.SetActive(false);
+        }
+
+        public void GetClean()
+        {
+            dishRenderer.material.color = Color.white;
+            dirty = false;
+
+        }
+
+        public void GetDirty()
+        {
+            dishRenderer.material.color = Color.black;
+            dirty = true;
+        }
     }
-
-    public void ShowUI()
-    {
-        slider.gameObject.SetActive(true);
-    }
-
-    public void HideUI()
-    {
-        slider.gameObject.SetActive(false);
-    }
-
-    public void GetClean()
-    {
-        dishRenderer.material.color = Color.white;
-        dirty = false;
-
-    }
-
-    public void GetDirty()
-    {
-        dishRenderer.material.color = Color.black;
-        dirty = true;
-    }
-    
-}
-
-
 }
 

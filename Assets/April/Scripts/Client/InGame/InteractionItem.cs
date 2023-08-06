@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionItem : MonoBehaviour
+namespace April
 {
-    
+    public class InteractionItem : MonoBehaviour
+    {
+        
+    }
 }
+

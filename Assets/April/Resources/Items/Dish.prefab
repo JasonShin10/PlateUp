@@ -173,6 +173,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2673254893945525463}
   m_Mesh: {fileID: 3962392604961349191, guid: 610c01680284fa14ba5ec40bd8690a6f, type: 3}
+--- !u!1 &3733081119496532519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3203689863039611392}
+  m_Layer: 0
+  m_Name: April.MergeRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3203689863039611392
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3733081119496532519}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6160835655197207963}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4573351181726877560
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,9 +424,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1412020947216098733}
+  - {fileID: 3203689863039611392}
   - {fileID: 3498230012997235214}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-5807918609426449426
 MonoBehaviour:
@@ -409,6 +441,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f6467261faee5458615bec498c911c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemMergeRoot: {fileID: 3203689863039611392}
+  interactionItems: []
   dishRenderer: {fileID: 0}
   dirty: 0
   slider: {fileID: 0}

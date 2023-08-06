@@ -141,11 +141,14 @@ namespace April
 
         public void CustomerInteract()
         {
-            if (player.item != null)
+            if (player.item == null)
+                return;
+
+            if (player.item.TryGetComponent(out Dish dish))
             {
-                if (player.item.transform.childCount > 0 && player.item.transform.GetChild(2).GetComponent<Food>() != null)
+                if (dish.ContainedFoodItems.Count > 0)
                 {
-                    Food foodItem = player.item.transform.GetChild(2).GetComponent<Food>();
+                    Food foodItem = dish.ContainedFoodItems[0];
                     if (orderFood.GetType() == foodItem.GetType() && orderFood.CookingState == foodItem.CookingState)
                     {
                         orderImageDisplay.gameObject.SetActive(false);
@@ -161,7 +164,6 @@ namespace April
                 }
             }
         }
-
 
         float maxTime = 3f;
         IEnumerator Eat()

@@ -56,7 +56,7 @@ namespace April
             InputManager.Singleton.InputMaster.PlayerControl.Interact.canceled += StopInteraction;
             InputManager.Singleton.InputMaster.PlayerControl.Click.performed += MouseClick;
             InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed += CursorEnable;
-            
+
 
             playerNameText.text = playerName;
         }
@@ -95,6 +95,7 @@ namespace April
             Debug.Log("StopInteraction");
             isButtonPressed = false;
         }
+
         bool IsMouseOverGameWindow()
         {
             Vector3 mousePosition = Input.mousePosition;
@@ -118,10 +119,11 @@ namespace April
             //}
 
             // Ray의 시작점을 플레이어의 발 아래가 아니라, 약간 위에서 시작하게 하는것
-            Ray ray = new Ray(transform.position, transform.forward);
-            if (Physics.Raycast(ray, out var hitInfo, 1f, interactionObjectLayerMask, QueryTriggerInteraction.Collide))
+            Ray ray = new Ray(transform.position + Vector3.up, transform.forward);
+            Debug.DrawRay(ray.origin, ray.direction);
+            if (Physics.Raycast(ray, out var hitInfo, 1.5f, interactionObjectLayerMask, QueryTriggerInteraction.Collide))
             {
-                if (hitInfo.transform.TryGetComponent<InteractionBase>(out var interaction))
+                if (hitInfo.transform.TryGetComponent(out InteractionBase interaction))
                 {
                     // stove를 바라보면 currentInteractionObject는 stove. 
                     // 다른데 바라볼때 다른게 갱신되게끔 하는건가?
@@ -136,7 +138,6 @@ namespace April
                                 interaction.Interact(this);
                             }
                         }
-
                     }
                     else if (currentInteractionObject == null)
                     {

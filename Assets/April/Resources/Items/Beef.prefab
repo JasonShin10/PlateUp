@@ -381,6 +381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressValue: 0
+  offsetOnDish: 0.032
   slider: {fileID: 0}
 --- !u!65 &1679522806264011625
 BoxCollider:

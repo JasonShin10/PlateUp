@@ -9,6 +9,8 @@ public abstract class Food : InteractionItem
     public abstract int CookingState { get; }
     public float progressValue;
 
+    public float offsetOnDish;
+
     public virtual void ShowUI()
     {
 

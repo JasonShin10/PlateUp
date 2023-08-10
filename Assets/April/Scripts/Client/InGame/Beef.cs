@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 namespace April
 {
-    public class Meat : Food
+    public class Beef : Food
     {
-        public override MenuList MenuType => MenuList.Meat;
+        public override MenuList MenuType => MenuList.Beef;
 
-        public enum MeatState
+        public enum BeefState
         {
             Raw,
             Medium,
@@ -19,14 +19,14 @@ namespace April
         }
 
         public Slider slider;
-        private Renderer meatRenderer;
-        Color meatColor;
+        private Renderer BeefRenderer;
+        Color BeefColor;
 
         private void Start()
         {
             slider = GetComponentInChildren<Slider>(true);
             slider.maxValue = 90f;
-            meatRenderer = GetComponentInChildren<Renderer>(true);
+            BeefRenderer = GetComponentInChildren<Renderer>(true);
         }
         public override int CookingState => (int)State;
 
@@ -38,25 +38,25 @@ namespace April
         //    }
         //}
 
-        public MeatState State
+        public BeefState State
         {
             get
             {
                 if (progressValue <= 0)
                 {
-                    return MeatState.Raw;
+                    return BeefState.Raw;
                 }
                 else if (progressValue <= 40f)
                 {
-                    return MeatState.Medium;
+                    return BeefState.Medium;
                 }
                 else if (progressValue <= 90f)
                 {
-                    return MeatState.WellDone;
+                    return BeefState.WellDone;
                 }
                 else
                 {
-                    return MeatState.Burned;
+                    return BeefState.Burned;
                 }
             }
         }
@@ -74,20 +74,20 @@ namespace April
         {
             switch (State)
             {
-                case MeatState.Raw:
-                    meatColor = Color.red;
+                case BeefState.Raw:
+                    BeefColor = Color.red;
                     break;
-                case MeatState.Medium:
-                    meatColor = new Color(0.8f, 0.3f, 0.1f);
+                case BeefState.Medium:
+                    BeefColor = new Color(0.8f, 0.3f, 0.1f);
                     break;
-                case MeatState.WellDone:
-                    meatColor = new Color(0.5f, 0.2f, 0.1f);
+                case BeefState.WellDone:
+                    BeefColor = new Color(0.5f, 0.2f, 0.1f);
                     break;
-                case MeatState.Burned:
-                    meatColor = Color.black;
+                case BeefState.Burned:
+                    BeefColor = Color.black;
                     break;
             }
-            meatRenderer.material.color = meatColor;
+            BeefRenderer.material.color = BeefColor;
 
             if (slider != null)
             {

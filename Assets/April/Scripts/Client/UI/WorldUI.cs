@@ -8,7 +8,7 @@ using TMPro;
 public class WorldUI : UIBase
 {
     public TextMeshProUGUI nameTag;
-    public Slider meatProgress;
+    public Slider BeefProgress;
     public Transform characterTransform; 
     public Vector3 offset = new Vector3(0, 2, 0);
     public Camera mainCamera;
@@ -26,22 +26,22 @@ public class WorldUI : UIBase
 
     //private void OnEnable()
     //{
-    //    Stove.OnMeatCreated += ShowMeatUI;
+    //    Stove.OnBeefCreated += ShowBeefUI;
     //}
 
     //private void OnDisable()
     //{
-    //    Stove.OnMeatCreated -= ShowMeatUI;
+    //    Stove.OnBeefCreated -= ShowBeefUI;
     //}
 
-    // chicken할때 오버로딩 해야할까?
-    public void ShowMeatUI(Meat meat)
+    // ThickBeef할때 오버로딩 해야할까?
+    public void ShowBeefUI(Beef Beef)
     {
         Debug.Log("111");
 
-        Slider sliderPrefab = Instantiate(meatProgress,transform.position, Quaternion.identity, transform);
+        Slider sliderPrefab = Instantiate(BeefProgress,transform.position, Quaternion.identity, transform);
         sliderPrefab.maxValue = 90;
-        sliderPrefab.value = meat.progressValue; 
-        meat.slider = sliderPrefab;
+        sliderPrefab.value = Beef.progressValue; 
+        Beef.slider = sliderPrefab;
     }
 }

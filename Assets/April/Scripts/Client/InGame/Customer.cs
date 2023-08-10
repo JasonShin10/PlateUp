@@ -14,6 +14,19 @@ namespace April
 {
     public class Customer : InteractionBase
     {
+        public enum CustomerState
+        {
+            Entering,
+            Waiting,
+            WaitingOrder,
+            WaitingFood,
+            WaitingFriend,
+            Leaving
+        }
+
+        public CustomerState currentCustomerState = CustomerState.Entering;
+
+
         SysRandom random = new SysRandom();
         public override bool IsAutoInteractable => false;
         public override InteractionObjectType InterationObjectType => InteractionObjectType.None;
@@ -32,7 +45,9 @@ namespace April
         }
 
         private NavMeshAgent agent;
-        private CustomerTable_InteractSlot myTableSlot;
+        public CustomerTable myTable;
+        public CustomerTable_InteractSlot mySeat;
+        public Slider patienceSlider;
         public Image orderImageDisplay;
 
         public Renderer graphicRenderer;
@@ -44,21 +59,109 @@ namespace April
         private MenuList orderedMenuType;
         private int orderedMenuStateType;
 
+        public bool isGroup;
+        public bool waiting;
+        public Transform waitingPos;
+
         protected override void Awake()
         {
             base.Awake();
+        }
+        public override void Start()
+        {
+            base.Start();
+            agent = GetComponent<NavMeshAgent>();
+            orderImageDisplay = GetComponentInChildren<Image>(true);
+            patienceSlider = GetComponentInChildren<Slider>(true);
+            patienceSlider.maxValue = 90f;
+            patienceSlider.value = patienceSlider.maxValue;
+            patienceSlider.gameObject.SetActive(false);
+
+            if (InteractionBase.SpawnedInteractionObjects.TryGetValue(InteractionObjectType.CustomerTable, out List<InteractionBase> tables))
+            {
+                FindTarget(tables);
+            }
+        
+            // 대기중인 손님에게 myTable을 어떻게 할당할까
+            // 웨이팅 리스트에 넣어주고 
+            // 웨이팅 리스트손님은 따로 ..
+
+            SetCustomerState(currentCustomerState);
+        }
+        private void Update()
+        {
+
+            distanceBetweenDestination = Vector3.Distance(transform.position, agent.destination);
+            if (distanceBetweenDestination <= 0.1f)
+            {
+                onDestinationCallback?.Invoke();
+                onDestinationCallback = null;
+                if (currentCustomerState != CustomerState.Waiting )
+                {
+                currentCustomerState = CustomerState.WaitingOrder;
+                }
+                SetCustomerState(currentCustomerState);
+            }
+        }
+
+        void SetCustomerState(CustomerState currentCustomerState)
+        {
+            switch (currentCustomerState)
+            {
+                case CustomerState.Entering:
+                    HandleEntering();
+                    break;
+                case CustomerState.Waiting:
+                    HandleWaiting(); 
+                    break;
+                case CustomerState.WaitingOrder:
+                    HandleWaitingOrder();
+                    break;
+
+            }
+        }
+
+        private void HandleEntering()
+        {
+            DecideMenu();
+        }
+
+        private void HandleWaiting()
+        {
+            MoveToTarget(waitingPos.position);
+        }
+
+        private void HandleWaitingOrder()
+        {
+            patienceSlider.gameObject.SetActive(true);
+            patienceSlider.value -= Time.deltaTime;
+        }
+
+        private void HandleWaitingFood()
+        {
+
+        }
+
+        private void HandleWaitingFriend()
+        {
+
+        }
+
+        private void Leaving()
+        {
+
         }
 
         public Food GetFoodByMenu(MenuList menu, out Type menuStateType)
         {
             switch (menu)
             {
-                case MenuList.Meat:
-                    menuStateType = typeof(Meat.MeatState);
-                    return new Meat();
-                case MenuList.Chicken:
-                    menuStateType = typeof(Chicken.ChickenState);
-                    return new Chicken();
+                case MenuList.Beef:
+                    menuStateType = typeof(Beef.BeefState);
+                    return new Beef();
+                case MenuList.ThickBeef:
+                    menuStateType = typeof(ThickBeef.ThickBeefState);
+                    return new ThickBeef();
                 default:
                     throw new ArgumentException("Invalid menu item");
             }
@@ -77,63 +180,66 @@ namespace April
 
             int randomNum = UnityEngine.Random.Range(firstState, lastState);
             orderImageDisplay.sprite = imageContainer.sprites[0];
+            
             orderImageDisplay.gameObject.SetActive(false);
 
             //orderedMenuType = randomMenu;
             //orderedMenuStateType = randomNum;
-            orderedMenuType = MenuList.Meat;
+            orderedMenuType = MenuList.Beef;
             orderedMenuStateType = 0;
         }
 
 
         private void FindTarget(List<InteractionBase> tableSlots)
         {
-            foreach (InteractionBase tableSlotEntity in tableSlots)
-            {
-                var customerTableSlot = tableSlotEntity as CustomerTable_InteractSlot;
-                if (customerTableSlot.customerAssigned == true)
-                {
-                    continue;
-                }
-                else
-                {
-                    myTableSlot = customerTableSlot;
-                    myTableSlot.customerAssigned = true;
-                    MoveToTarget(customerTableSlot.transform.position, () =>
-                    {
-                        orderImageDisplay.gameObject.SetActive(true);
-                        transform.LookAt(myTableSlot.parentTable.transform.position, Vector3.up);
-                    });
-                    break;
-                }
-            }
-        }
-        new void Start()
-        {
-            base.Start();
-            agent = GetComponent<NavMeshAgent>();
-            orderImageDisplay = GetComponentInChildren<Image>(true);
-
-            DecideMenu();
 
             if (InteractionBase.SpawnedInteractionObjects.TryGetValue(InteractionObjectType.CustomerTable, out List<InteractionBase> tables))
             {
-                FindTarget(tables);
+                foreach (InteractionBase table in tables)
+                {
+                    var customerTable = table as CustomerTable;
+                    if (customerTable.customerAssigned == true)
+                    {
+                        continue;
+                    }
+
+                    if (isGroup)
+                    {
+                        if (currentCustomerState != CustomerState.Waiting)
+                        {
+                            customerTable.customers.Add(this);
+                        }
+                        customerTable.GroupCheck();
+                    }
+                    else
+                    {
+                        customerTable.customerAssigned = true;
+                    }
+                    foreach (CustomerTable_InteractSlot chairPos in customerTable.chairPos)
+                    {
+                        if (chairPos.customerAssigned == true)
+                        {
+                            continue;
+                        }
+                        myTable = customerTable;
+                        mySeat = chairPos;
+                        mySeat.customerAssigned = true;
+                        MoveToTarget(chairPos.transform.position, () =>
+                        {
+                            orderImageDisplay.gameObject.SetActive(true);
+                            transform.LookAt(myTable.transform.position, Vector3.up);
+                        });
+                        return;
+                    }
+                }
             }
+           
+  
         }
 
-        private void Update()
-        {
-            distanceBetweenDestination = Vector3.Distance(transform.position, agent.destination);
-            if (distanceBetweenDestination <= 0.1f)
-            {
-                onDestinationCallback?.Invoke();
-                onDestinationCallback = null;
-            }
-        }
 
         // Update is called once per frame
-        void MoveToTarget(Vector3 destination, Action callbackOnDestination = null)
+        public void MoveToTarget(Vector3 destination, Action callbackOnDestination = null)
         {
             onDestinationCallback += callbackOnDestination;
             agent.SetDestination(destination);
@@ -161,8 +267,8 @@ namespace April
                         myFood = foodItem;
                         foodDish = player.item;
 
-                        player.item.transform.SetParent(myTableSlot.transform);
-                        player.item.transform.localPosition = Vector3.up;
+                        player.item.transform.SetParent(myTable.transform);
+                        player.item.transform.localPosition = new Vector3(0, 1.66f, 0);
                         player.item = null;
 
                         StartCoroutine(Eat());
@@ -179,8 +285,8 @@ namespace April
             Destroy(myFood.gameObject);
 
             myFood = null;
-            myTableSlot.customerAssigned = false;
-            myTableSlot.item = foodDish;
+            myTable.customerAssigned = false;
+            myTable.item = foodDish;
 
             Dish emptyDish = (Dish)foodDish;
             emptyDish.GetDirty();

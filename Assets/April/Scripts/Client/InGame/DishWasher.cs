@@ -37,7 +37,7 @@ namespace April
                 if (dish != null && dish.dirty == true)
                 {
                     player.item.transform.SetParent(this.transform);
-                    player.item.transform.localPosition = Vector3.up;
+                    player.item.transform.localPosition = new Vector3(1.518f, 1.717f, 0.399f);
                     player.item = null;
                     dish.ShowUI();
                 }
@@ -52,7 +52,7 @@ namespace April
                     player.item.transform.localPosition = Vector3.up + Vector3.forward;
                     dish.progressValue = 0;
                     dish = null;
-
+                    Exit();
                 }
             }
         }

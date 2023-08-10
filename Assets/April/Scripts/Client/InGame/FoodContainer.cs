@@ -12,8 +12,8 @@ namespace April
 
         private PlayerController player;
         public CinemachineVirtualCamera containerCamera;
-        public Meat beefPrefab;
-        public Chicken chickenPrefab;
+        public Beef beefPrefab;
+        public ThickBeef ThickBeefPrefab;
 
         private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
 
@@ -25,21 +25,21 @@ namespace April
 
             interactActionDatas.Add(new InteractActionData()
             {
-                actionName = "Meat Interact",
-                callback = MeatInteract
+                actionName = "Beef Interact",
+                callback = BeefInteract
             });
 
             interactActionDatas.Add(new InteractActionData()
             {
-                actionName = "Chicken Interact",
-                callback = ChickenInteract
+                actionName = "ThickBeef Interact",
+                callback = ThickBeefInteract
             });
 
             containerCamera.gameObject.SetActive(false);
         }
 
 
-        void MeatInteract()
+        void BeefInteract()
 
         {
             if (player.item == null)
@@ -53,12 +53,12 @@ namespace April
             }
         }
 
-        void ChickenInteract()
+        void ThickBeefInteract()
         {
             if (player.item == null)
             {
-                var newFoodItem = Instantiate(chickenPrefab);
-                newFoodItem.transform.localScale = chickenPrefab.transform.localScale;
+                var newFoodItem = Instantiate(ThickBeefPrefab);
+                newFoodItem.transform.localScale = ThickBeefPrefab.transform.localScale;
                 newFoodItem.transform.SetParent(player.transform);
                 newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
                 newFoodItem.gameObject.SetActive(true);

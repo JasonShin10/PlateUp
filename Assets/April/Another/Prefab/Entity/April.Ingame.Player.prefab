@@ -33,7 +33,7 @@ Transform:
   - {fileID: 3129544764149851806}
   - {fileID: 965710229344226125}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &2770849709421854750
 CharacterController:
@@ -80,7 +80,7 @@ MonoBehaviour:
   interactionOffsetHeight: 0.8
   interactionObjectLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 64
   playerSpeed: 5
   playerTurnSmoothTime: 0
   playerName: Jack
@@ -354,6 +354,18 @@ PrefabInstance:
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -392,6 +404,10 @@ PrefabInstance:
     - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

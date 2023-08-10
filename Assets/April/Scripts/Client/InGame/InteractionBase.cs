@@ -38,7 +38,7 @@ namespace April
             RemoveRegist();
         }
 
-        protected void Start()
+        public virtual void Start()
         {
             gameObject.layer = LayerMask.NameToLayer("InteractionObject");
         }

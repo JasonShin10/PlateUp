@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4268537080031723051}
   - component: {fileID: 7926141709932508574}
   m_Layer: 0
-  m_Name: April.Visualization.Stove
+  m_Name: April.Visualization.Chair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2454581458226440144}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: -0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.43, y: 1.43, z: 1.43}
+  m_LocalScale: {x: 2.9, y: 2.9, z: 2.9}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8240616566930528535}
@@ -115,7 +115,7 @@ Transform:
   m_Children:
   - {fileID: 7976690081594219023}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!65 &5769744612529824451
 BoxCollider:

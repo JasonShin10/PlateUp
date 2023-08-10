@@ -18,6 +18,7 @@ namespace April
 
         public Transform itemMergeRoot;
         public List<Food> mergedFoodList = new List<Food>();
+        public float offset= 0.5f;
 
         public void AddItem(Food item, Vector3 offset)
         {

@@ -4,29 +4,34 @@ using UnityEngine;
 
 namespace April
 {
-    public class CustomerTable_InteractSlot : InteractionBase
+    public class CustomerTable_InteractSlot : MonoBehaviour
     {
-        public override bool IsAutoInteractable => false;
-        public override InteractionObjectType InterationObjectType => InteractionObjectType.CustomerTable;
+        //public override bool IsAutoInteractable => false;
+        //public override InteractionObjectType InterationObjectType => InteractionObjectType.CustomerTable;
 
-        public CustomerTable parentTable;
+        //public CustomerTable parentTable;
         public bool customerAssigned;
-        public InteractionItem item;
+        //public InteractionItem item;
 
 
-        public override void Exit()
-        {
+        //public override void Exit()
+        //{
 
-        }
+        //}
 
-        public override void Interact(PlayerController player)
-        {
-            if (item == null)
-                return;
+        //public void GroupCheck()
+        //{
 
-            player.item = item;
-            player.item.transform.SetParent(player.transform);
-            player.item.transform.localPosition = Vector3.up + Vector3.forward;
-        }
+        //}
+
+        //public override void Interact(PlayerController player)
+        //{
+        //    if (item == null)
+        //        return;
+
+        //    player.item = item;
+        //    player.item.transform.SetParent(player.transform);
+        //    player.item.transform.localPosition = Vector3.up + Vector3.forward;
+        //}
     }
 }

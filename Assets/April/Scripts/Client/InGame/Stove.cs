@@ -9,7 +9,7 @@ namespace April
 {
     public class Stove : InteractionBase
     {
-        public override bool IsAutoInteractable => true;
+        public override bool IsAutoInteractable => false;
         public override InteractionObjectType InterationObjectType => InteractionObjectType.Stove;
 
         private PlayerController player;
@@ -17,7 +17,8 @@ namespace April
 
         private InteractionItem item;
         private Food foodComponent;
-        //public static event Action<Meat> OnMeatCreated;
+        [SerializeField] private float offSet = 2.2f;
+        //public static event Action<Beef> OnBeefCreated;
         protected override void Awake()
         {
             base.Awake();
@@ -36,7 +37,7 @@ namespace April
         {
             if (foodComponent != null)
             {
-                if (foodComponent.CookingState != (int)Meat.MeatState.Burned)
+                if (foodComponent.CookingState != (int)Beef.BeefState.Burned)
                 {
                     foodComponent.progressValue += burningPower * Time.deltaTime;
                 }
@@ -68,24 +69,19 @@ namespace April
                 }
 
 
-                // meat에 붙어있는 slider을 켜라
+                // Beef에 붙어있는 slider을 켜라
 
                 foodComponent.ShowUI();
                 foodComponent.transform.SetParent(this.transform);
-
-                Collider stoveCollider = GetComponent<Collider>();
-                float stoveHeight = stoveCollider.bounds.size.y;
-                foodComponent.transform.position = transform.position + new Vector3(0,stoveHeight,0);
-
+                foodComponent.transform.localPosition = new Vector3(0, offSet,0);
+                
                 // 참조를 없애겠다.
                 player.item = null;
                 Debug.Log("Item Insert To Stove!");
             }
             else if (player.item == null)
             {
-
                 player.item = foodComponent;
-
                 foodComponent.HideUI();
                 player.item.transform.SetParent(player.transform);
                 player.item.transform.localPosition = Vector3.up + Vector3.forward;
@@ -96,9 +92,9 @@ namespace April
         public override void Interact(PlayerController player)
         {
             this.player = player;
-
-            var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
-            interactUI.InitActions(interactActionDatas);
+            StoveInteract();
+            //var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
+            //interactUI.InitActions(interactActionDatas);
         }
 
         public override void Exit()

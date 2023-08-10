@@ -14,14 +14,11 @@ public class Table : InteractionBase
 
     private InteractionItem item;
 
-    float tableHeight;
-    float dishHeight;
-    float foodHeight;
+    // 인터페이스로 옮겨볼까?
+    public float offset = 0.3f;
     private new void Start()
     {
         base.Start();
-        tableHeight = GetComponent<Collider>().bounds.size.y;
-
     }
 
     void TableInteract()
@@ -30,17 +27,21 @@ public class Table : InteractionBase
         {
             if (player.item is Dish)
             {
-                if (item != null)
+                if (item is Food)
                 {
+                    var dish = player.item as Dish;
+                    var food = item as Food;
+                    dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
+                    item = null;
                     Debug.Log("Something is already on table");
                     return;
                 }
                 else
                 {
                     item = player.item;
-                    dishHeight = item.GetComponentInChildren<Collider>().bounds.size.y;
-                    item.transform.SetParent(this.transform);
-                    item.transform.localPosition = new Vector3(0, tableHeight + dishHeight / 2, 0);
+                    var dish = item as Dish;
+                    dish.transform.SetParent(this.transform);
+                    dish.transform.localPosition = new Vector3(0, offset, 0);
                     player.item = null;
                     Debug.Log("Dish Insert To Table!");
                 }
@@ -49,34 +50,22 @@ public class Table : InteractionBase
             {
                 if (item is Dish)
                 {
-                    //foodHeight = player.item.GetComponentInChildren<Collider>().bounds.size.y;
-                    //switch (player.item)
-                    //{
-                    //    case Meat:
-                    //        player.item.transform.SetParent(item.transform);
-                    //        player.item.transform.localPosition = new Vector3(0, dishHeight + foodHeight / 2, 0);
-                    //        player.item = null;
-                    //        break;
-                    //    case Chicken:
-                    //        player.item.transform.SetParent(item.transform);
-                    //        player.item.transform.localPosition = new Vector3(0, dishHeight + foodHeight / 2, 0);
-                    //        player.item = null;
-                    //        break;
-                    //}
-
                     var dish = item as Dish;
                     var food = player.item as Food;
-                    dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
+                    dish.AddItem(food, new Vector3(0, offset +food.offsetOnDish, 0));
                     player.item = null;
                 }
                 else
                 {
+                    if (item == null)
+                    {
                     item = player.item;
-
                     item.transform.SetParent(this.transform);
-                    item.transform.localPosition = new Vector3(0, tableHeight + foodHeight / 2, 0); ;
+                    item.transform.localPosition = new Vector3(0, offset, 0);
                     player.item = null;
                     Debug.Log("Food Insert To Table!");
+                    }
+                    
                 }
 
             }

@@ -13,6 +13,10 @@ namespace April
         private PlayerController player;
         public Dish dish;
 
+        public Transform dirtyDishPivot;
+        public Transform cleanDishPivot;
+
+
         public void Update()
         {
             if (dish != null && dish.dirty == true)
@@ -24,6 +28,7 @@ namespace April
                 if (dish.slider.value == dish.slider.maxValue)
                 {
                     dish.GetClean();
+                    dish.transform.position = cleanDishPivot.position;
                 }
             }
         }
@@ -37,7 +42,7 @@ namespace April
                 if (dish != null && dish.dirty == true)
                 {
                     player.item.transform.SetParent(this.transform);
-                    player.item.transform.localPosition = new Vector3(1.518f, 1.717f, 0.399f);
+                    player.item.transform.position = dirtyDishPivot.position;
                     player.item = null;
                     dish.ShowUI();
                 }

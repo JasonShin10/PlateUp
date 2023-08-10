@@ -10,7 +10,25 @@ namespace April
         //public override InteractionObjectType InterationObjectType => InteractionObjectType.CustomerTable;
 
         //public CustomerTable parentTable;
-        public bool customerAssigned;
+
+        public bool CustomerAssigned { get; private set; }
+        public Customer AssignedCustomer => assignedCustomer;
+
+
+        private Customer assignedCustomer;
+
+        public void SetAssigned(Customer owner)
+        {
+            assignedCustomer = owner;
+            CustomerAssigned = true;
+        }
+
+        public void Unssigned()
+        {
+            assignedCustomer = null;
+            CustomerAssigned = false;
+        }
+
         //public InteractionItem item;
 
 

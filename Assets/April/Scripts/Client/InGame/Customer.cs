@@ -98,7 +98,7 @@ namespace April
                 onDestinationCallback = null;
                 if (currentCustomerState != CustomerState.Waiting )
                 {
-                currentCustomerState = CustomerState.WaitingOrder;
+                    currentCustomerState = CustomerState.WaitingOrder;
                 }
                 SetCustomerState(currentCustomerState);
             }
@@ -217,13 +217,13 @@ namespace April
                     }
                     foreach (CustomerTable_InteractSlot chairPos in customerTable.chairPos)
                     {
-                        if (chairPos.customerAssigned == true)
+                        if (chairPos.CustomerAssigned == true)
                         {
                             continue;
                         }
                         myTable = customerTable;
                         mySeat = chairPos;
-                        mySeat.customerAssigned = true;
+                        mySeat.SetAssigned(this);
                         MoveToTarget(chairPos.transform.position, () =>
                         {
                             orderImageDisplay.gameObject.SetActive(true);
@@ -298,7 +298,7 @@ namespace April
         {
             MoveToTarget(exitTarget.transform.position, () =>
             {
-                CustomerFactory.Instance.RemoveCustomer(this);
+                IngameCustomerFactorySystem.Instance.RemoveCustomer(this);
             });
         }
 

@@ -1,17 +1,23 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace April
 {
-    public class CustomerFactory : MonoBehaviour
+    public class IngameCustomerFactorySystem : MonoBehaviour
     {
-        public static CustomerFactory Instance { get; private set; }
+        public static IngameCustomerFactorySystem Instance { get; private set; }
 
         public Dictionary<int, List<Customer>> waitingCustomersNum = new Dictionary<int, List<Customer>>();
         public int isGroup;
         public Customer customerPrefab;
+        public Transform spawnPoint;
         public Transform waitingPos;
+
+
+        [MinMaxSlider(2, 10, true)]
+        public Vector2Int npcGroupSpawnRnage = new Vector2Int(2, 10);
 
         public List<CustomerTable> tables = new List<CustomerTable>();
         public List<Customer> waitingCustomers = new List<Customer>();
@@ -20,7 +26,6 @@ namespace April
         private float currentTime;
         private float maxTime = 10f;
         public int waitNum;
-        //[SerializeField] List<CustomerTable> tables = new List<CustomerTable>();
 
         private void Awake()
         {
@@ -32,55 +37,31 @@ namespace April
         {
             SpawnCustomer();
         }
-        //private void FindTarget(Customer customer)
-        //{
-        //    if (InteractionBase.SpawnedInteractionObjects.TryGetValue(InteractionObjectType.CustomerTable, out List<InteractionBase> tables))
-        //    {
-        //        foreach (InteractionBase table in tables)
-        //        {
-        //            var customerTable = table as CustomerTable;
-        //            if (customerTable.customerAssigned == true)
-        //            {
-        //                continue;
-        //            }
-        //            foreach (CustomerTable_InteractSlot chairPos in customerTable.chairPos)
-        //            {
-        //                if (chairPos.customerAssigned == true)
-        //                {
-        //                    continue;
-        //                }
-        //                customer.myTable = customerTable;
-        //                customer.mySeat = chairPos;
-        //                customer.mySeat.customerAssigned = true;
-        //                customer.MoveToTarget(chairPos.transform.position, () =>
-        //                {
-        //                    customer.orderImageDisplay.gameObject.SetActive(true);
-        //                    transform.LookAt(customer.myTable.transform.position, Vector3.up);
-        //                });
 
-        //            }
-
-        //        }
-        //    }
-
-        //}
         private void OnDestroy()
         {
             Instance = null;
         }
 
-        public void GetRandomBool()
-        {
-            isGroup = Random.Range(0, 2);
-        }
-
         public void SpawnCustomer()
         {
+            if (IngameCustomerWaitingSystem.Instance.IsFullWaitingSlot)
+                return;
+
             allAsigned = true;
-            GetRandomBool();
-            for (int i = 0; i <= isGroup; i++)
+
+            int rand = Random.Range(0, 2);
+            bool isGroupSpawn = rand % 2 == 0;
+
+            int spawnCount = 1;
+            if (isGroupSpawn)
             {
-                Customer customerInstance = Instantiate(customerPrefab, transform.position, Quaternion.identity);
+                spawnCount = Random.Range(npcGroupSpawnRnage.x, npcGroupSpawnRnage.y + 1);
+            }
+
+            for (int i = 0; i < spawnCount; i++)
+            {
+                Customer customerInstance = Instantiate(customerPrefab, spawnPoint.position, Quaternion.identity);
                 customerInstance.gameObject.SetActive(true);
                 foreach (CustomerTable table in tables)
                 {
@@ -89,10 +70,13 @@ namespace April
                         allAsigned = false;
                     }
                 }
-                if (isGroup == 1)
-                {
-                    customerInstance.isGroup = true;
-                }
+
+                customerInstance.isGroup = isGroupSpawn;
+                //if (isGroup == 1)
+                //{
+                //    customerInstance.isGroup = true;
+                //}
+
                 if (allAsigned == true)
                 {
                     waitingCustomers.Add(customerInstance);
@@ -100,6 +84,7 @@ namespace April
                     customerInstance.waitingPos = waitingPos;
                     customerInstance.currentCustomerState = Customer.CustomerState.Waiting;
                 }
+
                 //FindTarget(customerInstance);
                 customerInstance.exitTarget = this.transform;
                 // customerInstance.tables = tables;
@@ -113,12 +98,14 @@ namespace April
                 customerInstance.GraphicColor = randomColor;
 
             }
+
             if (allAsigned == true)
             {
                 waitingCustomersNum[waitNum] = new List<Customer>(waitingCustomers);
                 waitNum++;
             }
         }
+
         void Update()
         {
             currentTime += Time.deltaTime;

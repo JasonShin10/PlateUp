@@ -8,6 +8,7 @@ namespace April
     public class IngameCustomerWaitingSystem_SlotData : MonoBehaviour
     {
         public Customer customer;
+
     }
 }
 

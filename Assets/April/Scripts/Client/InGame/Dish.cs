@@ -27,11 +27,9 @@ namespace April
             item.transform.localPosition = offset;
         }
 
-        public void RemoveItem(Food item, Vector3 position, Transform parent = null)
+        public void RemoveItem(Food item,Transform parent = null)
         {
             mergedFoodList.Remove(item);
-            item.transform.SetParent(parent);
-            item.transform.position = position;
         }
 
         void Start()

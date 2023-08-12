@@ -9,23 +9,23 @@ namespace April
     {
         public static IngameCustomerFactorySystem Instance { get; private set; }
 
-        public Dictionary<int, List<Customer>> waitingCustomersNum = new Dictionary<int, List<Customer>>();
+        //public Dictionary<int, List<Customer>> waitingCustomersNum = new Dictionary<int, List<Customer>>();
         public int isGroup;
         public Customer customerPrefab;
         public Transform spawnPoint;
-        public Transform waitingPos;
+
 
 
         [MinMaxSlider(2, 10, true)]
         public Vector2Int npcGroupSpawnRnage = new Vector2Int(2, 10);
 
         public List<CustomerTable> tables = new List<CustomerTable>();
-        public List<Customer> waitingCustomers = new List<Customer>();
+        //public List<Customer> waitingCustomers = new List<Customer>();
 
         public bool allAsigned;
         private float currentTime;
         private float maxTime = 10f;
-        public int waitNum;
+        public int waitingNum;
 
         private void Awake()
         {
@@ -79,10 +79,21 @@ namespace April
 
                 if (allAsigned == true)
                 {
-                    waitingCustomers.Add(customerInstance);
-                    customerInstance.waiting = true;
-                    customerInstance.waitingPos = waitingPos;
-                    customerInstance.currentCustomerState = Customer.CustomerState.Waiting;
+                    //waitingCustomers.Add(customerInstance);
+                    foreach(IngameCustomerWaitingSystem_SlotData slot in IngameCustomerWaitingSystem.Instance.waitingSlots)
+                    {
+                        if (slot.customer == null)
+                        {
+                        slot.customer = customerInstance;
+                        slot.customer.waitingPos = slot.transform;
+                        slot.customer.waitingNum = waitingNum;
+                        slot.customer.currentCustomerState = Customer.CustomerState.Waiting;
+                       
+                            //slot.customer.SetCustomerState(Customer.CustomerState.Waiting);
+                        //customerInstance.waiting = true;
+                        break;
+                        }
+                    }
                 }
 
                 //FindTarget(customerInstance);
@@ -101,8 +112,8 @@ namespace April
 
             if (allAsigned == true)
             {
-                waitingCustomersNum[waitNum] = new List<Customer>(waitingCustomers);
-                waitNum++;
+                //waitingCustomersNum[waitNum] = new List<Customer>(waitingCustomers);
+                waitingNum++;
             }
         }
 

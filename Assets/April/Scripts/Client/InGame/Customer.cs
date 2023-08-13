@@ -79,7 +79,7 @@ namespace April
             patienceSlider.gameObject.SetActive(false);
             orderImageDisplay.gameObject.SetActive(false);
             OnCustomerCheckout += GoOut;
-            OnCustomerCheckout += IngameCustomerWaitingSystem.Instance.MakeCustomerForward;
+            
 
 
             SetCustomerState(currentCustomerState);
@@ -264,6 +264,7 @@ namespace April
         private void HandleLeaving()
         {
             OnCustomerCheckout?.Invoke();
+            IngameCustomerWaitingSystem.Instance.MakeCustomerForward();
         }
         public void MoveToTarget(Transform destination, Action callbackOnDestination = null)
         {

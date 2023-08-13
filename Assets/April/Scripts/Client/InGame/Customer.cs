@@ -14,6 +14,22 @@ namespace April
 {
     public class Customer : InteractionBase
     {
+        public static List<Customer> SpawnedCustomers = new List<Customer>();
+
+        public static bool TryGetCustomerGroup(int groupId, out List<Customer> result)
+        {
+            result = new List<Customer>();
+            for (int i = 0; i < SpawnedCustomers.Count; i++)
+            {
+                if (SpawnedCustomers[i].groupID == groupId)
+                {
+                    result.Add(SpawnedCustomers[i]);
+                }
+            }
+            return result.Count > 0;
+        }
+
+
         public enum CustomerState
         {
             Entering,
@@ -60,30 +76,39 @@ namespace April
         private int orderedMenuStateType;
 
         public bool isGroup;
-        //public bool waiting;
-        public int waitingNum;
+        public int groupID;
         public Transform waitingPos;
 
         protected override void Awake()
         {
+            SpawnedCustomers.Add(this);
             base.Awake();
-        }
-        public override void Start()
-        {
-            base.Start();
+
             agent = GetComponent<NavMeshAgent>();
             orderImageDisplay = GetComponentInChildren<Image>(true);
             patienceSlider = GetComponentInChildren<Slider>(true);
+        }
+
+        public override void Start()
+        {
+            base.Start();
             patienceSlider.maxValue = 90f;
             patienceSlider.value = patienceSlider.maxValue;
             patienceSlider.gameObject.SetActive(false);
             orderImageDisplay.gameObject.SetActive(false);
             OnCustomerCheckout += GoOut;
-            OnCustomerCheckout += IngameCustomerWaitingSystem.Instance.MakeCustomerForward;
-
+            //OnCustomerCheckout += IngameCustomerWaitingSystem.Instance.MakeCustomerForward;
 
             SetCustomerState(currentCustomerState);
         }
+
+        protected override void OnDestroy()
+        {
+            SpawnedCustomers.Remove(this);
+
+            base.OnDestroy();
+        }
+
         private void Update()
         {
             distanceBetweenDestination = Vector3.Distance(transform.position, agent.destination);
@@ -129,6 +154,7 @@ namespace April
 
             }
         }
+
         private void FindTarget()
         {
             if (InteractionBase.SpawnedInteractionObjects.TryGetValue(InteractionObjectType.CustomerTable, out List<InteractionBase> tables))
@@ -165,7 +191,6 @@ namespace April
                         mySeat.assignedCustomer = this;
                         MoveToTarget(mySeat.position, () =>
                         {
-                            
                             transform.LookAt(myTable.transform.position, Vector3.up);
                         });
                         return;
@@ -236,8 +261,8 @@ namespace April
         }
         private void HandleWaitingOrder()
         {
-            
-            
+
+
             patienceSlider.value -= Time.deltaTime;
         }
 
@@ -265,13 +290,13 @@ namespace April
         {
             OnCustomerCheckout?.Invoke();
         }
+
         public void MoveToTarget(Transform destination, Action callbackOnDestination = null)
         {
-
             onDestinationCallback += callbackOnDestination;
-            if(destination == mySeat.position)
+            if (destination == mySeat.position)
             {
-                onDestinationCallback += PatienceSliderActivate; 
+                onDestinationCallback += PatienceSliderActivate;
             }
             agent.SetDestination(destination.position);
         }
@@ -307,13 +332,13 @@ namespace April
                 currentCustomerState = CustomerState.WaitingFood;
                 PatienceSliderInit();
                 orderImageDisplay.gameObject.SetActive(true);
-                
+
             }
             if (currentCustomerState == CustomerState.WaitingFood)
             {
-            if (player.item == null)
-                return;
-                
+                if (player.item == null)
+                    return;
+
                 if (player.item.TryGetComponent(out Dish dish))
                 {
                     if (dish.ContainedFoodItems.Count > 0)

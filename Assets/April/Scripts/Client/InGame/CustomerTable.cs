@@ -15,6 +15,8 @@ namespace April
 
     public class CustomerTable : InteractionBase
     {
+        public bool IsEmptyTable => !customerAssigned;
+
         //public SerializableDictionary<CustomerTable_InteractSlot, Transform> dishesPoints
         //    = new SerializableDictionary<CustomerTable_InteractSlot, Transform>();
         public bool customerAssigned;
@@ -22,7 +24,8 @@ namespace April
         public override bool IsAutoInteractable => false;
         // 하나라도 존재하면 트루 아니면 false / 
         public bool IsAllEmptyTableSlot => !tableSlots.Exists(x => x.assignedCustomer != null);
-        
+        public int TableSlotCount => tableSlots.Count;
+
         public override InteractionObjectType InterationObjectType => InteractionObjectType.CustomerTable;
 
 
@@ -30,7 +33,7 @@ namespace April
         public List<TableSlotData> tableSlots = new List<TableSlotData>();
 
         //public List<CustomerTable_InteractSlot> chairPos = new List<CustomerTable_InteractSlot>();
-       
+
         public void GroupCheck()
         {
             if (customers.Count == 2)
@@ -41,12 +44,13 @@ namespace April
 
         public void CustomerCheck()
         {
-           if(IsAllEmptyTableSlot && CheckTableClean())
+            if (IsAllEmptyTableSlot && CheckTableClean())
             {
                 customerAssigned = false;
-                IngameCustomerWaitingSystem.Instance.WaitCustomerComeIn();
+                IngameCustomerWaitingSystem.Instance.NotifiedTableCheckIn(this);
             }
         }
+
         public override void Interact(PlayerController player)
         {
             if (dishes.Count == 0)
@@ -60,7 +64,7 @@ namespace April
 
         public bool CheckTableClean()
         {
-            if(dishes.Count ==0)
+            if (dishes.Count == 0)
             {
                 return true;
             }

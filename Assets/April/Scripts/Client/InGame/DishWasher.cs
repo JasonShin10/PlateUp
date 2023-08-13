@@ -65,14 +65,14 @@ namespace April
         public override void Interact(PlayerController player)
         {
             this.player = player;
-            this.player.visualization.SetInteractionCook(true);
+            //this.player.visualization.SetInteractionCook(true);
 
             DishWasherInteract();
         }
 
         public override void Exit()
         {
-            this.player.visualization.SetInteractionCook(false);
+            //this.player.visualization.SetInteractionCook(false);
         }
     }
 

@@ -83,6 +83,31 @@ namespace April
             Cursor.lockState = CursorLockMode.None;
         }
 
+        private void ActivateInteraction_Animation(InteractionBase currentInteraction)
+        {
+            switch (currentInteractionObject)
+            {
+                case FoodContainer _:
+                    this.visualization.SetInteractionFoodContainer(true);
+                    break;
+                case DishWasher _:
+                    this.visualization.SetInteractionCook(true);
+                    break;
+            }
+        }
+
+        private void DeactivateInteraction_Animation(InteractionBase currentInteraction)
+        {
+            switch (currentInteractionObject)
+            {
+                case FoodContainer _:
+                    this.visualization.SetInteractionFoodContainer(false);
+                    break;
+                case DishWasher _:
+                    this.visualization.SetInteractionCook(false);
+                    break;
+            }
+        }
         private void DoInteraction(InputAction.CallbackContext context)
         {
             Debug.Log("DoInteraction");
@@ -94,6 +119,7 @@ namespace April
         {
             Debug.Log("StopInteraction");
             isButtonPressed = false;
+            this.visualization.SetInteractionCook(false);
         }
 
         bool IsMouseOverGameWindow()
@@ -136,6 +162,7 @@ namespace April
                             if (currentInteractionObject.IsAutoInteractable)
                             {
                                 interaction.Interact(this);
+                                ActivateInteraction_Animation(interaction);
                             }
                         }
                     }
@@ -145,6 +172,7 @@ namespace April
                         if (currentInteractionObject.IsAutoInteractable)
                         {
                             interaction.Interact(this);
+                            ActivateInteraction_Animation(interaction);
                         }
                     }
                     else
@@ -156,6 +184,7 @@ namespace April
             else
             {
                 UIManager.Hide<InteractionUI>(UIList.InteractionUI);
+                DeactivateInteraction_Animation(currentInteractionObject);
                 currentInteractionObject = null;
             }
 

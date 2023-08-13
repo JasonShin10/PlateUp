@@ -71,7 +71,7 @@ namespace April
             var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
             interactUI.InitActions(interactActionDatas);
 
-            player.visualization.SetInteractionFoodContainer(true);
+
             containerCamera.gameObject.SetActive(true);
         }
 

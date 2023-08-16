@@ -85,7 +85,7 @@ namespace April
 
         private void ActivateInteraction_Animation(InteractionBase currentInteraction)
         {
-            switch (currentInteractionObject)
+            switch (currentInteraction)
             {
                 case FoodContainer _:
                     this.visualization.SetInteractionFoodContainer(true);
@@ -98,7 +98,7 @@ namespace April
 
         private void DeactivateInteraction_Animation(InteractionBase currentInteraction)
         {
-            switch (currentInteractionObject)
+            switch (currentInteraction)
             {
                 case FoodContainer _:
                     this.visualization.SetInteractionFoodContainer(false);
@@ -119,7 +119,10 @@ namespace April
         {
             Debug.Log("StopInteraction");
             isButtonPressed = false;
-            this.visualization.SetInteractionCook(false);
+            if (currentInteractionObject)
+            {
+                DeactivateInteraction_Animation(currentInteractionObject);
+            }
         }
 
         bool IsMouseOverGameWindow()
@@ -166,6 +169,13 @@ namespace April
                             }
                         }
                     }
+                    else if (currentInteractionObject != null && currentInteractionObject == interaction)
+                    {
+                        if (isButtonPressed)
+                        {
+                            ActivateInteraction_Animation(interaction);
+                        }
+                    }
                     else if (currentInteractionObject == null)
                     {
                         currentInteractionObject = interaction;
@@ -177,7 +187,7 @@ namespace April
                     }
                     else
                     {
-                        // Same Interaction Object -> Do Nothing                        
+                        // Same Interaction Object -> Do Nothing
                     }
                 }
             }

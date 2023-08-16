@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2770849709421854750}
   - component: {fileID: 9168426018463690590}
   m_Layer: 0
-  m_Name: April.Ingame.Player
+  m_Name: April.Ingame.Character.Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

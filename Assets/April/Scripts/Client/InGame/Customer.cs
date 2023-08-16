@@ -79,7 +79,7 @@ namespace April
             patienceSlider.gameObject.SetActive(false);
             orderImageDisplay.gameObject.SetActive(false);
             OnCustomerCheckout += GoOut;
-            
+
 
 
             SetCustomerState(currentCustomerState);
@@ -165,7 +165,7 @@ namespace April
                         mySeat.assignedCustomer = this;
                         MoveToTarget(mySeat.position, () =>
                         {
-                            
+
                             transform.LookAt(myTable.transform.position, Vector3.up);
                         });
                         return;
@@ -236,8 +236,8 @@ namespace April
         }
         private void HandleWaitingOrder()
         {
-            
-            
+
+
             patienceSlider.value -= Time.deltaTime;
         }
 
@@ -270,9 +270,9 @@ namespace April
         {
 
             onDestinationCallback += callbackOnDestination;
-            if(destination == mySeat.position)
+            if (destination == mySeat.position)
             {
-                onDestinationCallback += PatienceSliderActivate; 
+                onDestinationCallback += PatienceSliderActivate;
             }
             agent.SetDestination(destination.position);
         }
@@ -301,20 +301,19 @@ namespace April
 
         public void CustomerInteract()
         {
-
             if (currentCustomerState == CustomerState.WaitingOrder)
             {
                 DecideMenu();
                 currentCustomerState = CustomerState.WaitingFood;
                 PatienceSliderInit();
                 orderImageDisplay.gameObject.SetActive(true);
-                
+
             }
-            if (currentCustomerState == CustomerState.WaitingFood)
+            else if (currentCustomerState == CustomerState.WaitingFood)
             {
-            if (player.item == null)
-                return;
-                
+                if (player.item == null)
+                    return;
+
                 if (player.item.TryGetComponent(out Dish dish))
                 {
                     if (dish.ContainedFoodItems.Count > 0)

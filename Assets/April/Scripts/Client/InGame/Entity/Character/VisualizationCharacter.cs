@@ -33,6 +33,7 @@ namespace April
         {
             Animator.SetBool(AnimatorParameterName_IsInteraction_FoodContainer, isInteraction);
         }
+
         public void SetInteractionCook(bool isInteraction)
         {
             Animator.SetBool(AnimatorHashKey_IsInteraction_Cook, isInteraction);

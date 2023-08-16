@@ -2,13 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 namespace April
 {
     public class IngameUI : UIBase
     {
         public TextMeshProUGUI timeText;
+        public TextMeshProUGUI totalAssets;
         private float elapsedTime = 0f;
+        private int totalAssetsAmount = 0;
+
+        public int TotalAssets
+        {
+            get
+            {
+                return totalAssetsAmount;
+            }
+            set
+            {
+                totalAssetsAmount = value;
+                totalAssets.text = string.Format("{0:###,###,###}", totalAssetsAmount);
+            }
+        }
+
+        private void Start()
+        {
+            TotalAssets = 0;
+        }
 
         private void Update()
         {
@@ -20,6 +41,12 @@ namespace April
 
             timeText.text = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
         }
-       
+
+        public void AddAssets(int amount)
+        {
+            TotalAssets += amount;
+        }
     }
+
+
 }

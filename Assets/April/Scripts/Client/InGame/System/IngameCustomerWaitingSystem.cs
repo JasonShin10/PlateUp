@@ -84,27 +84,27 @@ namespace April
             return false;
         }
 
-        public void NotifiedTableCheckIn(CustomerTable table)
+        public void NotifyCanTableCheckIn()
         {
             // Waiting Customer Enter To Table
             var firstSlot = waitingSlots[0];
             if (!firstSlot.IsExistCustomer)
                 return;
 
-            int tableSlotCount = table.TableSlotCount;
-            int targetGroupID = firstSlot.customer.groupID;
 
+            int targetGroupID = firstSlot.customer.groupID;
             if (Customer.TryGetCustomerGroup(targetGroupID, out var waitingCustomers))
             {
                 //Debug.Assert(waitingCustomers.Count < tableSlotCount);
 
                 waitingCustomers.ForEach(customer =>
                 {
+                    Debug.Log("NotifiedTableCheckIn");
                     customer.SetCustomerState(Customer.CustomerState.Entering);
                 });
             }
 
-            int groupEndSlotIndex = waitingCustomers.Count - 1;
+            int groupEndSlotIndex = waitingCustomers.Count;
             for (int i = 0; i < groupEndSlotIndex; i++)
             {
                 waitingSlots[i].customer = null;
@@ -115,17 +115,24 @@ namespace April
         }
 
         public void CheckWaitingCustomerPossibleEnter()
-        {
+        {       
             if (InteractionBase.SpawnedInteractionObjects.TryGetValue(InteractionObjectType.CustomerTable, out List<InteractionBase> tables))
             {
                 foreach (InteractionBase table in tables)
                 {
                     var customerTable = table as CustomerTable;
-                    if (!customerTable.IsEmptyTable)
+                    if (customerTable.IsEmptyTable)
+                    {
+                    NotifyCanTableCheckIn();
+                    Debug.Log("tableCount");
+                    return;                   
+                    }
+                    else
+                    {
                         continue;
-
-                    NotifiedTableCheckIn(customerTable);
+                    }
                 }
+
             }
         }
 
@@ -138,6 +145,8 @@ namespace April
                     var emptySlot = waitingSlots.Find(x => !x.IsExistCustomer);
                     waitingSlots[i].customer.waitingPos = emptySlot.transform;
                     emptySlot.customer = waitingSlots[i].customer;
+                    emptySlot.customer.waitingPos = emptySlot.transform;
+                    emptySlot.customer.SetCustomerState(Customer.CustomerState.Waiting);
                     waitingSlots[i].customer = null;
                 }
             }

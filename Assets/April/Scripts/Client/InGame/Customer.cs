@@ -99,7 +99,7 @@ namespace April
             OnCustomerCheckout += GoOut;
             //OnCustomerCheckout += IngameCustomerWaitingSystem.Instance.MakeCustomerForward;
 
-            SetCustomerState(currentCustomerState);
+            //SetCustomerState(currentCustomerState);
         }
 
         protected override void OnDestroy()
@@ -128,27 +128,27 @@ namespace April
             switch (currentState)
             {
                 case CustomerState.Entering:
-                    currentCustomerState = CustomerState.Entering;
+                    
                     HandleEntering();
                     break;
                 case CustomerState.Waiting:
-                    currentCustomerState = CustomerState.Waiting;
+
                     HandleWaiting();
                     break;
                 case CustomerState.WaitingOrder:
-                    currentCustomerState = CustomerState.WaitingOrder;
+
                     HandleWaitingOrder();
                     break;
                 case CustomerState.WaitingFood:
-                    currentCustomerState = CustomerState.WaitingFood;
+                    
                     HandleWaitingFood();
                     break;
                 case CustomerState.WaitingFriend:
-                    currentCustomerState = CustomerState.WaitingFriend;
+                   
                     HandleWaitingFriend();
                     break;
                 case CustomerState.Leaving:
-                    currentCustomerState = CustomerState.Leaving;
+                    
                     HandleLeaving();
                     break;
 
@@ -162,11 +162,10 @@ namespace April
                 foreach (InteractionBase table in tables)
                 {
                     var customerTable = table as CustomerTable;
-                    if (customerTable.customerAssigned == true)
+                    if (!customerTable.IsEmptyTable)
                     {
                         continue;
                     }
-
                     if (isGroup)
                     {
                         if (currentCustomerState != CustomerState.Waiting)
@@ -238,12 +237,15 @@ namespace April
 
         private void HandleEntering()
         {
+            currentCustomerState = CustomerState.Entering;
             FindTarget();
+            Debug.Log("999");
             //DecideMenu();
         }
 
         private void HandleWaiting()
         {
+            currentCustomerState = CustomerState.Waiting;
             //waitingCustomers.Add(this);
             MoveToTarget(waitingPos);
 
@@ -262,22 +264,23 @@ namespace April
         private void HandleWaitingOrder()
         {
 
-
+            currentCustomerState = CustomerState.WaitingOrder;
             patienceSlider.value -= Time.deltaTime;
         }
 
         private void HandleWaitingFood()
         {
-
+            currentCustomerState = CustomerState.WaitingFood;
         }
 
         private void HandleWaitingFriend()
         {
-
+            currentCustomerState = CustomerState.WaitingFriend;
         }
         public void GoOut()
         {
             //myTable.customerAssigned = false;
+            myTable.customers.Clear();
             mySeat.assignedCustomer = null;
             MoveToTarget(exitTarget.transform, () =>
             {
@@ -288,6 +291,7 @@ namespace April
 
         private void HandleLeaving()
         {
+            currentCustomerState = CustomerState.Leaving;
             OnCustomerCheckout?.Invoke();
         }
 

@@ -19,6 +19,7 @@ namespace April
 
         //public SerializableDictionary<CustomerTable_InteractSlot, Transform> dishesPoints
         //    = new SerializableDictionary<CustomerTable_InteractSlot, Transform>();
+
         public bool customerAssigned;
         public Stack<InteractionItem> dishes = new Stack<InteractionItem>();
         public override bool IsAutoInteractable => false;
@@ -47,7 +48,8 @@ namespace April
             if (IsAllEmptyTableSlot && CheckTableClean())
             {
                 customerAssigned = false;
-                IngameCustomerWaitingSystem.Instance.NotifiedTableCheckIn(this);
+                Debug.Log("CustomerCheck");
+                IngameCustomerWaitingSystem.Instance.NotifyCanTableCheckIn();
             }
         }
 

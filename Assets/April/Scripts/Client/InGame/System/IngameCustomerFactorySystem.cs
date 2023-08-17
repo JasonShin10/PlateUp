@@ -43,6 +43,7 @@ namespace April
 
             int rand = Random.Range(0, 2);
             bool isGroupSpawn = rand % 2 == 0;
+            //bool isGroupSpawn = false;
             int spawnCount = 1;
             if (isGroupSpawn)
             {
@@ -61,12 +62,14 @@ namespace April
                     customerInstance.isGroup = isGroupSpawn;
 
                     customerInstance.waitingPos = waitingSlots[i].transform;
+                    
                     customerInstance.groupID = groupId;
-                    customerInstance.currentCustomerState = Customer.CustomerState.Waiting;
+                    customerInstance.SetCustomerState(Customer.CustomerState.Waiting);
+                    
                     customerInstance.exitTarget = this.transform;
 
                     waitingSlots[i].customer = customerInstance;
-
+                    
                     var randomColor = new Color();
                     randomColor.r = Random.Range(0, 256) / 255f;
                     randomColor.g = Random.Range(0, 256) / 255f;
@@ -75,7 +78,7 @@ namespace April
 
                     customerInstance.GraphicColor = randomColor;
                 }
-
+                Debug.Log("...");
                 IngameCustomerWaitingSystem.Instance.CheckWaitingCustomerPossibleEnter();
             }
         }

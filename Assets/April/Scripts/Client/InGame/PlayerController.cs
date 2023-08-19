@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using System;
 using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
+using System.Globalization;
 
 namespace April
 {
@@ -113,6 +114,11 @@ namespace April
             Debug.Log("DoInteraction");
             currentInteractionObject?.Interact(this);
             isButtonPressed = true;
+            if (currentInteractionObject is DishWasher)
+            {
+                var dishWasher = (DishWasher)currentInteractionObject;
+                dishWasher.particleController.PlayParticle();
+            }
         }
 
         private void StopInteraction(InputAction.CallbackContext context)
@@ -122,6 +128,11 @@ namespace April
             if (currentInteractionObject)
             {
                 DeactivateInteraction_Animation(currentInteractionObject);
+            }
+            if (currentInteractionObject is DishWasher)
+            {
+                var dishWasher = (DishWasher)currentInteractionObject;
+                dishWasher.particleController.StopParticle();
             }
         }
 

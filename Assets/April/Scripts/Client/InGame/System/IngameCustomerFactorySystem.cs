@@ -9,23 +9,15 @@ namespace April
     {
         public static IngameCustomerFactorySystem Instance { get; private set; }
 
-        //public Dictionary<int, List<Customer>> waitingCustomersNum = new Dictionary<int, List<Customer>>();
         public int isGroup;
         public Customer customerPrefab;
         public Transform spawnPoint;
-
-
-
         [MinMaxSlider(2, 10, true)]
         public Vector2Int npcGroupSpawnRnage = new Vector2Int(2, 10);
-
         public List<CustomerTable> tables = new List<CustomerTable>();
-        //public List<Customer> waitingCustomers = new List<Customer>();
 
-        public bool allAsigned;
         private float currentTime;
         private float maxTime = 10f;
-        public int waitingNum;
 
         private void Awake()
         {
@@ -43,77 +35,51 @@ namespace April
             Instance = null;
         }
 
+        [Button("Spawn Customer")]
         public void SpawnCustomer()
         {
             if (IngameCustomerWaitingSystem.Instance.IsFullWaitingSlot)
                 return;
 
-            allAsigned = true;
-
             int rand = Random.Range(0, 2);
             bool isGroupSpawn = rand % 2 == 0;
-
+            //bool isGroupSpawn = false;
             int spawnCount = 1;
             if (isGroupSpawn)
             {
                 spawnCount = Random.Range(npcGroupSpawnRnage.x, npcGroupSpawnRnage.y + 1);
             }
 
-            for (int i = 0; i < spawnCount; i++)
+            if (spawnCount > IngameCustomerWaitingSystem.Instance.EmptyWaitingSlotCount)
+                return;
+
+            if (IngameCustomerWaitingSystem.Instance.TryGetEmptySlots(spawnCount, out int groupId, out var waitingSlots))
             {
-                Customer customerInstance = Instantiate(customerPrefab, spawnPoint.position, Quaternion.identity);
-                customerInstance.gameObject.SetActive(true);
-                foreach (CustomerTable table in tables)
+                for (int i = 0; i < spawnCount; i++)
                 {
-                    if (!table.customerAssigned)
-                    {
-                        allAsigned = false;
-                    }
+                    Customer customerInstance = Instantiate(customerPrefab, spawnPoint.position, Quaternion.identity);
+                    customerInstance.gameObject.SetActive(true);
+                    customerInstance.isGroup = isGroupSpawn;
+
+                    customerInstance.waitingPos = waitingSlots[i].transform;
+
+                    customerInstance.groupID = groupId;
+                    customerInstance.SetCustomerState(Customer.CustomerState.Waiting);
+
+                    customerInstance.exitTarget = this.transform;
+
+                    waitingSlots[i].customer = customerInstance;
+
+                    var randomColor = new Color();
+                    randomColor.r = Random.Range(0, 256) / 255f;
+                    randomColor.g = Random.Range(0, 256) / 255f;
+                    randomColor.b = Random.Range(0, 256) / 255f;
+                    randomColor.a = Random.Range(0, 256) / 255f;
+
+                    customerInstance.GraphicColor = randomColor;
                 }
-
-                customerInstance.isGroup = isGroupSpawn;
-                //if (isGroup == 1)
-                //{
-                //    customerInstance.isGroup = true;
-                //}
-
-                if (allAsigned == true)
-                {
-                    //waitingCustomers.Add(customerInstance);
-                    foreach(IngameCustomerWaitingSystem_SlotData slot in IngameCustomerWaitingSystem.Instance.waitingSlots)
-                    {
-                        if (slot.customer == null)
-                        {
-                        slot.customer = customerInstance;
-                        slot.customer.waitingPos = slot.transform;
-                        slot.customer.waitingNum = waitingNum;
-                        slot.customer.currentCustomerState = Customer.CustomerState.Waiting;
-                       
-                            //slot.customer.SetCustomerState(Customer.CustomerState.Waiting);
-                        //customerInstance.waiting = true;
-                        break;
-                        }
-                    }
-                }
-
-                //FindTarget(customerInstance);
-                customerInstance.exitTarget = this.transform;
-                // customerInstance.tables = tables;
-
-                var randomColor = new Color();
-                randomColor.r = Random.Range(0, 256) / 255f;
-                randomColor.g = Random.Range(0, 256) / 255f;
-                randomColor.b = Random.Range(0, 256) / 255f;
-                randomColor.a = Random.Range(0, 256) / 255f;
-
-                customerInstance.GraphicColor = randomColor;
-
-            }
-
-            if (allAsigned == true)
-            {
-                //waitingCustomersNum[waitNum] = new List<Customer>(waitingCustomers);
-                waitingNum++;
+                Debug.Log("...");
+                IngameCustomerWaitingSystem.Instance.CheckWaitingCustomerPossibleEnter();
             }
         }
 

@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19be8d87b091c174b975cec94f11af01, type: 3}
   m_Name: Runtime Collection
   m_EditorClassIdentifier: 
-  sprites:
+  normalBeefSprites:
   - {fileID: 21300000, guid: 5522f7331e98f3e4d800eb0e6bad004a, type: 3}
   - {fileID: 21300000, guid: 0740d951755f73548ae4b65b739e4de0, type: 3}
   - {fileID: 21300000, guid: ec761603b7c37f149abba41a39e5b808, type: 3}
+  thickBeefSprites:
+  - {fileID: 21300000, guid: 989447c72f0416f4192758d7a19016fe, type: 3}
+  - {fileID: 21300000, guid: ae49b887f72164c40b1b9926c7e59029, type: 3}
+  - {fileID: 21300000, guid: 47f707cfc006d044390e8a3153685835, type: 3}

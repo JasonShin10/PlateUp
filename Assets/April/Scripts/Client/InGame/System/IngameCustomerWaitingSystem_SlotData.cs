@@ -7,8 +7,9 @@ namespace April
 {
     public class IngameCustomerWaitingSystem_SlotData : MonoBehaviour
     {
+        public bool IsExistCustomer => customer != null;
+
         public Customer customer;
 
     }
 }
-

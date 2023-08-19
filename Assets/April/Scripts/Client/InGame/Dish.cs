@@ -61,6 +61,7 @@ namespace April
         public void GetClean()
         {
             dishRenderer.material.color = Color.white;
+            HideUI();
             dirty = false;
 
         }

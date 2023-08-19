@@ -20,7 +20,10 @@ namespace April
                 if (dish.ContainedFoodItems.Count > 0)
                 {
                     Food foodItem = dish.ContainedFoodItems[0];
-                   Destroy(foodItem);
+
+                   Destroy(foodItem.gameObject);
+                    dish.ContainedFoodItems.Clear();
+                    
                 }
             }
         }

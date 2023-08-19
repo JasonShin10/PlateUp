@@ -12,7 +12,7 @@ namespace April
 
         private PlayerController player;
         public Dish dish;
-
+        public ParticleController particleController;
         public Transform dirtyDishPivot;
         public Transform cleanDishPivot;
 
@@ -24,7 +24,9 @@ namespace April
                 if (PlayerController.Instance.isButtonPressed == true)
                 {
                     dish.progressValue += 10f * Time.deltaTime;
+                    
                 }
+              
                 if (dish.slider.value == dish.slider.maxValue)
                 {
                     dish.GetClean();

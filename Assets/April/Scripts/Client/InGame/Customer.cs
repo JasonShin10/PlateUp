@@ -14,6 +14,22 @@ namespace April
 {
     public class Customer : InteractionBase
     {
+        public static List<Customer> SpawnedCustomers = new List<Customer>();
+
+        public static bool TryGetCustomerGroup(int groupId, out List<Customer> result)
+        {
+            result = new List<Customer>();
+            for (int i = 0; i < SpawnedCustomers.Count; i++)
+            {
+                if (SpawnedCustomers[i].groupID == groupId)
+                {
+                    result.Add(SpawnedCustomers[i]);
+                }
+            }
+            return result.Count > 0;
+        }
+
+
         public enum CustomerState
         {
             Entering,
@@ -25,7 +41,6 @@ namespace April
         }
 
         public CustomerState currentCustomerState = CustomerState.Entering;
-        public event Action OnCustomerCheckout;
 
         SysRandom random = new SysRandom();
         public override bool IsAutoInteractable => false;
@@ -56,34 +71,40 @@ namespace April
         private float distanceBetweenDestination;
         private event Action onDestinationCallback;
 
-        private MenuList orderedMenuType;
-        private int orderedMenuStateType;
+        public MenuList orderedMenuType;
+        public int orderedMenuStateType;
 
         public bool isGroup;
-        //public bool waiting;
-        public int waitingNum;
+        public int groupID;
         public Transform waitingPos;
 
+        [SerializeField] private int money = 100;
         protected override void Awake()
         {
+            SpawnedCustomers.Add(this);
             base.Awake();
-        }
-        public override void Start()
-        {
-            base.Start();
+
             agent = GetComponent<NavMeshAgent>();
             orderImageDisplay = GetComponentInChildren<Image>(true);
             patienceSlider = GetComponentInChildren<Slider>(true);
+        }
+
+        public override void Start()
+        {
+            base.Start();
             patienceSlider.maxValue = 90f;
             patienceSlider.value = patienceSlider.maxValue;
             patienceSlider.gameObject.SetActive(false);
             orderImageDisplay.gameObject.SetActive(false);
-            OnCustomerCheckout += GoOut;
-
-
-
-            SetCustomerState(currentCustomerState);
         }
+
+        protected override void OnDestroy()
+        {
+            SpawnedCustomers.Remove(this);
+
+            base.OnDestroy();
+        }
+
         private void Update()
         {
             distanceBetweenDestination = Vector3.Distance(transform.position, agent.destination);
@@ -91,44 +112,47 @@ namespace April
             {
                 onDestinationCallback?.Invoke();
                 onDestinationCallback = null;
-                if (currentCustomerState != CustomerState.Waiting)
+
+                if (currentCustomerState == CustomerState.WaitingOrder || currentCustomerState == CustomerState.WaitingFood || currentCustomerState == CustomerState.WaitingFriend)
                 {
-                    SetCustomerState(CustomerState.WaitingOrder);
+                    patienceSlider.value -= Time.deltaTime;
                 }
             }
         }
+
 
         public void SetCustomerState(CustomerState currentState)
         {
             switch (currentState)
             {
                 case CustomerState.Entering:
-                    currentCustomerState = CustomerState.Entering;
+
                     HandleEntering();
                     break;
                 case CustomerState.Waiting:
-                    currentCustomerState = CustomerState.Waiting;
+
                     HandleWaiting();
                     break;
                 case CustomerState.WaitingOrder:
-                    currentCustomerState = CustomerState.WaitingOrder;
+
                     HandleWaitingOrder();
                     break;
                 case CustomerState.WaitingFood:
-                    currentCustomerState = CustomerState.WaitingFood;
+
                     HandleWaitingFood();
                     break;
                 case CustomerState.WaitingFriend:
-                    currentCustomerState = CustomerState.WaitingFriend;
+
                     HandleWaitingFriend();
                     break;
                 case CustomerState.Leaving:
-                    currentCustomerState = CustomerState.Leaving;
+
                     HandleLeaving();
                     break;
 
             }
         }
+
         private void FindTarget()
         {
             if (InteractionBase.SpawnedInteractionObjects.TryGetValue(InteractionObjectType.CustomerTable, out List<InteractionBase> tables))
@@ -136,11 +160,10 @@ namespace April
                 foreach (InteractionBase table in tables)
                 {
                     var customerTable = table as CustomerTable;
-                    if (customerTable.customerAssigned == true)
+                    if (!customerTable.IsEmptyTable)
                     {
                         continue;
                     }
-
                     if (isGroup)
                     {
                         if (currentCustomerState != CustomerState.Waiting)
@@ -161,11 +184,9 @@ namespace April
                         }
                         myTable = customerTable;
                         mySeat = chairPos;
-                        //mySeat.SetAssigned(this);
                         mySeat.assignedCustomer = this;
                         MoveToTarget(mySeat.position, () =>
                         {
-
                             transform.LookAt(myTable.transform.position, Vector3.up);
                         });
                         return;
@@ -192,36 +213,33 @@ namespace April
         private void DecideMenu()
         {
             Array values = Enum.GetValues(typeof(MenuList));
-
             MenuList randomMenu = (MenuList)values.GetValue(random.Next(values.Length));
-            GetFoodByMenu(randomMenu, out Type menuStateType);
-
+            var food = GetFoodByMenu(randomMenu, out Type menuStateType);
+            int randomMenuInt = Convert.ToInt32(randomMenu);
+           
             Array menuStates = Enum.GetValues(menuStateType);
             int firstState = (int)menuStates.GetValue(0);
             int lastState = (int)menuStates.GetValue(menuStates.Length - 1);
 
-            int randomNum = UnityEngine.Random.Range(firstState, lastState);
-            orderImageDisplay.sprite = imageContainer.sprites[0];
+            int randomMenuNum = UnityEngine.Random.Range(firstState, lastState+1);
 
-
-
-            //orderedMenuType = randomMenu;
-            //orderedMenuStateType = randomNum;
-            orderedMenuType = MenuList.Beef;
+            orderImageDisplay.sprite = imageContainer.MenuSpriteGroups[randomMenuInt][randomMenuNum];
+            orderedMenuType = 0;
             orderedMenuStateType = 0;
+            //orderedMenuType = randomMenu;
+            //orderedMenuStateType = randomMenuNum;
         }
 
         private void HandleEntering()
         {
+            currentCustomerState = CustomerState.Entering;
             FindTarget();
-            //DecideMenu();
         }
 
         private void HandleWaiting()
         {
-            //waitingCustomers.Add(this);
+            currentCustomerState = CustomerState.Waiting;
             MoveToTarget(waitingPos);
-
         }
 
         private void PatienceSliderActivate()
@@ -229,50 +247,54 @@ namespace April
             patienceSlider.gameObject.SetActive(true);
         }
 
-        private void PatienceSliderInit()
+        private void PatienceSliderReset()
         {
             patienceSlider.value = patienceSlider.maxValue;
             patienceSlider.gameObject.SetActive(false);
         }
+
         private void HandleWaitingOrder()
         {
-
-
+            currentCustomerState = CustomerState.WaitingOrder;
             patienceSlider.value -= Time.deltaTime;
         }
 
         private void HandleWaitingFood()
         {
-
+            currentCustomerState = CustomerState.WaitingFood;
+            PatienceSliderActivate();
         }
 
         private void HandleWaitingFriend()
         {
-
+            currentCustomerState = CustomerState.WaitingFriend;
+            PatienceSliderReset();
+            PatienceSliderActivate();
         }
         public void GoOut()
         {
-            //myTable.customerAssigned = false;
             mySeat.assignedCustomer = null;
             MoveToTarget(exitTarget.transform, () =>
             {
                 IngameCustomerFactorySystem.Instance.RemoveCustomer(this);
+                myTable.customers.Clear();
             });
-            //myTable.CustomerCheck();
         }
 
         private void HandleLeaving()
         {
-            OnCustomerCheckout?.Invoke();
-            IngameCustomerWaitingSystem.Instance.MakeCustomerForward();
+            currentCustomerState = CustomerState.Leaving;
+            GoOut();
+            
         }
+
         public void MoveToTarget(Transform destination, Action callbackOnDestination = null)
         {
-
             onDestinationCallback += callbackOnDestination;
             if (destination == mySeat.position)
             {
                 onDestinationCallback += PatienceSliderActivate;
+                SetCustomerState(CustomerState.WaitingOrder);
             }
             agent.SetDestination(destination.position);
         }
@@ -285,6 +307,7 @@ namespace April
 
         IEnumerator Eat()
         {
+            PatienceSliderReset();
             yield return new WaitForSeconds(maxTime);
 
             Dish emptyDish = (Dish)foodDish;
@@ -299,21 +322,42 @@ namespace April
             SetCustomerState(CustomerState.Leaving);
         }
 
+        IEnumerator Eat(IEnumerable<Customer> customers)
+        {
+            yield return new WaitForSeconds(maxTime);
+
+            foreach (var customer in customers)
+            {
+                customer.PatienceSliderReset();
+                Dish emptyDish = (Dish)customer.foodDish;
+                emptyDish.RemoveItem(customer.myFood);
+                Destroy(customer.myFood.gameObject);
+
+                customer.myFood = null;
+                customer.myTable.dishes.Push(customer.foodDish);
+
+                emptyDish.GetDirty();
+
+                customer.SetCustomerState(CustomerState.Leaving);
+            }
+        }
+
         public void CustomerInteract()
         {
             if (currentCustomerState == CustomerState.WaitingOrder)
             {
                 DecideMenu();
-                currentCustomerState = CustomerState.WaitingFood;
-                PatienceSliderInit();
+                PatienceSliderReset();
+                SetCustomerState(CustomerState.WaitingFood);
                 orderImageDisplay.gameObject.SetActive(true);
-
+                return;
             }
-            else if (currentCustomerState == CustomerState.WaitingFood)
+            if (currentCustomerState == CustomerState.WaitingFood || currentCustomerState == CustomerState.WaitingFriend)
             {
-                if (player.item == null)
+                if (player.item == null || myFood != null)
                     return;
-
+                PatienceSliderReset();
+                PatienceSliderActivate();
                 if (player.item.TryGetComponent(out Dish dish))
                 {
                     if (dish.ContainedFoodItems.Count > 0)
@@ -324,12 +368,28 @@ namespace April
                             orderImageDisplay.gameObject.SetActive(false);
                             myFood = foodItem;
                             foodDish = player.item;
-
                             player.item.transform.SetParent(myTable.transform);
                             player.item.transform.localPosition = new Vector3(0, 1.66f, 0);
                             player.item = null;
+                            if (!isGroup)
+                            {
+                                StartCoroutine(Eat());
+                            }
+                            else if(myTable.IsAllCustomerHasFood)
+                            {
+                              
+                               StartCoroutine(Eat(myTable.customers));
 
-                            StartCoroutine(Eat());
+                            }
+                            else if(!myTable.IsAllCustomerHasFood)
+                            {
+                                foreach(var customer in myTable.customers)
+                                {
+                                    customer.SetCustomerState(CustomerState.WaitingFriend);
+                                    
+                                }
+                            }
+
                         }
                     }
                 }
@@ -344,4 +404,3 @@ namespace April
         }
     }
 }
-

@@ -215,6 +215,9 @@ namespace April
 
         private void DecideMenu()
         {
+            // Hint ? 
+            MyEnumTypes randomType = (MyEnumTypes)UnityEngine.Random.Range((int)MyEnumTypes.None, (int)MyEnumTypes.RandomMax);
+
             Array values = Enum.GetValues(typeof(MenuList));
             MenuList randomMenu = (MenuList)values.GetValue(random.Next(values.Length));
             var food = GetFoodByMenu(randomMenu, out int firstState, out int lastState);
@@ -269,12 +272,11 @@ namespace April
             PatienceSliderActivate();
         }
         public void GoOut()
-        {
+        {            
             mySeat.assignedCustomer = null;
             MoveToTarget(exitTarget.transform, () =>
             {
                 IngameCustomerFactorySystem.Instance.RemoveCustomer(this);
-                myTable.customers.Clear();
             });
         }
 
@@ -318,6 +320,7 @@ namespace April
             emptyDish.GetDirty();
 
             SetCustomerState(CustomerState.Leaving);
+            myTable.customers.Clear();
         }
 
         IEnumerator Eat(IEnumerable<Customer> customers)
@@ -338,6 +341,8 @@ namespace April
 
                 customer.SetCustomerState(CustomerState.Leaving);
             }
+
+            myTable.customers.Clear();
         }
 
         public void CustomerInteract()
@@ -349,11 +354,12 @@ namespace April
                 SetCustomerState(CustomerState.WaitingFood);
                 orderImageDisplay.gameObject.SetActive(true);
                 return;
-            }
-            if (currentCustomerState == CustomerState.WaitingFood || currentCustomerState == CustomerState.WaitingFriend)
+            }            
+            else if (currentCustomerState == CustomerState.WaitingFood || currentCustomerState == CustomerState.WaitingFriend)
             {
                 if (player.item == null || myFood != null)
                     return;
+
                 PatienceSliderReset();
                 PatienceSliderActivate();
                 if (player.item.TryGetComponent(out Dish dish))

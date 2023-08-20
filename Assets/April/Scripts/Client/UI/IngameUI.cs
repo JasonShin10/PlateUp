@@ -33,14 +33,25 @@ namespace April
             set
             {
                 totalAssetsAmount = value;
-                totalAssets.text = string.Format("{0:###,###,###}", totalAssetsAmount);
+                totalAssets.text = string.Format("Money : {0:###,###,##0}", totalAssetsAmount);
             }
         }
 
         private void Start()
         {
             TotalAssets = 0;
-            
+
+            int a = 10000;
+            float b = 200.51f;
+
+            Debug.LogFormat("{0}", a);
+            Debug.LogFormat("{0}", b);
+
+            Debug.LogFormat("{0:0.0}", a);
+            Debug.LogFormat("{0:0.0}", b);
+
+            Debug.LogFormat("{0:#.#}", a);
+            Debug.LogFormat("{0:#.#}", b);
         }
 
         private void Update()

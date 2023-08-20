@@ -20,8 +20,6 @@ namespace April
         protected override void Awake()
         {
             base.Awake();
-            //var actionData = new InteractActionData();
-            //actionData.callback += Execute;
 
             interactActionDatas.Add(new InteractActionData()
             {

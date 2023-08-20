@@ -10,8 +10,8 @@ namespace April
         public enum ThickBeefState
         {
             Raw,
-            HalfCooked,
-            FullyCooked,
+            Medium,
+            WellDone,
             Burned
         }
 

@@ -8,8 +8,8 @@ namespace April
 {
     public class Character_Waitress : CharacterBase
     {
-        public override CharacterType CharacterType => CharacterType.Waitress;
 
+        public override CharacterType CharacterType => CharacterType.Waitress;
 
         public Transform waitingPosition;
 
@@ -21,7 +21,31 @@ namespace April
             currentTargetCustomer = customer;
             this.SetDestination(customer.transform.position, OnDestinationCustomer);
         }
+        [Button("Find Customer")]
 
+        public void FindCustomer()
+        {
+            // Áú¹® 1.
+            float minPatienceValue = float.MaxValue;
+            float minStateValue = float.MaxValue;
+            Customer minPatiecneCustomer = null;
+            List<CustomerTable> tables = IngameCustomerFactorySystem.Instance.tables;
+            foreach (CustomerTable table in tables)
+            {
+                foreach (Customer customer in table.customers)
+                {
+                    if ((int)customer.currentCustomerState < minStateValue)
+                    {
+                        minStateValue = (int)customer.currentCustomerState;
+                    }
+                    if (customer.patienceSlider.value < minPatienceValue)
+                    {
+                        minPatiecneCustomer = customer;
+                    }
+                }
+            }
+            ReceiveCustomerOrder(minPatiecneCustomer);
+        }
         protected override void Update()
         {
             base.Update();
@@ -42,6 +66,7 @@ namespace April
                 this.SetDestination(waitingPosition.position);
             }
         }
+
     }
 }
 

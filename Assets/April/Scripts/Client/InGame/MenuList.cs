@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-    namespace April
+namespace April
+{
+    public enum MenuList
     {
-        public enum MenuList
-        {
-            Beef = 0,
-            ThickBeef = 1,
-        }
-
-
-
+        Beef = 0,
+        ThickBeef = 1,
     }
+
+
+
+}
 
 
 

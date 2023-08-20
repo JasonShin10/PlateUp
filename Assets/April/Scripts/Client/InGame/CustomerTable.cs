@@ -18,9 +18,6 @@ namespace April
     {
         public bool IsEmptyTable => !customerAssigned;
 
-        //public SerializableDictionary<CustomerTable_InteractSlot, Transform> dishesPoints
-        //    = new SerializableDictionary<CustomerTable_InteractSlot, Transform>();
-
         public bool customerAssigned;
         public Stack<InteractionItem> dishes = new Stack<InteractionItem>();
         public override bool IsAutoInteractable => false;
@@ -35,7 +32,6 @@ namespace April
         public List<Customer> customers = new List<Customer>();
         public List<TableSlotData> tableSlots = new List<TableSlotData>();
 
-        //public List<CustomerTable_InteractSlot> chairPos = new List<CustomerTable_InteractSlot>();
 
         public void GroupCheck()
         {

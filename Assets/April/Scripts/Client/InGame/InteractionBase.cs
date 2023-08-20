@@ -14,7 +14,8 @@ namespace April
         DishTable,
         CustomerTable,
         DishWasher,
-        TrashCan
+        TrashCan,
+        CabbageContainer
     }
 
     public abstract class InteractionBase : MonoBehaviour

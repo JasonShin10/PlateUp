@@ -8,10 +8,21 @@ namespace April
 {
     public class IngameUI : UIBase
     {
+        public static IngameUI Instance { get; private set; }
+
         public TextMeshProUGUI timeText;
         public TextMeshProUGUI totalAssets;
         private float elapsedTime = 0f;
         private int totalAssetsAmount = 0;
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
+        }
 
         public int TotalAssets
         {
@@ -29,6 +40,7 @@ namespace April
         private void Start()
         {
             TotalAssets = 0;
+            
         }
 
         private void Update()

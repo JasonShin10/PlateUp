@@ -64,7 +64,7 @@ namespace April
         public TableSlotData mySeat;
         public Slider patienceSlider;
         public Image orderImageDisplay;
-
+  
         public Renderer graphicRenderer;
         public MenuImageContainer imageContainer;
 
@@ -78,7 +78,7 @@ namespace April
         public int groupID;
         public Transform waitingPos;
 
-        [SerializeField] private int money = 100;
+        private int money = 100;
         protected override void Awake()
         {
             SpawnedCustomers.Add(this);
@@ -196,38 +196,35 @@ namespace April
 
 
         }
-        public Food GetFoodByMenu(MenuList menu, out Type menuStateType)
+        public Food GetFoodByMenu(MenuList menu, out int firstState, out int lastState)
         {
             switch (menu)
             {
                 case MenuList.Beef:
-                    menuStateType = typeof(Beef.BeefState);
+                    firstState = (int)Beef.BeefState.Raw;
+                    lastState = (int)Beef.BeefState.WellDone;
                     return new Beef();
                 case MenuList.ThickBeef:
-                    menuStateType = typeof(ThickBeef.ThickBeefState);
+                    firstState = (int)ThickBeef.ThickBeefState.Raw;
+                    lastState = (int)ThickBeef.ThickBeefState.WellDone;
                     return new ThickBeef();
                 default:
                     throw new ArgumentException("Invalid menu item");
             }
         }
+
         private void DecideMenu()
         {
             Array values = Enum.GetValues(typeof(MenuList));
             MenuList randomMenu = (MenuList)values.GetValue(random.Next(values.Length));
-            var food = GetFoodByMenu(randomMenu, out Type menuStateType);
+            var food = GetFoodByMenu(randomMenu, out int firstState, out int lastState);
             int randomMenuInt = Convert.ToInt32(randomMenu);
-           
-            Array menuStates = Enum.GetValues(menuStateType);
-            int firstState = (int)menuStates.GetValue(0);
-            int lastState = (int)menuStates.GetValue(menuStates.Length - 1);
 
-            int randomMenuNum = UnityEngine.Random.Range(firstState, lastState+1);
+            int randomMenuNum = UnityEngine.Random.Range(firstState, lastState + 1);
 
             orderImageDisplay.sprite = imageContainer.MenuSpriteGroups[randomMenuInt][randomMenuNum];
             orderedMenuType = 0;
             orderedMenuStateType = 0;
-            //orderedMenuType = randomMenu;
-            //orderedMenuStateType = randomMenuNum;
         }
 
         private void HandleEntering()
@@ -285,6 +282,7 @@ namespace April
         {
             currentCustomerState = CustomerState.Leaving;
             GoOut();
+            IngameUI.Instance.AddAssets(100);
             
         }
 

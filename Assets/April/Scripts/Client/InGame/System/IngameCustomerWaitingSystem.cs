@@ -99,7 +99,7 @@ namespace April
                 waitingCustomers.ForEach(customer =>
                 {
                     Debug.Log("NotifiedTableCheckIn");
-                    customer.SetCustomerState(Customer.CustomerState.Entering);
+                    customer.SetCustomerState(CustomerState.Entering);
                 });
             }
 
@@ -145,7 +145,7 @@ namespace April
                     waitingSlots[i].customer.waitingPos = emptySlot.transform;
                     emptySlot.customer = waitingSlots[i].customer;
                     emptySlot.customer.waitingPos = emptySlot.transform;
-                    emptySlot.customer.SetCustomerState(Customer.CustomerState.Waiting);
+                    emptySlot.customer.SetCustomerState(CustomerState.Waiting);
                     waitingSlots[i].customer = null;
                 }
             }

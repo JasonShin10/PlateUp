@@ -15,7 +15,6 @@ namespace April
     public class Customer : InteractionBase
     {
         public static List<Customer> SpawnedCustomers = new List<Customer>();
-
         public static bool TryGetCustomerGroup(int groupId, out List<Customer> result)
         {
             result = new List<Customer>();
@@ -29,18 +28,27 @@ namespace April
             return result.Count > 0;
         }
 
+        public event Action<CustomerState, Customer> OnStateChange;
+        
 
-        public enum CustomerState
+
+        public CustomerState State
         {
-            Entering,
-            Waiting,
-            WaitingOrder,
-            WaitingFood,
-            WaitingFriend,
-            Leaving
+            get { return state; }
+            set
+            {
+                if (state != value)
+                {
+                    CustomerState oldState = state;
+                    state = value;
+                    OnStateChange?.Invoke(oldState, this);
+                }
+            }
         }
 
-        public CustomerState currentCustomerState = CustomerState.Entering;
+
+   
+        public CustomerState state = CustomerState.Entering;
 
         SysRandom random = new SysRandom();
         public override bool IsAutoInteractable => false;
@@ -64,7 +72,7 @@ namespace April
         public TableSlotData mySeat;
         public Slider patienceSlider;
         public Image orderImageDisplay;
-  
+
         public Renderer graphicRenderer;
         public MenuImageContainer imageContainer;
 
@@ -92,6 +100,7 @@ namespace April
         public override void Start()
         {
             base.Start();
+            
             patienceSlider.maxValue = 90f;
             patienceSlider.value = patienceSlider.maxValue;
             patienceSlider.gameObject.SetActive(false);
@@ -113,7 +122,7 @@ namespace April
                 onDestinationCallback?.Invoke();
                 onDestinationCallback = null;
 
-                if (currentCustomerState == CustomerState.WaitingOrder || currentCustomerState == CustomerState.WaitingFood || currentCustomerState == CustomerState.WaitingFriend)
+                if (state == CustomerState.WaitingOrder || state == CustomerState.WaitingFood || state == CustomerState.WaitingFriend)
                 {
                     patienceSlider.value -= Time.deltaTime;
                 }
@@ -166,7 +175,7 @@ namespace April
                     }
                     if (isGroup)
                     {
-                        if (currentCustomerState != CustomerState.Waiting)
+                        if (state != CustomerState.Waiting)
                         {
                             customerTable.customers.Add(this);
                         }
@@ -232,13 +241,14 @@ namespace April
 
         private void HandleEntering()
         {
-            currentCustomerState = CustomerState.Entering;
+            state = CustomerState.Entering;
             FindTarget();
         }
 
         private void HandleWaiting()
         {
-            currentCustomerState = CustomerState.Waiting;
+            state = CustomerState.Waiting;
+            
             MoveToTarget(waitingPos);
         }
 
@@ -255,24 +265,28 @@ namespace April
 
         private void HandleWaitingOrder()
         {
-            currentCustomerState = CustomerState.WaitingOrder;
+            
+            State = CustomerState.WaitingOrder;
+            
             patienceSlider.value -= Time.deltaTime;
         }
 
         private void HandleWaitingFood()
         {
-            currentCustomerState = CustomerState.WaitingFood;
+            State = CustomerState.WaitingFood;
+
             PatienceSliderActivate();
         }
 
         private void HandleWaitingFriend()
         {
-            currentCustomerState = CustomerState.WaitingFriend;
+            state = CustomerState.WaitingFriend;
+            
             PatienceSliderReset();
             PatienceSliderActivate();
         }
         public void GoOut()
-        {            
+        {
             mySeat.assignedCustomer = null;
             MoveToTarget(exitTarget.transform, () =>
             {
@@ -282,10 +296,10 @@ namespace April
 
         private void HandleLeaving()
         {
-            currentCustomerState = CustomerState.Leaving;
+            state = CustomerState.Leaving;
             GoOut();
             IngameUI.Instance.AddAssets(100);
-            
+
         }
 
         public void MoveToTarget(Transform destination, Action callbackOnDestination = null)
@@ -347,18 +361,21 @@ namespace April
 
         public void CustomerInteract()
         {
-            if (currentCustomerState == CustomerState.WaitingOrder)
+            if (state == CustomerState.WaitingOrder)
             {
                 DecideMenu();
                 PatienceSliderReset();
                 SetCustomerState(CustomerState.WaitingFood);
                 orderImageDisplay.gameObject.SetActive(true);
                 return;
-            }            
-            else if (currentCustomerState == CustomerState.WaitingFood || currentCustomerState == CustomerState.WaitingFriend)
+            }
+            else if (state == CustomerState.WaitingFood || state == CustomerState.WaitingFriend)
             {
                 if (player.item == null || myFood != null)
+                {
+
                     return;
+                }
 
                 PatienceSliderReset();
                 PatienceSliderActivate();
@@ -379,18 +396,18 @@ namespace April
                             {
                                 StartCoroutine(Eat());
                             }
-                            else if(myTable.IsAllCustomerHasFood)
+                            else if (myTable.IsAllCustomerHasFood)
                             {
-                              
-                               StartCoroutine(Eat(myTable.customers));
+
+                                StartCoroutine(Eat(myTable.customers));
 
                             }
-                            else if(!myTable.IsAllCustomerHasFood)
+                            else if (!myTable.IsAllCustomerHasFood)
                             {
-                                foreach(var customer in myTable.customers)
+                                foreach (var customer in myTable.customers)
                                 {
                                     customer.SetCustomerState(CustomerState.WaitingFriend);
-                                    
+
                                 }
                             }
 

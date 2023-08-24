@@ -20,7 +20,11 @@ namespace April
 
         [field: SerializeField] public VisualizationCharacter Visualization { get; private set; }
         [field: SerializeField] public NavMeshAgent NavAgent { get; private set; }
-
+        protected virtual void Awake()
+        {
+            
+            NavAgent.stoppingDistance = 1f;
+        }
 
         public event Action OnDestination;
 

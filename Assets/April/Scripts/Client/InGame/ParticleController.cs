@@ -18,8 +18,7 @@ public class ParticleController : MonoBehaviour
 
     public void StopParticle()
     {
-       
-            myParticleSystem.Stop();
-        
+
+            myParticleSystem.Stop();        
     }
 }

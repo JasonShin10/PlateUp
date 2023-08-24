@@ -16,6 +16,8 @@ namespace April
         public Vector2Int npcGroupSpawnRnage = new Vector2Int(2, 10);
         public List<CustomerTable> tables = new List<CustomerTable>();
 
+        public Character_Waitress waitress; 
+
         private float currentTime;
         private float maxTime = 10f;
 
@@ -64,12 +66,12 @@ namespace April
                     customerInstance.waitingPos = waitingSlots[i].transform;
 
                     customerInstance.groupID = groupId;
-                    customerInstance.SetCustomerState(Customer.CustomerState.Waiting);
+                    customerInstance.SetCustomerState(CustomerState.Waiting);
 
                     customerInstance.exitTarget = this.transform;
-
+                    waitress.RegisterCustomer(customerInstance);
                     waitingSlots[i].customer = customerInstance;
-
+                    
                     var randomColor = new Color();
                     randomColor.r = Random.Range(0, 256) / 255f;
                     randomColor.g = Random.Range(0, 256) / 255f;

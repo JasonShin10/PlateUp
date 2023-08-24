@@ -33,7 +33,7 @@ namespace April
             Customer minPatiecneCustomer = null;
             List<CustomerTable> tables = IngameCustomerFactorySystem.Instance.tables;
            
-                foreach (Customer customer in table.customers)
+                foreach (Customer customer in waitingOrderCustomerList)
                 {
                     if ((int)customer.state < minStateValue)
                     {

@@ -9,6 +9,8 @@ namespace April
 {
     public class Character_Waitress : CharacterBase
     {
+        public static List<Character_Waitress> SpawnedWaitlessList = new List<Character_Waitress>();
+
 
         public override CharacterType CharacterType => CharacterType.Waitress;
 
@@ -17,6 +19,19 @@ namespace April
         private Customer currentTargetCustomer;
         [SerializeField]private List<Customer> waitingOrderCustomerList = new List<Customer>();
         [SerializeField]private List<Customer> waitingFoodCustomerList = new List<Customer>();
+
+        protected override void Awake()
+        {
+            base.Awake();
+            SpawnedWaitlessList.Add(this);
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            SpawnedWaitlessList.Remove(this);
+        }
+
 
         [Button("Receive Customer Order")]
         public void ReceiveCustomerOrder(Customer customer)

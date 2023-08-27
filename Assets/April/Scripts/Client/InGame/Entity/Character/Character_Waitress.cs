@@ -11,15 +11,18 @@ namespace April
     {
         public static List<Character_Waitress> SpawnedWaitlessList = new List<Character_Waitress>();
 
-
+        
         public override CharacterType CharacterType => CharacterType.Waitress;
 
         public Transform waitingPosition;
         
         private Customer currentTargetCustomer;
-        [SerializeField]private List<Customer> waitingOrderCustomerList = new List<Customer>();
-        [SerializeField]private List<Customer> waitingFoodCustomerList = new List<Customer>();
+        public WaitressTable WaitressTable;
 
+        private List<Customer> waitingOrderCustomerList;
+        private List<Customer> waitingFoodCustomerList;
+
+        private Dish dish;
         protected override void Awake()
         {
             base.Awake();
@@ -32,22 +35,32 @@ namespace April
             SpawnedWaitlessList.Remove(this);
         }
 
-
         [Button("Receive Customer Order")]
         public void ReceiveCustomerOrder(Customer customer)
         {
             currentTargetCustomer = customer;
             this.SetDestination(currentTargetCustomer.transform.position, OnDestinationCustomer);
         }
-        [Button("Find Customer")]
+        
+        private void Start()
+        {
+            waitingOrderCustomerList = IngameWaiterSystem.Instance.waitingOrderCustomerList;
+            waitingFoodCustomerList = IngameWaiterSystem.Instance.waitingFoodCustomerList;
+            WaitressTable.OnFoodArrived += HandleFoodArrived;
+        }
 
-        public void FindCustomer()
+        public void HandleFoodArrived()
+        {
+            //this.SetDestination(WaitressTable.transform.position,)
+        }
+        
+
+        public void FindWaitingOrderCustomer()
         {
             float minPatienceValue = float.MaxValue;
             float minStateValue = float.MaxValue;
             Customer minPatiecneCustomer = null;
-            List<CustomerTable> tables = IngameCustomerFactorySystem.Instance.tables;
-           
+                   
                 foreach (Customer customer in waitingOrderCustomerList)
                 {
                     if ((int)customer.state < minStateValue)
@@ -60,6 +73,27 @@ namespace April
                     }
                 }
             
+            ReceiveCustomerOrder(minPatiecneCustomer);
+        }
+
+        public void FindWaitingFoodCustomer()
+        {
+            float minPatienceValue = float.MaxValue;
+            float minStateValue = float.MaxValue;
+            Customer minPatiecneCustomer = null;
+
+            foreach (Customer customer in waitingFoodCustomerList)
+            {
+                if ((int)customer.state < minStateValue)
+                {
+                    minStateValue = (int)customer.state;
+                }
+                if (customer.patienceSlider.value < minPatienceValue)
+                {
+                    minPatiecneCustomer = customer;
+                }
+            }
+
             ReceiveCustomerOrder(minPatiecneCustomer);
         }
         protected override void Update()
@@ -102,7 +136,6 @@ namespace April
 
             }
         }
-
         private void OnDestinationCustomer()
         {
             if (currentTargetCustomer)
@@ -114,6 +147,16 @@ namespace April
             }
         }
 
+        private void OnWaitressTable()
+        {
+            currentTargetCustomer.Interact(null);
+            
+        }
     }
+
+    //private void OnDestinationWaitressTable()
+    //{
+        
+    //}
 }
 

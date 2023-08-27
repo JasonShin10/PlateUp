@@ -18,12 +18,18 @@ namespace April
     {
         public abstract CharacterType CharacterType { get; }
 
+        public virtual bool IsAutoInteractable { get; }
         [field: SerializeField] public VisualizationCharacter Visualization { get; private set; }
         [field: SerializeField] public NavMeshAgent NavAgent { get; private set; }
         protected virtual void Awake()
         {            
             NavAgent.stoppingDistance = 1f;
         }
+        public virtual void Interact(PlayerController player)
+        {
+
+        }
+
 
         protected virtual void OnDestroy()
         {

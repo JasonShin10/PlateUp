@@ -12,7 +12,7 @@ using SysRandom = System.Random;
 
 namespace April
 {
-    public class Customer : InteractionBase
+    public class Customer : CharacterBase
     {
         public static List<Customer> SpawnedCustomers = new List<Customer>();
         public static bool TryGetCustomerGroup(int groupId, out List<Customer> result)
@@ -52,7 +52,15 @@ namespace April
 
         SysRandom random = new SysRandom();
         public override bool IsAutoInteractable => false;
-        public override InteractionObjectType InterationObjectType => InteractionObjectType.None;
+        //public override CharacterType CharacterType => CharacterType.Waitress;
+
+        public override CharacterType CharacterType
+        {
+            get
+            {
+                return CharacterType.Waitress;
+            }
+        }
 
         public PlayerController player;
 
@@ -97,9 +105,9 @@ namespace April
             patienceSlider = GetComponentInChildren<Slider>(true);
         }
 
-        public override void Start()
+        protected void Start()
         {
-            base.Start();
+            
             
             patienceSlider.maxValue = 90f;
             patienceSlider.value = patienceSlider.maxValue;
@@ -114,7 +122,7 @@ namespace April
             base.OnDestroy();
         }
 
-        private void Update()
+        protected override void Update()
         {
             distanceBetweenDestination = Vector3.Distance(transform.position, agent.destination);
             if (distanceBetweenDestination <= 0.1f)
@@ -419,9 +427,6 @@ namespace April
 
         float maxTime = 3f;
 
-        public override void Exit()
-        {
-
-        }
+  
     }
 }

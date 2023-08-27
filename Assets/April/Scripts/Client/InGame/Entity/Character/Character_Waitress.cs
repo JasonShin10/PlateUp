@@ -11,18 +11,16 @@ namespace April
     {
         public static List<Character_Waitress> SpawnedWaitlessList = new List<Character_Waitress>();
 
-        
+
         public override CharacterType CharacterType => CharacterType.Waitress;
 
         public Transform waitingPosition;
-        
+
         private Customer currentTargetCustomer;
         public WaitressTable WaitressTable;
 
-        private List<Customer> waitingOrderCustomerList;
-        private List<Customer> waitingFoodCustomerList;
-
         private Dish dish;
+
         protected override void Awake()
         {
             base.Awake();
@@ -41,11 +39,9 @@ namespace April
             currentTargetCustomer = customer;
             this.SetDestination(currentTargetCustomer.transform.position, OnDestinationCustomer);
         }
-        
+
         private void Start()
         {
-            waitingOrderCustomerList = IngameWaiterSystem.Instance.waitingOrderCustomerList;
-            waitingFoodCustomerList = IngameWaiterSystem.Instance.waitingFoodCustomerList;
             WaitressTable.OnFoodArrived += HandleFoodArrived;
         }
 
@@ -53,26 +49,26 @@ namespace April
         {
             //this.SetDestination(WaitressTable.transform.position,)
         }
-        
+
 
         public void FindWaitingOrderCustomer()
         {
             float minPatienceValue = float.MaxValue;
             float minStateValue = float.MaxValue;
             Customer minPatiecneCustomer = null;
-                   
-                foreach (Customer customer in waitingOrderCustomerList)
+
+            foreach (Customer customer in IngameWaiterSystem.Instance.waitingOrderCustomerList)
+            {
+                if ((int)customer.state < minStateValue)
                 {
-                    if ((int)customer.state < minStateValue)
-                    {
-                        minStateValue = (int)customer.state;
-                    }
-                    if (customer.patienceSlider.value < minPatienceValue)
-                    {
-                        minPatiecneCustomer = customer;
-                    }
+                    minStateValue = (int)customer.state;
                 }
-            
+                if (customer.patienceSlider.value < minPatienceValue)
+                {
+                    minPatiecneCustomer = customer;
+                }
+            }
+
             ReceiveCustomerOrder(minPatiecneCustomer);
         }
 
@@ -82,7 +78,7 @@ namespace April
             float minStateValue = float.MaxValue;
             Customer minPatiecneCustomer = null;
 
-            foreach (Customer customer in waitingFoodCustomerList)
+            foreach (Customer customer in IngameWaiterSystem.Instance.waitingFoodCustomerList)
             {
                 if ((int)customer.state < minStateValue)
                 {
@@ -116,20 +112,20 @@ namespace April
             switch (oldState)
             {
                 case CustomerState.WaitingOrder:
-                    waitingOrderCustomerList.Remove(customer);
+                    IngameWaiterSystem.Instance.waitingOrderCustomerList.Remove(customer);
                     break;
                 case CustomerState.WaitingFood:
-                    waitingFoodCustomerList.Remove(customer);
+                    IngameWaiterSystem.Instance.waitingFoodCustomerList.Remove(customer);
                     break;
 
             }
             switch (customer.State)
             {
                 case CustomerState.WaitingOrder:
-                    waitingOrderCustomerList.Add(customer);
+                    IngameWaiterSystem.Instance.waitingOrderCustomerList.Add(customer);
                     break;
                 case CustomerState.WaitingFood:
-                    waitingFoodCustomerList.Add(customer);
+                    IngameWaiterSystem.Instance.waitingFoodCustomerList.Add(customer);
                     break;
                 case CustomerState.Leaving:
                     break;
@@ -150,13 +146,13 @@ namespace April
         private void OnWaitressTable()
         {
             currentTargetCustomer.Interact(null);
-            
+
         }
     }
 
     //private void OnDestinationWaitressTable()
     //{
-        
+
     //}
 }
 

@@ -128,6 +128,7 @@ GameObject:
   - component: {fileID: 5178180927702997903}
   - component: {fileID: 790092294130013433}
   - component: {fileID: 1348671884562666465}
+  - component: {fileID: 5123074095658019438}
   m_Layer: 0
   m_Name: April.Visualization.Character.Customer
   m_TagString: Untagged
@@ -201,6 +202,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5123074095658019438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 816207874912068041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071d5345cc7154b4eaefdf9d3cf5f04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Animator>k__BackingField: {fileID: 0}
 --- !u!1 &1725841207569264200
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,19 +336,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6494a259571a394687ca041e0c46b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentCustomerState: 0
+  <Visualization>k__BackingField: {fileID: 5123074095658019438}
+  <NavAgent>k__BackingField: {fileID: 5193423582965640040}
+  state: 0
   player: {fileID: 0}
   target: {fileID: 0}
   exitTarget: {fileID: 0}
   myFood: {fileID: 0}
   myTable: {fileID: 0}
-  mySeat: {fileID: 0}
+  mySeat:
+    assignedCustomer: {fileID: 0}
+    position: {fileID: 0}
   patienceSlider: {fileID: 0}
   orderImageDisplay: {fileID: 4784079631931004134}
   graphicRenderer: {fileID: 1348671884562666465}
   imageContainer: {fileID: 11400000, guid: f0b021598acb88a49b5777f81a4b89dc, type: 2}
+  orderedMenuType: 0
+  orderedMenuStateType: 0
   isGroup: 0
-  allTableAssigned: 0
+  groupID: 0
   waitingPos: {fileID: 0}
 --- !u!1 &3532819161959344332
 GameObject:

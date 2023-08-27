@@ -1,22 +1,25 @@
-using April;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IngameWaiterSystem : MonoBehaviour
+namespace April
 {
-    public static IngameWaiterSystem Instance { get; private set; }
-    public List<Character_Waitress> SpawnedWaitlessList = new List<Character_Waitress>();
-    public List<Customer> waitingOrderCustomerList = new List<Customer>();
-    public List<Customer> waitingFoodCustomerList = new List<Customer>();
-
-    private void Awake()
+    public class IngameWaiterSystem : MonoBehaviour
     {
-        Instance = this;
-    }
+        public static IngameWaiterSystem Instance { get; private set; }
 
-    private void OnDestroy()
-    {
-        Instance = null;
+        public List<Character_Waitress> SpawnedWaitlessList = new List<Character_Waitress>();
+        public List<Customer> waitingOrderCustomerList = new List<Customer>();
+        public List<Customer> waitingFoodCustomerList = new List<Customer>();
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
+        }
     }
 }

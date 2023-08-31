@@ -19,7 +19,7 @@ namespace April
         WaitressTable
     }
 
-    public abstract class InteractionBase : MonoBehaviour
+    public abstract class InteractionBase : MonoBehaviour,IRaycastInterface
     {
         public static Dictionary<InteractionObjectType, List<InteractionBase>> SpawnedInteractionObjects
             = new Dictionary<InteractionObjectType, List<InteractionBase>>();
@@ -28,7 +28,7 @@ namespace April
 
         public abstract bool IsAutoInteractable { get; }
         public abstract InteractionObjectType InterationObjectType { get; }
-        public abstract void Interact(PlayerController player);
+        public abstract void Interact(CharacterBase character);
         public abstract void Exit();
 
         protected virtual void Awake()

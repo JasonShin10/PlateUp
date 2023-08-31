@@ -84,10 +84,15 @@ namespace April
             }
         }
 
-        public override void Interact(PlayerController player)
+        public override void Interact(CharacterBase character)
         {
-            this.player = player;
-            TableInteract();
+            this.player = character as PlayerController;
+
+            if (this.player != null)
+            {
+                TableInteract();
+
+            }
         }
 
         public override void Exit()

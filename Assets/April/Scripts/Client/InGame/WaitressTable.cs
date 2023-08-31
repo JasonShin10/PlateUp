@@ -1,89 +1,118 @@
-using April;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaitressTable : InteractionBase
+namespace April
 {
-    public override bool IsAutoInteractable => false;
-    public override InteractionObjectType InterationObjectType => InteractionObjectType.WaitressTable;
-    private PlayerController player;
-    private InteractionItem item;
-    public float offset;
-    public event Action OnFoodArrived;
-    // Start is called before the first frame update
-    void waitTressTableInteract()
+    public class WaitressTable : InteractionBase
     {
-        if (player.item != null)
+        public override bool IsAutoInteractable => false;
+        public override InteractionObjectType InterationObjectType => InteractionObjectType.WaitressTable;
+        private PlayerController player;
+        private InteractionItem item;
+        private Dish dish;
+        private Food food;
+        public float offset;
+        public event Action OnFoodArrived;
+        // Start is called before the first frame update
+        public void waitressInteract(Character_Waitress waitress)
         {
-            if (player.item is Dish)
+            if (dish.ContainedFoodItems[0] != null && dish != null)
             {
-                if (item is Food)
+                waitress.dish = dish;
+                dish.transform.SetParent(waitress.transform);
+                dish.transform.localPosition = Vector3.up + Vector3.forward;
+
+
+            }
+            else
+            {
+                return;
+            }
+
+
+        }
+        void playerInteract()
+        {
+            if (player.item != null)
+            {
+                if (player.item is Dish)
                 {
-                    var dish = player.item as Dish;
-                    var food = item as Food;
-                    dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
-                    item = null;
-                    
-                    return;
+                    if (item is Food)
+                    {
+                        dish = player.item as Dish;
+                        food = item as Food;
+                        dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
+                        item = null;
+                        OnFoodArrived?.Invoke();
+                    }
+                    else
+                    {
+                        item = player.item;
+                        dish = item as Dish;
+                        food = dish.ContainedFoodItems[0];
+                        dish.transform.SetParent(this.transform);
+                        dish.transform.localPosition = new Vector3(0, offset, 0);
+                        player.item = null;
+                        OnFoodArrived?.Invoke();
+                    }
                 }
                 else
                 {
-                    item = player.item;
-                    var dish = item as Dish;
-                    dish.transform.SetParent(this.transform);
-                    dish.transform.localPosition = new Vector3(0, offset, 0);
-                    player.item = null;
-                    OnFoodArrived?.Invoke();
+                    if (item is Dish)
+                    {
+                        dish = item as Dish;
+                        food = player.item as Food;
+                        dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
+                        player.item = null;
+                    }
+                    else
+                    {
+                        if (item == null)
+                        {
+                            item = player.item;
+                            item.transform.SetParent(this.transform);
+                            item.transform.localPosition = new Vector3(0, offset, 0);
+                            player.item = null;
+                        }
+
+                    }
+
                 }
             }
             else
             {
-                if (item is Dish)
+                if (item != null)
                 {
-                    var dish = item as Dish;
-                    var food = player.item as Food;
-                    dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
-                    player.item = null;
+                    player.item = item;
+                    item.transform.SetParent(player.transform);
+                    item.transform.localPosition = Vector3.up + Vector3.forward;
+                    item = null;
+                    food = null;
+                    dish = null;
                 }
-                else
-                {
-                    if (item == null)
-                    {
-                        item = player.item;
-                        item.transform.SetParent(this.transform);
-                        item.transform.localPosition = new Vector3(0, offset, 0);
-                        player.item = null;
-                        Debug.Log("Food Insert To Table!");
-                    }
-
-                }
-
             }
         }
-        else
+
+        public override void Interact(CharacterBase character)
         {
-            if (item != null)
+
+            this.player = character as PlayerController;
+
+            if (this.player != null)
             {
-                player.item = item;
-                item.transform.SetParent(player.transform);
-                item.transform.localPosition = Vector3.up + Vector3.forward;
-                item = null;
+                playerInteract();
+
             }
+
         }
-    }
 
-    public override void Interact(PlayerController player)
-    {
-        this.player = player;
-        waitTressTableInteract();
-        //var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
-        //interactUI.InitActions(interactActionDatas);
-    }
 
-    public override void Exit()
-    {
 
+        public override void Exit()
+        {
+
+        }
     }
 }

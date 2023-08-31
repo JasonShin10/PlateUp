@@ -1,23 +1,24 @@
-using April;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
-public abstract class Food : InteractionItem
+namespace April
 {
-    public abstract MenuList MenuType { get; }
-    public abstract int CookingState { get; }
-    public float progressValue;
-
-    public float offsetOnDish;
-
-    public virtual void ShowUI()
+    public abstract class Food : InteractionItem
     {
+        public abstract MenuList MenuType { get; }
+        public abstract int CookingState { get; }
+        public float progressValue;
 
-    }
-    public virtual void HideUI()
-    {
+        public float offsetOnDish;
 
+        public virtual void ShowUI()
+        {
+
+        }
+        public virtual void HideUI()
+        {
+
+        }
     }
 }

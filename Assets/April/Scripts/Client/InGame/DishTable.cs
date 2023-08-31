@@ -7,7 +7,6 @@ namespace April
     {
         public override bool IsAutoInteractable => false;
         public override InteractionObjectType InterationObjectType => InteractionObjectType.DishTable;
-
         private PlayerController player;
         private List<Dish> dishes = new List<Dish>();
         public Dish dish;
@@ -64,10 +63,14 @@ namespace April
             }
         }
 
-        public override void Interact(PlayerController player)
+        public override void Interact(CharacterBase character)
         {
-            this.player = player;
-            DishTableInteract();
+            this.player = character as PlayerController;
+
+            if (this.player != null)
+            {
+                DishTableInteract();
+            }
         }
 
         public override void Exit()

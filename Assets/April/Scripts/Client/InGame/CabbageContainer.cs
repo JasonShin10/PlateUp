@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace April
 {
@@ -27,10 +28,15 @@ namespace April
             }
         }
 
-        public override void Interact(PlayerController player)
+        public override void Interact(CharacterBase character)
         {
-            this.player = player;
-            CabbageContainerInteract();
+            this.player = character as PlayerController;
+
+            if (this.player != null)
+            {
+                CabbageContainerInteract();
+
+            }
         }
 
         public override void Exit()

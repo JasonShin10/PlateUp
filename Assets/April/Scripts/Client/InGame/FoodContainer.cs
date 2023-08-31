@@ -62,15 +62,20 @@ namespace April
                 player.item = newFoodItem;
             }
         }
-        public override void Interact(PlayerController player)
+        public override void Interact(CharacterBase character)
         {
-            this.player = player;
+
+            this.player = character as PlayerController;
+
+            if (this.player != null)
+            {
 
             var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
             interactUI.InitActions(interactActionDatas);
 
 
             containerCamera.gameObject.SetActive(true);
+            }
         }
 
         public override void Exit()

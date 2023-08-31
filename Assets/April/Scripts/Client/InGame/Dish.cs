@@ -8,14 +8,10 @@ namespace April
     public class Dish : InteractionItem
     {
         public List<Food> ContainedFoodItems => mergedFoodList;
-
-
         public Renderer dishRenderer;
         public bool dirty;
-
         public Slider slider;
         public float progressValue;
-
         public Transform itemMergeRoot;
         public List<Food> mergedFoodList = new List<Food>();
         public float offset= 0.5f;
@@ -63,7 +59,6 @@ namespace April
             dishRenderer.material.color = Color.white;
             HideUI();
             dirty = false;
-
         }
 
         public void GetDirty()

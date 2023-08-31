@@ -51,14 +51,14 @@ namespace April
             }
         }
 
-        public override void Interact(PlayerController player)
+        public override void Interact(CharacterBase character)
         {
-            if (dishes.Count == 0 || player.item != null)
+            if (dishes.Count == 0 || character.item != null)
                 return;
 
-            player.item = dishes.Pop();
-            player.item.transform.SetParent(player.transform);
-            player.item.transform.localPosition = Vector3.up + Vector3.forward;
+            character.item = dishes.Pop();
+            character.item.transform.SetParent(character.transform);
+            character.item.transform.localPosition = Vector3.up + Vector3.forward;
             CustomerCheck();
         }
 

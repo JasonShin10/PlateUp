@@ -2,6 +2,7 @@ using April;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class TomatoContainer : InteractionBase
 {
@@ -25,10 +26,15 @@ public class TomatoContainer : InteractionBase
         }
     }
 
-    public override void Interact(PlayerController player)
+    public override void Interact(CharacterBase character)
     {
-        this.player = player;
-        TomatoContainerInteract();
+        this.player = character as PlayerController;
+
+        if (this.player != null)
+        {
+            TomatoContainerInteract();
+
+        }
     }
 
     public override void Exit()

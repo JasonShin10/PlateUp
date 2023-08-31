@@ -2,23 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleController : MonoBehaviour
+namespace April
 {
-    public ParticleSystem myParticleSystem;
-    private void Start()
+    public class ParticleController : MonoBehaviour
     {
-        myParticleSystem.Stop();
-    }
-    public void PlayParticle()
-    {
-       
+        public ParticleSystem myParticleSystem;
+        private void Start()
+        {
+            myParticleSystem.Stop();
+        }
+        public void PlayParticle()
+        {
             myParticleSystem.Play();
-        
-    }
+        }
 
-    public void StopParticle()
-    {
+        public void StopParticle()
+        {
 
-            myParticleSystem.Stop();        
+            myParticleSystem.Stop();
+        }
     }
 }

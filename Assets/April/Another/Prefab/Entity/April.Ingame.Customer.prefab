@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8424197514780745636}
   - component: {fileID: 171286915279971291}
   - component: {fileID: 6869529833720076563}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: 3D UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -342,6 +342,7 @@ MonoBehaviour:
   player: {fileID: 0}
   target: {fileID: 0}
   exitTarget: {fileID: 0}
+  orderFood: {fileID: 0}
   myFood: {fileID: 0}
   myTable: {fileID: 0}
   mySeat:
@@ -367,7 +368,7 @@ GameObject:
   - component: {fileID: 7973674794715457191}
   - component: {fileID: 3804578755298745253}
   - component: {fileID: 4784079631931004134}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}

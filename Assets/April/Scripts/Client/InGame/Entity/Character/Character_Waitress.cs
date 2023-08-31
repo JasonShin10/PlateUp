@@ -9,28 +9,26 @@ namespace April
 {
     public class Character_Waitress : CharacterBase
     {
-        public static List<Character_Waitress> SpawnedWaitlessList = new List<Character_Waitress>();
-
-
+        public static List<Character_Waitress> SpawnedWaitressList = new List<Character_Waitress>();
         public override CharacterType CharacterType => CharacterType.Waitress;
-
         public Transform waitingPosition;
-
         private Customer currentTargetCustomer;
-        public WaitressTable WaitressTable;
-
-        private Dish dish;
-
+        public WaitressTable waitressTable;
+        public Dish dish;
+        public Food food;
+        bool hasFood =false;
+        public int foodState;
+        
         protected override void Awake()
         {
             base.Awake();
-            SpawnedWaitlessList.Add(this);
+            SpawnedWaitressList.Add(this);
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            SpawnedWaitlessList.Remove(this);
+            SpawnedWaitressList.Remove(this);
         }
 
         [Button("Receive Customer Order")]
@@ -40,14 +38,16 @@ namespace April
             this.SetDestination(currentTargetCustomer.transform.position, OnDestinationCustomer);
         }
 
-        private void Start()
+        public override void Start()
         {
-            WaitressTable.OnFoodArrived += HandleFoodArrived;
+            base.Start();
+            waitressTable.OnFoodArrived += HandleFoodArrived;
         }
 
         public void HandleFoodArrived()
         {
-            //this.SetDestination(WaitressTable.transform.position,)
+            hasFood = true;
+            this.SetDestination(waitressTable.transform.position, OnWaitressTable);
         }
 
 
@@ -65,10 +65,10 @@ namespace April
                 }
                 if (customer.patienceSlider.value < minPatienceValue)
                 {
+                    minPatienceValue = customer.patienceSlider.value;
                     minPatiecneCustomer = customer;
                 }
             }
-
             ReceiveCustomerOrder(minPatiecneCustomer);
         }
 
@@ -80,17 +80,24 @@ namespace April
 
             foreach (Customer customer in IngameWaiterSystem.Instance.waitingFoodCustomerList)
             {
-                if ((int)customer.state < minStateValue)
+                if (customer.orderedMenuType == food.MenuType && customer.orderedMenuStateType == food.CookingState)
                 {
-                    minStateValue = (int)customer.state;
-                }
-                if (customer.patienceSlider.value < minPatienceValue)
-                {
-                    minPatiecneCustomer = customer;
+                    if ((int)customer.state < minStateValue)
+                    {
+                        minStateValue = (int)customer.state;
+                    }
+                    if (customer.patienceSlider.value < minPatienceValue)
+                    {
+                        minPatienceValue = customer.patienceSlider.value;
+                        minPatiecneCustomer = customer;
+                    }
                 }
             }
-
+            if (minPatiecneCustomer)
+            {
             ReceiveCustomerOrder(minPatiecneCustomer);
+                Debug.Log(minPatiecneCustomer.name);
+            }
         }
         protected override void Update()
         {
@@ -100,6 +107,10 @@ namespace April
             // 1. if RayHit Customer ? => OnDestinationCustomer();
             // 2. Vector3.Distance(currentTargetCustomer.transform.position transform.position) <= 1f ? => OnDestinationCustomer();
             // 3. this.SetDestination(customer.transform.position, OnDestinationCustomer);
+            if (IngameWaiterSystem.Instance.waitingOrderCustomerList.Count >0 && hasFood == false)
+            {
+                FindWaitingOrderCustomer();
+            }
         }
 
         public void RegisterCustomer(Customer customer)
@@ -115,6 +126,10 @@ namespace April
                     IngameWaiterSystem.Instance.waitingOrderCustomerList.Remove(customer);
                     break;
                 case CustomerState.WaitingFood:
+                    IngameWaiterSystem.Instance.waitingFoodCustomerList.Remove(customer);
+                    break;
+                case CustomerState.Leaving:
+                    IngameWaiterSystem.Instance.waitingOrderCustomerList.Remove(customer);
                     IngameWaiterSystem.Instance.waitingFoodCustomerList.Remove(customer);
                     break;
 
@@ -134,9 +149,10 @@ namespace April
         }
         private void OnDestinationCustomer()
         {
-            if (currentTargetCustomer)
+            Debug.Log(currentTargetCustomer.name);
+         if (currentTargetCustomer)
             {
-                currentTargetCustomer.Interact(null);
+                currentTargetCustomer.Interact(this);
                 currentTargetCustomer = null;
 
                 this.SetDestination(waitingPosition.position);
@@ -145,14 +161,22 @@ namespace April
 
         private void OnWaitressTable()
         {
-            currentTargetCustomer.Interact(null);
+            waitressTable.waitressInteract(this);
+            if (dish)
+            {
+            food = dish.ContainedFoodItems[0];
+            foodState = food.CookingState;
+                FindWaitingFoodCustomer();
+            }
+            
+        }
+
+        private void FindCustomer()
+        {
 
         }
     }
 
-    //private void OnDestinationWaitressTable()
-    //{
 
-    //}
 }
 

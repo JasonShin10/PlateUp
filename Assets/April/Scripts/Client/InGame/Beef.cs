@@ -9,7 +9,7 @@ namespace April
     public class Beef : Food
     {
         public override MenuList MenuType => MenuList.Beef;
-
+        
         public enum BeefState
         {
             Raw,
@@ -34,10 +34,10 @@ namespace April
         //{
         //    get
         //    {
-        //        return CurrenState.ToString();
+        //        return State.ToString();
         //    }
         //}
-
+        
         public BeefState State
         {
             get

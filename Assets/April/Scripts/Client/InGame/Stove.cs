@@ -89,12 +89,15 @@ namespace April
             }
         }
 
-        public override void Interact(PlayerController player)
+        public override void Interact(CharacterBase character)
         {
-            this.player = player;
-            StoveInteract();
-            //var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
-            //interactUI.InitActions(interactActionDatas);
+            this.player = character as PlayerController;
+
+            if (this.player != null)
+            {
+                StoveInteract();
+
+            }
         }
 
         public override void Exit()

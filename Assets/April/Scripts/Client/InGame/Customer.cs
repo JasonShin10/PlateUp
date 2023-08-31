@@ -62,10 +62,13 @@ namespace April
             }
         }
 
-        public PlayerController player;
-
+        //public PlayerController player;
+        public CharacterBase character;
         public Chair target;
+
         public Transform exitTarget;
+
+        public Food orderFood;
         public Food myFood;
 
         private InteractionItem foodDish;
@@ -87,6 +90,7 @@ namespace April
         private float distanceBetweenDestination;
         private event Action onDestinationCallback;
 
+        // 질문 MenuList int로 바꾸어도 되는지
         public MenuList orderedMenuType;
         public int orderedMenuStateType;
 
@@ -105,10 +109,9 @@ namespace April
             patienceSlider = GetComponentInChildren<Slider>(true);
         }
 
-        protected void Start()
-        {
-            
-            
+        public override void Start()
+        {   
+            base.Start();
             patienceSlider.maxValue = 90f;
             patienceSlider.value = patienceSlider.maxValue;
             patienceSlider.gameObject.SetActive(false);
@@ -128,6 +131,10 @@ namespace April
             if (distanceBetweenDestination <= 0.1f)
             {
                 onDestinationCallback?.Invoke();
+                if (state == CustomerState.Entering)
+                {
+                    SetCustomerState(CustomerState.WaitingOrder);
+                }
                 onDestinationCallback = null;
 
                 if (state == CustomerState.WaitingOrder || state == CustomerState.WaitingFood || state == CustomerState.WaitingFriend)
@@ -313,17 +320,18 @@ namespace April
         public void MoveToTarget(Transform destination, Action callbackOnDestination = null)
         {
             onDestinationCallback += callbackOnDestination;
+            agent.SetDestination(destination.position);
             if (destination == mySeat.position)
             {
                 onDestinationCallback += PatienceSliderActivate;
-                SetCustomerState(CustomerState.WaitingOrder);
+                //SetCustomerState(CustomerState.WaitingOrder);
             }
-            agent.SetDestination(destination.position);
         }
 
-        public override void Interact(PlayerController player)
+        public override void Interact(CharacterBase character)
         {
-            this.player = player;
+            
+            this.character = character;
             CustomerInteract();
         }
 
@@ -379,7 +387,7 @@ namespace April
             }
             else if (state == CustomerState.WaitingFood || state == CustomerState.WaitingFriend)
             {
-                if (player.item == null || myFood != null)
+                if (character.item == null || myFood != null)
                 {
 
                     return;
@@ -387,7 +395,7 @@ namespace April
 
                 PatienceSliderReset();
                 PatienceSliderActivate();
-                if (player.item.TryGetComponent(out Dish dish))
+                if (character.item.TryGetComponent(out Dish dish))
                 {
                     if (dish.ContainedFoodItems.Count > 0)
                     {
@@ -396,10 +404,10 @@ namespace April
                         {
                             orderImageDisplay.gameObject.SetActive(false);
                             myFood = foodItem;
-                            foodDish = player.item;
-                            player.item.transform.SetParent(myTable.transform);
-                            player.item.transform.localPosition = new Vector3(0, 1.66f, 0);
-                            player.item = null;
+                            foodDish = character.item;
+                            character.item.transform.SetParent(myTable.transform);
+                            character.item.transform.localPosition = new Vector3(0, 1.66f, 0);
+                            character.item = null;
                             if (!isGroup)
                             {
                                 StartCoroutine(Eat());

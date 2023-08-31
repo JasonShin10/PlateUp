@@ -12,15 +12,23 @@ using System.Globalization;
 
 namespace April
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : CharacterBase
     {
         public static PlayerController Instance { get; private set; }
-
+        public override CharacterType CharacterType
+        {
+            get
+            {
+                return CharacterType.Player;
+            }
+        }
         public bool isButtonPressed = false;
         public bool runButtonPressed = false;
         [Title("Components")]
-        public InteractionBase currentInteractionObject;
-        public InteractionItem item;
+        public IRaycastInterface currentInteractionObject;
+        //public CharacterBase currentInteracionCharacter;
+        //public IRaycastInterface currentInteraction;
+        
 
         public float interactionOffsetHeight = 0.8f;
         public LayerMask interactionObjectLayerMask;
@@ -40,23 +48,27 @@ namespace April
         private bool isMouseOverGUI;
         private float playerTurningCurrentVelocity;
 
-        private void Awake()
+        protected override void Awake()
         {
             Instance = this;
             characterController = GetComponent<CharacterController>();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             Instance = null;
         }
 
+        public override void Start()
+        {
+            
+        }
         private void OnEnable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Interact.performed += DoInteraction;
             InputManager.Singleton.InputMaster.PlayerControl.Interact.canceled += StopInteraction;
-            InputManager.Singleton.InputMaster.PlayerControl.Click.performed += MouseClick;
-            InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed += CursorEnable;
+            //InputManager.Singleton.InputMaster.PlayerControl.Click.performed += MouseClick;
+            //InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed += CursorEnable;
 
 
             playerNameText.text = playerName;
@@ -65,24 +77,24 @@ namespace April
         private void OnDisable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Interact.performed -= DoInteraction;
-            InputManager.Singleton.InputMaster.PlayerControl.Click.performed -= MouseClick;
-            InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed -= CursorEnable;
+            //InputManager.Singleton.InputMaster.PlayerControl.Click.performed -= MouseClick;
+            //InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed -= CursorEnable;
         }
 
-        private void MouseClick(InputAction.CallbackContext context)
-        {
-            if (!isMouseOverGUI)
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-        }
+        //private void MouseClick(InputAction.CallbackContext context)
+        //{
+        //    if (!isMouseOverGUI)
+        //    {
+        //        Cursor.visible = false;
+        //        Cursor.lockState = CursorLockMode.Locked;
+        //    }
+        //}
 
-        private void CursorEnable(InputAction.CallbackContext context)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
+        //private void CursorEnable(InputAction.CallbackContext context)
+        //{
+        //    Cursor.visible = true;
+        //    Cursor.lockState = CursorLockMode.None;
+        //}
 
         private void ActivateInteraction_Animation(InteractionBase currentInteraction)
         {
@@ -125,9 +137,9 @@ namespace April
         {
             Debug.Log("StopInteraction");
             isButtonPressed = false;
-            if (currentInteractionObject)
+            if (currentInteractionObject != null)
             {
-                DeactivateInteraction_Animation(currentInteractionObject);
+                DeactivateInteraction_Animation(currentInteractionObject as InteractionBase);
             }
             if (currentInteractionObject is DishWasher)
             {
@@ -142,70 +154,49 @@ namespace April
             return mousePosition.x >= 0 && mousePosition.x <= Screen.width && mousePosition.y >= 0 && mousePosition.y <= Screen.height;
         }
 
-        private void Update()
+        protected override void Update()
         {
             if (EventSystem.current != null)
                 isMouseOverGUI = EventSystem.current.IsPointerOverGameObject();
             else
                 isMouseOverGUI = false;
 
-            //if (IsMouseOverGameWindow())
-            //{
-            //    Cursor.visible = false;
-            //}
-            //else
-            //{
-            //    Cursor.visible = true;
-            //}
-
-            // Ray의 시작점을 플레이어의 발 아래가 아니라, 약간 위에서 시작하게 하는것
             Ray ray = new Ray(transform.position + Vector3.up, transform.forward);
             Debug.DrawRay(ray.origin, ray.direction);
             if (Physics.Raycast(ray, out var hitInfo, 1.5f, interactionObjectLayerMask, QueryTriggerInteraction.Collide))
             {
-                if (hitInfo.transform.TryGetComponent(out InteractionBase interaction))
+                bool FoundInteractionObject = hitInfo.transform.TryGetComponent(out IRaycastInterface interaction);
+           
+                if (FoundInteractionObject)
                 {
-                    // stove를 바라보면 currentInteractionObject는 stove. 
-                    // 다른데 바라볼때 다른게 갱신되게끔 하는건가?
-                    if (currentInteractionObject != null && currentInteractionObject != interaction)
-                    {
+ 
+                    if (currentInteractionObject != interaction)
+                    {                     
+                            
                         currentInteractionObject = interaction;
-                        if (currentInteractionObject != null && currentInteractionObject != interaction)
+                        if (interaction is InteractionBase interactionBase)
                         {
-                            currentInteractionObject = interaction;
-                            if (currentInteractionObject.IsAutoInteractable)
+                            if (interactionBase.IsAutoInteractable)
                             {
-                                interaction.Interact(this);
-                                ActivateInteraction_Animation(interaction);
+                                interactionBase.Interact(this);
+                                ActivateInteraction_Animation(interactionBase);
+                            }                     
+                   }
+                        else if (interaction is CharacterBase interactionCharacter)
+                        {
+                            if (interactionCharacter.IsAutoInteractable)
+                            {
+                                interactionCharacter.Interact(this);
+                               
                             }
                         }
-                    }
-                    else if (currentInteractionObject != null && currentInteractionObject == interaction)
-                    {
-                        if (isButtonPressed)
-                        {
-                            ActivateInteraction_Animation(interaction);
-                        }
-                    }
-                    else if (currentInteractionObject == null)
-                    {
-                        currentInteractionObject = interaction;
-                        if (currentInteractionObject.IsAutoInteractable)
-                        {
-                            interaction.Interact(this);
-                            ActivateInteraction_Animation(interaction);
-                        }
-                    }
-                    else
-                    {
-                        // Same Interaction Object -> Do Nothing
                     }
                 }
             }
             else
             {
                 UIManager.Hide<InteractionUI>(UIList.InteractionUI);
-                DeactivateInteraction_Animation(currentInteractionObject);
+                DeactivateInteraction_Animation(currentInteractionObject as InteractionBase);
                 currentInteractionObject = null;
             }
 

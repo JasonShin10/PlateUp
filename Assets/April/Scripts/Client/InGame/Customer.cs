@@ -29,8 +29,6 @@ namespace April
         }
 
         public event Action<CustomerState, Customer> OnStateChange;
-        
-
 
         public CustomerState State
         {
@@ -45,8 +43,6 @@ namespace April
                 }
             }
         }
-
-
    
         public CustomerState state = CustomerState.Entering;
 
@@ -217,9 +213,8 @@ namespace April
                     }
                 }
             }
-
-
         }
+
         public Food GetFoodByMenu(MenuList menu, out int firstState, out int lastState)
         {
             switch (menu)
@@ -279,16 +274,19 @@ namespace April
         }
 
         private void HandleWaitingOrder()
-        {
-            
+        {            
             State = CustomerState.WaitingOrder;
-            
+
+            IngameWaiterSystem.Instance.NotifyWaitingOrder(this);
+
             patienceSlider.value -= Time.deltaTime;
         }
 
         private void HandleWaitingFood()
         {
             State = CustomerState.WaitingFood;
+
+            IngameWaiterSystem.Instance.NotifyWaitingFood(this);
 
             PatienceSliderActivate();
         }
@@ -329,8 +327,7 @@ namespace April
         }
 
         public override void Interact(CharacterBase character)
-        {
-            
+        {            
             this.character = character;
             CustomerInteract();
         }
@@ -383,15 +380,19 @@ namespace April
                 PatienceSliderReset();
                 SetCustomerState(CustomerState.WaitingFood);
                 orderImageDisplay.gameObject.SetActive(true);
+
+                IngameWaiterSystem.Instance.RemoveWaitingOrder(this);
+
                 return;
             }
             else if (state == CustomerState.WaitingFood || state == CustomerState.WaitingFriend)
             {
                 if (character.item == null || myFood != null)
                 {
-
                     return;
                 }
+
+                IngameWaiterSystem.Instance.RemoveWaitingFood(this);
 
                 PatienceSliderReset();
                 PatienceSliderActivate();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System;
-
+using UnityEngine.Events;
 
 namespace April
 {
@@ -17,13 +17,22 @@ namespace April
 
     public abstract class CharacterBase : MonoBehaviour, IRaycastInterface
     {
+        void OnDrawGizmos()
+        {
+            if (NavAgent)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(transform.position + Vector3.up, NavAgent.destination + Vector3.up);
+            }
+        }
+
         public abstract CharacterType CharacterType { get; }
 
         public virtual bool IsAutoInteractable { get; }
         [field: SerializeField] public VisualizationCharacter Visualization { get; private set; }
         [field: SerializeField] public NavMeshAgent NavAgent { get; private set; }
         protected virtual void Awake()
-        {            
+        {
             NavAgent.stoppingDistance = 1f;
         }
         public virtual void Interact(CharacterBase character)
@@ -39,43 +48,48 @@ namespace April
         {
 
         }
+
         public InteractionItem item;
         public event Action OnDestination;
 
-        private float distanceBetweenDestination;
+        public float distanceBetweenDestination;
 
         protected virtual void Update()
         {
             distanceBetweenDestination = Vector3.Distance(transform.position, NavAgent.destination);
             if (distanceBetweenDestination <= NavAgent.stoppingDistance)
             {
-                Debug.Log("Arrived at the destination. Invoking the callback...");
                 if (OnDestination != null)
                 {
-                    Debug.Log($"OnDestination is assigned to: {OnDestination.Method.Name}");
+                    OnDestination?.Invoke();
+                    OnDestination = null;
                 }
-                else
-                {
-                    Debug.Log("OnDestination is null");
-                }
-                OnDestination?.Invoke();
-                // 이부분이 문제인거 같다..
-                OnDestination = null;
             }
         }
 
         public void SetDestination(Vector3 destination, Action onDestinationCallback = null)
         {
-            NavAgent.SetDestination(destination);
-            Debug.Log($"Incoming callback: {onDestinationCallback}");
-            if (onDestinationCallback != null)
+            float distance = Vector3.Distance(destination, transform.position);
+            if (distance <= NavAgent.stoppingDistance)
             {
-                OnDestination = onDestinationCallback;
-                Debug.Log($"OnDestination assigned: {OnDestination}");
+                onDestinationCallback?.Invoke();
+            }
+            else
+            {
+                NavAgent.SetDestination(destination);
+                if (onDestinationCallback != null)
+                {
+                    OnDestination += onDestinationCallback;
+                }
             }
         }
 
-       public void Exit()
+        public void ResetDestinationCallback()
+        {
+            OnDestination = null;
+        }
+
+        public void Exit()
         {
 
         }

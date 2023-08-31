@@ -28,7 +28,7 @@ namespace April
         public IRaycastInterface currentInteractionObject;
         //public CharacterBase currentInteracionCharacter;
         //public IRaycastInterface currentInteraction;
-        
+
 
         public float interactionOffsetHeight = 0.8f;
         public LayerMask interactionObjectLayerMask;
@@ -61,7 +61,7 @@ namespace April
 
         public override void Start()
         {
-            
+
         }
         private void OnEnable()
         {
@@ -166,13 +166,13 @@ namespace April
             if (Physics.Raycast(ray, out var hitInfo, 1.5f, interactionObjectLayerMask, QueryTriggerInteraction.Collide))
             {
                 bool FoundInteractionObject = hitInfo.transform.TryGetComponent(out IRaycastInterface interaction);
-           
+
                 if (FoundInteractionObject)
                 {
- 
+
                     if (currentInteractionObject != interaction)
-                    {                     
-                            
+                    {
+
                         currentInteractionObject = interaction;
                         if (interaction is InteractionBase interactionBase)
                         {
@@ -180,14 +180,14 @@ namespace April
                             {
                                 interactionBase.Interact(this);
                                 ActivateInteraction_Animation(interactionBase);
-                            }                     
-                   }
+                            }
+                        }
                         else if (interaction is CharacterBase interactionCharacter)
                         {
                             if (interactionCharacter.IsAutoInteractable)
                             {
                                 interactionCharacter.Interact(this);
-                               
+
                             }
                         }
                     }

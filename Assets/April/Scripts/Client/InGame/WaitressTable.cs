@@ -8,32 +8,31 @@ namespace April
     public class WaitressTable : InteractionBase
     {
         public override bool IsAutoInteractable => false;
+        public bool HasFood => dish != null && dish.ContainedFoodItems.Count > 0;
+
         public override InteractionObjectType InterationObjectType => InteractionObjectType.WaitressTable;
+
+        [field: SerializeField] public Transform IneractionPoint { get; private set; }
+
         private PlayerController player;
         private InteractionItem item;
         private Dish dish;
         private Food food;
         public float offset;
         public event Action OnFoodArrived;
-        // Start is called before the first frame update
-        public void waitressInteract(Character_Waitress waitress)
+
+        public void WaitressInteract(Character_Waitress waitress)
         {
             if (dish.ContainedFoodItems[0] != null && dish != null)
             {
                 waitress.dish = dish;
                 dish.transform.SetParent(waitress.transform);
                 dish.transform.localPosition = Vector3.up + Vector3.forward;
-
-
+                dish = null;
             }
-            else
-            {
-                return;
-            }
-
-
         }
-        void playerInteract()
+
+        void PlayerInteract()
         {
             if (player.item != null)
             {
@@ -45,6 +44,7 @@ namespace April
                         food = item as Food;
                         dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
                         item = null;
+
                         OnFoodArrived?.Invoke();
                     }
                     else
@@ -102,7 +102,7 @@ namespace April
 
             if (this.player != null)
             {
-                playerInteract();
+                PlayerInteract();
 
             }
 

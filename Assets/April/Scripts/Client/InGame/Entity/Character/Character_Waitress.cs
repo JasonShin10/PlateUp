@@ -11,14 +11,19 @@ namespace April
     {
         public static List<Character_Waitress> SpawnedWaitressList = new List<Character_Waitress>();
         public override CharacterType CharacterType => CharacterType.Waitress;
+
+        public bool HasJobTask => hasJobTask;
+
         public Transform waitingPosition;
         private Customer currentTargetCustomer;
         public WaitressTable waitressTable;
         public Dish dish;
         public Food food;
-        bool hasFood =false;
+        bool hasFood = false;
         public int foodState;
-        
+
+        private bool hasJobTask = false;
+
         protected override void Awake()
         {
             base.Awake();
@@ -31,11 +36,20 @@ namespace April
             SpawnedWaitressList.Remove(this);
         }
 
-        [Button("Receive Customer Order")]
         public void ReceiveCustomerOrder(Customer customer)
         {
+            hasJobTask = true;
             currentTargetCustomer = customer;
-            this.SetDestination(currentTargetCustomer.transform.position, OnDestinationCustomer);
+            this.SetDestination(currentTargetCustomer.transform.position);
+
+            StartCoroutine(DelayedRegistDestinationCallback());
+            IEnumerator DelayedRegistDestinationCallback()
+            {
+                yield return new WaitForEndOfFrame();
+
+                OnDestination += OnDestinationCustomer;
+            }
+            
         }
 
         public override void Start()
@@ -47,9 +61,9 @@ namespace April
         public void HandleFoodArrived()
         {
             hasFood = true;
-            this.SetDestination(waitressTable.transform.position, OnWaitressTable);
+            hasJobTask = true;
+            this.SetDestination(waitressTable.IneractionPoint.position, OnWaitressArrivedTable);
         }
-
 
         public void FindWaitingOrderCustomer()
         {
@@ -69,6 +83,7 @@ namespace April
                     minPatiecneCustomer = customer;
                 }
             }
+
             ReceiveCustomerOrder(minPatiecneCustomer);
         }
 
@@ -93,23 +108,10 @@ namespace April
                     }
                 }
             }
+
             if (minPatiecneCustomer)
             {
-            ReceiveCustomerOrder(minPatiecneCustomer);
-                Debug.Log(minPatiecneCustomer.name);
-            }
-        }
-        protected override void Update()
-        {
-            base.Update();
-            //Debug.Log(customerList.Count);
-            // To do : Ray Casting For Customer
-            // 1. if RayHit Customer ? => OnDestinationCustomer();
-            // 2. Vector3.Distance(currentTargetCustomer.transform.position transform.position) <= 1f ? => OnDestinationCustomer();
-            // 3. this.SetDestination(customer.transform.position, OnDestinationCustomer);
-            if (IngameWaiterSystem.Instance.waitingOrderCustomerList.Count >0 && hasFood == false)
-            {
-                FindWaitingOrderCustomer();
+                ReceiveCustomerOrder(minPatiecneCustomer);
             }
         }
 
@@ -134,6 +136,7 @@ namespace April
                     break;
 
             }
+
             switch (customer.State)
             {
                 case CustomerState.WaitingOrder:
@@ -144,31 +147,41 @@ namespace April
                     break;
                 case CustomerState.Leaving:
                     break;
-
             }
         }
+
         private void OnDestinationCustomer()
         {
-            Debug.Log(currentTargetCustomer.name);
-         if (currentTargetCustomer)
+            if (currentTargetCustomer)
             {
                 currentTargetCustomer.Interact(this);
                 currentTargetCustomer = null;
 
-                this.SetDestination(waitingPosition.position);
+                if (IngameWaiterSystem.Instance.waitingOrderCustomerList.Count > 0)
+                {
+                    ReceiveCustomerOrder(IngameWaiterSystem.Instance.waitingOrderCustomerList[0]);
+                }
+                else if (IngameWaiterSystem.Instance.waitingFoodCustomerList.Count > 0 && waitressTable.HasFood)
+                {
+                    this.SetDestination(waitressTable.IneractionPoint.position, OnWaitressArrivedTable);
+                }
+                else
+                {
+                    this.SetDestination(waitingPosition.position);
+                    hasJobTask = false;
+                }
             }
         }
 
-        private void OnWaitressTable()
+        private void OnWaitressArrivedTable()
         {
-            waitressTable.waitressInteract(this);
+            waitressTable.WaitressInteract(this);
             if (dish)
             {
-            food = dish.ContainedFoodItems[0];
-            foodState = food.CookingState;
+                food = dish.ContainedFoodItems[0];
+                foodState = food.CookingState;
                 FindWaitingFoodCustomer();
             }
-            
         }
 
         private void FindCustomer()

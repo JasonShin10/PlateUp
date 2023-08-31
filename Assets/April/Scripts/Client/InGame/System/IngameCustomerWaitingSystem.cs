@@ -123,7 +123,6 @@ namespace April
                     if (customerTable.IsEmptyTable)
                     {
                         NotifyCanTableCheckIn();
-                        Debug.Log("tableCount");
                         return;
                     }
                     else

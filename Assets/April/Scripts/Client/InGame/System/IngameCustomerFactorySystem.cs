@@ -69,7 +69,7 @@ namespace April
                     customerInstance.SetCustomerState(CustomerState.Waiting);
 
                     customerInstance.exitTarget = this.transform;
-                    waitress.RegisterCustomer(customerInstance);
+                    //waitress.RegisterCustomer(customerInstance);
                     waitingSlots[i].customer = customerInstance;
                     
                     var randomColor = new Color();
@@ -80,7 +80,7 @@ namespace April
 
                     customerInstance.GraphicColor = randomColor;
                 }
-                Debug.Log("...");
+
                 IngameCustomerWaitingSystem.Instance.CheckWaitingCustomerPossibleEnter();
             }
         }

@@ -26,6 +26,7 @@ namespace April
             if (dish.ContainedFoodItems[0] != null && dish != null)
             {
                 waitress.dish = dish;
+                waitress.item = item;
                 dish.transform.SetParent(waitress.transform);
                 dish.transform.localPosition = Vector3.up + Vector3.forward;
                 dish = null;

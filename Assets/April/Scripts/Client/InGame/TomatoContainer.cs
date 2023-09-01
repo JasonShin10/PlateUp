@@ -1,44 +1,56 @@
-using April;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class TomatoContainer : InteractionBase
+namespace April
 {
-    public override bool IsAutoInteractable => false;
-    private PlayerController player;
-    public Cabbage cabbage;
 
-    public override InteractionObjectType InterationObjectType => InteractionObjectType.CabbageContainer;
-    void TomatoContainerInteract()
+    public class TomatoContainer : InteractionBase
     {
-        if (player.item is Cabbage)
+        public override bool IsAutoInteractable => false;
+        private PlayerController player;
+        public Tomato tomato;
+
+        public override InteractionObjectType InterationObjectType => InteractionObjectType.CabbageContainer;
+        void TomatoContainerInteract()
         {
-            Destroy(player.item.gameObject);
-            player.item = null;
+            if (player.item is Cabbage)
+            {
+                Destroy(player.item.gameObject);
+                player.item = null;
+            }
+            else if (player.item == null)
+            {
+                SpawnTomatoToPlayer();
+            }
         }
-        else if (player.item == null)
+
+        public void SpawnTomatoToPlayer()
         {
-            player.item = cabbage;
-            cabbage.transform.SetParent(player.transform);
-            cabbage.transform.localPosition = Vector3.up + Vector3.forward;
+            var newFoodItem = Instantiate(tomato);
+            newFoodItem.transform.localScale = tomato.transform.localScale;
+            newFoodItem.transform.SetParent(player.transform);
+            newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
+            newFoodItem.gameObject.SetActive(true);
+            player.item = newFoodItem;
         }
-    }
 
-    public override void Interact(CharacterBase character)
-    {
-        this.player = character as PlayerController;
-
-        if (this.player != null)
+        public override void Interact(CharacterBase character)
         {
-            TomatoContainerInteract();
+            this.player = character as PlayerController;
+
+            if (this.player != null)
+            {
+                TomatoContainerInteract();
+
+            }
+        }
+
+        public override void Exit()
+        {
 
         }
-    }
-
-    public override void Exit()
-    {
-
     }
 }

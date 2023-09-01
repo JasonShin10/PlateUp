@@ -62,6 +62,7 @@ namespace April
         {
             hasFood = true;
             hasJobTask = true;
+            OnDestination -= OnDestinationCustomer;
             this.SetDestination(waitressTable.IneractionPoint.position, OnWaitressArrivedTable);
         }
 
@@ -115,40 +116,40 @@ namespace April
             }
         }
 
-        public void RegisterCustomer(Customer customer)
-        {
-            customer.OnStateChange += HandleStateChange;
-        }
+        //public void RegisterCustomer(Customer customer)
+        //{
+        //    customer.OnStateChange += HandleStateChange;
+        //}
 
-        private void HandleStateChange(CustomerState oldState, Customer customer)
-        {
-            switch (oldState)
-            {
-                case CustomerState.WaitingOrder:
-                    IngameWaiterSystem.Instance.waitingOrderCustomerList.Remove(customer);
-                    break;
-                case CustomerState.WaitingFood:
-                    IngameWaiterSystem.Instance.waitingFoodCustomerList.Remove(customer);
-                    break;
-                case CustomerState.Leaving:
-                    IngameWaiterSystem.Instance.waitingOrderCustomerList.Remove(customer);
-                    IngameWaiterSystem.Instance.waitingFoodCustomerList.Remove(customer);
-                    break;
+        //private void HandleStateChange(CustomerState oldState, Customer customer)
+        //{
+        //    switch (oldState)
+        //    {
+        //        case CustomerState.WaitingOrder:
+        //            IngameWaiterSystem.Instance.waitingOrderCustomerList.Remove(customer);
+        //            break;
+        //        case CustomerState.WaitingFood:
+        //            IngameWaiterSystem.Instance.waitingFoodCustomerList.Remove(customer);
+        //            break;
+        //        case CustomerState.Leaving:
+        //            IngameWaiterSystem.Instance.waitingOrderCustomerList.Remove(customer);
+        //            IngameWaiterSystem.Instance.waitingFoodCustomerList.Remove(customer);
+        //            break;
 
-            }
+        //    }
 
-            switch (customer.State)
-            {
-                case CustomerState.WaitingOrder:
-                    IngameWaiterSystem.Instance.waitingOrderCustomerList.Add(customer);
-                    break;
-                case CustomerState.WaitingFood:
-                    IngameWaiterSystem.Instance.waitingFoodCustomerList.Add(customer);
-                    break;
-                case CustomerState.Leaving:
-                    break;
-            }
-        }
+        //    switch (customer.State)
+        //    {
+        //        case CustomerState.WaitingOrder:
+        //            IngameWaiterSystem.Instance.waitingOrderCustomerList.Add(customer);
+        //            break;
+        //        case CustomerState.WaitingFood:
+        //            IngameWaiterSystem.Instance.waitingFoodCustomerList.Add(customer);
+        //            break;
+        //        case CustomerState.Leaving:
+        //            break;
+        //    }
+        //}
 
         private void OnDestinationCustomer()
         {
@@ -175,6 +176,7 @@ namespace April
 
         private void OnWaitressArrivedTable()
         {
+            
             waitressTable.WaitressInteract(this);
             if (dish)
             {

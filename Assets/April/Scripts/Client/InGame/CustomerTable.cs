@@ -28,8 +28,8 @@ namespace April
 
         public override InteractionObjectType InterationObjectType => InteractionObjectType.CustomerTable;
 
-
         public List<Customer> customers = new List<Customer>();
+
         public List<TableSlotData> tableSlots = new List<TableSlotData>();
 
 
@@ -38,6 +38,27 @@ namespace April
             if (customers.Count == 2)
             {
                 customerAssigned = true;
+            }
+        }
+
+        public void ChangeCustomerState()
+        {
+            foreach (TableSlotData tableSlot in tableSlots)
+            {
+                if (tableSlot.assignedCustomer != null)
+                {
+                tableSlot.assignedCustomer.DecideMenu();
+                tableSlot.assignedCustomer.PatienceSliderReset();
+                tableSlot.assignedCustomer.SetCustomerState(CustomerState.WaitingFood);
+                tableSlot.assignedCustomer.orderImageDisplay.gameObject.SetActive(true);
+
+                IngameWaiterSystem.Instance.RemoveWaitingOrder(tableSlot.assignedCustomer);
+
+                }
+
+
+
+
             }
         }
 

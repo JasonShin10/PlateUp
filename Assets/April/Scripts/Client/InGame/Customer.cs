@@ -83,7 +83,7 @@ namespace April
         public Renderer graphicRenderer;
         public MenuImageContainer imageContainer;
 
-        private float distanceBetweenDestination;
+       
         private event Action onDestinationCallback;
 
         // 질문 MenuList int로 바꾸어도 되는지
@@ -232,7 +232,7 @@ namespace April
             }
         }
 
-        private void DecideMenu()
+        public void DecideMenu()
         {
             // Hint ? 
             MyEnumTypes randomType = (MyEnumTypes)UnityEngine.Random.Range((int)MyEnumTypes.None, (int)MyEnumTypes.RandomMax);
@@ -267,7 +267,7 @@ namespace April
             patienceSlider.gameObject.SetActive(true);
         }
 
-        private void PatienceSliderReset()
+        public void PatienceSliderReset()
         {
             patienceSlider.value = patienceSlider.maxValue;
             patienceSlider.gameObject.SetActive(false);
@@ -373,15 +373,16 @@ namespace April
         }
 
         public void CustomerInteract()
-        {
+       {
             if (state == CustomerState.WaitingOrder)
             {
-                DecideMenu();
-                PatienceSliderReset();
-                SetCustomerState(CustomerState.WaitingFood);
-                orderImageDisplay.gameObject.SetActive(true);
+                myTable.ChangeCustomerState();
+                //DecideMenu();
+                //PatienceSliderReset();
+                //SetCustomerState(CustomerState.WaitingFood);
+                //orderImageDisplay.gameObject.SetActive(true);
 
-                IngameWaiterSystem.Instance.RemoveWaitingOrder(this);
+                //IngameWaiterSystem.Instance.RemoveWaitingOrder(this);
 
                 return;
             }

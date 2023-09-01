@@ -77,6 +77,7 @@ namespace April
             else
             {
                 NavAgent.SetDestination(destination);
+
                 if (onDestinationCallback != null)
                 {
                     OnDestination += onDestinationCallback;

@@ -12,8 +12,9 @@ namespace April
 
         public TextMeshProUGUI timeText;
         public TextMeshProUGUI totalAssets;
-        private float elapsedTime = 0f;
+
         private int totalAssetsAmount = 0;
+
         private void Awake()
         {
             Instance = this;
@@ -37,37 +38,18 @@ namespace April
             }
         }
 
-        private void Start()
+        public void AddAssets(int amount)
         {
-            TotalAssets = 0;
-
-            int a = 10000;
-            float b = 200.51f;
-
-            Debug.LogFormat("{0}", a);
-            Debug.LogFormat("{0}", b);
-
-            Debug.LogFormat("{0:0.0}", a);
-            Debug.LogFormat("{0:0.0}", b);
-
-            Debug.LogFormat("{0:#.#}", a);
-            Debug.LogFormat("{0:#.#}", b);
+            TotalAssets += amount;
         }
 
-        private void Update()
+        public void SetTimeText(float elapsedTime)
         {
-            elapsedTime += Time.deltaTime;
-
             int hours = (int)(elapsedTime / 3600);
             int minutes = (int)((elapsedTime % 3600) / 60);
             int seconds = (int)(elapsedTime % 60);
 
             timeText.text = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
-        }
-
-        public void AddAssets(int amount)
-        {
-            TotalAssets += amount;
         }
     }
 

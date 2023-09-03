@@ -13,8 +13,8 @@ namespace April
         private PlayerController player;
         public CinemachineVirtualCamera containerCamera;
         public Beef beefPrefab;
-        public ThickBeef ThickBeefPrefab;
-
+        public ThickBeef thickBeefPrefab;
+        public Food beef;
         private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
 
         protected override void Awake()
@@ -36,17 +36,21 @@ namespace April
             containerCamera.gameObject.SetActive(false);
         }
 
+        public void SpawnBeefToPlayer(Food beef)
+        {
+            var newFoodItem = Instantiate(beef);
+            newFoodItem.transform.localScale = beef.transform.localScale;
+            newFoodItem.transform.SetParent(player.transform);
+            newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
+            newFoodItem.gameObject.SetActive(true);
+            player.item = newFoodItem;
+        }
 
         void BeefInteract()
         {
             if (player.item == null)
             {
-                var newFoodItem = Instantiate(beefPrefab);
-                newFoodItem.transform.localScale = beefPrefab.transform.localScale;
-                newFoodItem.transform.SetParent(player.transform);
-                newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
-                newFoodItem.gameObject.SetActive(true);
-                player.item = newFoodItem;
+                SpawnBeefToPlayer(beefPrefab);
             }
         }
 
@@ -54,12 +58,7 @@ namespace April
         {
             if (player.item == null)
             {
-                var newFoodItem = Instantiate(ThickBeefPrefab);
-                newFoodItem.transform.localScale = ThickBeefPrefab.transform.localScale;
-                newFoodItem.transform.SetParent(player.transform);
-                newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
-                newFoodItem.gameObject.SetActive(true);
-                player.item = newFoodItem;
+                SpawnBeefToPlayer(thickBeefPrefab);
             }
         }
         public override void Interact(CharacterBase character)

@@ -15,7 +15,7 @@ namespace April
         public ParticleController particleController;
         public Transform dirtyDishPivot;
         public Transform cleanDishPivot;
-
+        public float speed = 10f;
 
         public void Update()
         {
@@ -23,7 +23,7 @@ namespace April
             {
                 if (PlayerController.Instance.isButtonPressed == true)
                 {
-                    dish.progressValue += 10f * Time.deltaTime;
+                    dish.progressValue += speed * Time.deltaTime;
                     
                 }
               

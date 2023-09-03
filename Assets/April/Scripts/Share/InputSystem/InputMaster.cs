@@ -98,6 +98,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HoldInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""77e8550d-7d76-41a0-b276-4034d8f7dcd9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -243,6 +252,17 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61486f79-78c1-4641-81f3-06a2d904b090"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HoldInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -327,6 +347,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_PlayerControl_CameraRotateHorizontal = m_PlayerControl.FindAction("CameraRotateHorizontal", throwIfNotFound: true);
         m_PlayerControl_CameraRotateVertical = m_PlayerControl.FindAction("CameraRotateVertical", throwIfNotFound: true);
         m_PlayerControl_Run = m_PlayerControl.FindAction("Run", throwIfNotFound: true);
+        m_PlayerControl_HoldInteract = m_PlayerControl.FindAction("HoldInteract", throwIfNotFound: true);
         // UIControl
         m_UIControl = asset.FindActionMap("UIControl", throwIfNotFound: true);
         m_UIControl_SelectionUp = m_UIControl.FindAction("SelectionUp", throwIfNotFound: true);
@@ -401,6 +422,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControl_CameraRotateHorizontal;
     private readonly InputAction m_PlayerControl_CameraRotateVertical;
     private readonly InputAction m_PlayerControl_Run;
+    private readonly InputAction m_PlayerControl_HoldInteract;
     public struct PlayerControlActions
     {
         private @InputMaster m_Wrapper;
@@ -413,6 +435,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @CameraRotateHorizontal => m_Wrapper.m_PlayerControl_CameraRotateHorizontal;
         public InputAction @CameraRotateVertical => m_Wrapper.m_PlayerControl_CameraRotateVertical;
         public InputAction @Run => m_Wrapper.m_PlayerControl_Run;
+        public InputAction @HoldInteract => m_Wrapper.m_PlayerControl_HoldInteract;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -446,6 +469,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Run.started += instance.OnRun;
             @Run.performed += instance.OnRun;
             @Run.canceled += instance.OnRun;
+            @HoldInteract.started += instance.OnHoldInteract;
+            @HoldInteract.performed += instance.OnHoldInteract;
+            @HoldInteract.canceled += instance.OnHoldInteract;
         }
 
         private void UnregisterCallbacks(IPlayerControlActions instance)
@@ -474,6 +500,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Run.started -= instance.OnRun;
             @Run.performed -= instance.OnRun;
             @Run.canceled -= instance.OnRun;
+            @HoldInteract.started -= instance.OnHoldInteract;
+            @HoldInteract.performed -= instance.OnHoldInteract;
+            @HoldInteract.canceled -= instance.OnHoldInteract;
         }
 
         public void RemoveCallbacks(IPlayerControlActions instance)
@@ -563,6 +592,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnCameraRotateHorizontal(InputAction.CallbackContext context);
         void OnCameraRotateVertical(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnHoldInteract(InputAction.CallbackContext context);
     }
     public interface IUIControlActions
     {

@@ -16,6 +16,7 @@ namespace April
 
         private InteractionItem item;
 
+        private IButtonInteract buttonitem;
 
         public float offset = 0.3f;
         private new void Start()
@@ -23,12 +24,23 @@ namespace April
             base.Start();
         }
 
+        private void Update()
+        {
+            if (buttonitem != null && PlayerController.Instance.isButtonPressed == true)
+            {
+                buttonitem.ButtonInteract();
+            }
+        }
+
+  
         void TableInteract()
         {
+          
             if (player.item != null)
             {
                 if (player.item is Dish)
                 {
+                   
                     if (item is Food)
                     {
                         var dish = player.item as Dish;
@@ -62,6 +74,11 @@ namespace April
                         if (item == null)
                         {
                             item = player.item;
+                            if (item is IButtonInteract)
+                            {
+                                buttonitem = item as IButtonInteract;
+                                buttonitem.ShowUI();
+                            }
                             item.transform.SetParent(this.transform);
                             item.transform.localPosition = new Vector3(0, offset, 0);
                             player.item = null;
@@ -76,6 +93,11 @@ namespace April
             {
                 if (item != null)
                 {
+                    if (item is IButtonInteract)
+                    {
+                        buttonitem = item as IButtonInteract;
+                        buttonitem.HideUI();
+                    }
                     player.item = item;
                     item.transform.SetParent(player.transform);
                     item.transform.localPosition = Vector3.up + Vector3.forward;
@@ -91,7 +113,6 @@ namespace April
             if (this.player != null)
             {
                 TableInteract();
-
             }
         }
 

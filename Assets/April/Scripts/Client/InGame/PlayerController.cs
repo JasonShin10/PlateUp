@@ -66,6 +66,8 @@ namespace April
         private void OnEnable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Interact.performed += DoInteraction;
+            InputManager.Singleton.InputMaster.PlayerControl.HoldInteract.performed += HoldInteraction;
+            InputManager.Singleton.InputMaster.PlayerControl.HoldInteract.canceled +=StopInteraction;
             InputManager.Singleton.InputMaster.PlayerControl.Interact.canceled += StopInteraction;
             //InputManager.Singleton.InputMaster.PlayerControl.Click.performed += MouseClick;
             //InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed += CursorEnable;
@@ -77,6 +79,9 @@ namespace April
         private void OnDisable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Interact.performed -= DoInteraction;
+            InputManager.Singleton.InputMaster.PlayerControl.HoldInteract.performed -= HoldInteraction;
+            InputManager.Singleton.InputMaster.PlayerControl.HoldInteract.canceled -= StopInteraction;
+            InputManager.Singleton.InputMaster.PlayerControl.Interact.canceled -= StopInteraction;
             //InputManager.Singleton.InputMaster.PlayerControl.Click.performed -= MouseClick;
             //InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed -= CursorEnable;
         }
@@ -125,12 +130,19 @@ namespace April
         {
             Debug.Log("DoInteraction");
             currentInteractionObject?.Interact(this);
+            
+        }
+
+        private void HoldInteraction(InputAction.CallbackContext context)
+        {
+            Debug.Log("HoldInteraction");
             isButtonPressed = true;
             if (currentInteractionObject is DishWasher)
             {
                 var dishWasher = (DishWasher)currentInteractionObject;
                 dishWasher.particleController.PlayParticle();
             }
+
         }
 
         private void StopInteraction(InputAction.CallbackContext context)
@@ -169,10 +181,8 @@ namespace April
 
                 if (FoundInteractionObject)
                 {
-
                     if (currentInteractionObject != interaction)
                     {
-
                         currentInteractionObject = interaction;
                         if (interaction is InteractionBase interactionBase)
                         {

@@ -8,6 +8,7 @@ namespace April
     {
         Beef = 0,
         ThickBeef = 1,
+
     }
 
     public enum MyEnumTypes

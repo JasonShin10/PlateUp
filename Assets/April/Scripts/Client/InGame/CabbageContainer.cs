@@ -22,12 +22,18 @@ namespace April
             }
             else if(player.item == null)
             {
-            player.item = cabbage;
-            cabbage.transform.SetParent(player.transform);
-            cabbage.transform.localPosition = Vector3.up + Vector3.forward;
+            SpawnCabbageToPlayer();
             }
         }
-
+        public void SpawnCabbageToPlayer()
+        {
+            var newFoodItem = Instantiate(cabbage);
+            newFoodItem.transform.localScale = cabbage.transform.localScale;
+            newFoodItem.transform.SetParent(player.transform);
+            newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
+            newFoodItem.gameObject.SetActive(true);
+            player.item = newFoodItem;
+        }
         public override void Interact(CharacterBase character)
         {
             this.player = character as PlayerController;

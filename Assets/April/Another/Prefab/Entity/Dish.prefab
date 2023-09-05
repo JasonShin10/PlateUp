@@ -447,6 +447,8 @@ MonoBehaviour:
   progressValue: 0
   itemMergeRoot: {fileID: 3203689863039611392}
   mergedFoodList: []
+  salad: {fileID: 3946794144011667712, guid: 7364b5c13db93b54395dc75a6985e190, type: 3}
+  ingredients: 0100000000000000
   offset: 0.1
 --- !u!65 &4058149625339632843
 BoxCollider:

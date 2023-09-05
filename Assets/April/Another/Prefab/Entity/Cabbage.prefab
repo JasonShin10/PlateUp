@@ -375,7 +375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slicedCabbageMesh: {fileID: 5251577506420107263, guid: 4b54714fe2785c148b17c832612ba94f, type: 3}
   slider: {fileID: 1135130878389303110}
-  progressValue: 0
+  maxValue: 30
   onTable: 0
   speed: 10
 --- !u!1 &7608110946748699002

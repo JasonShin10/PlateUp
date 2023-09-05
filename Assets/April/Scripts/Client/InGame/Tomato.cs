@@ -1,24 +1,39 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace April
 {
-    public class Tomato : InteractionItem, IButtonInteract
+    public class Tomato : Ingredient, IButtonInteract
     {
+        
         public MeshFilter slicedTomatoMesh;
         private MeshFilter tomatoMesh;
         public Slider slider;
-        public float progressValue;
-        public bool onTable;
+        [SerializeField] private float maxValue;
+        public float ProgressValue { get; set; }
+        public float MaxValue
+        {
+            get
+            {
+                return maxValue;
+            }
+            set
+            {
+                maxValue = value;
+            }
+        }
+
         public float speed = 10;
         // Start is called before the first frame update
         void Start()
         {
             tomatoMesh = GetComponentInChildren<MeshFilter>(true);
             slider = GetComponentInChildren<Slider>(true);
-            slider.maxValue = 90f;
+            slider.maxValue = MaxValue;
         }
         public void ShowUI()
         {
@@ -31,14 +46,19 @@ namespace April
         }
         public void ButtonInteract()
         {
-            progressValue += speed * Time.deltaTime;
+
+            if (ProgressValue < maxValue)
+            {
+                ProgressValue += speed * Time.deltaTime;
+            }
+
         }
         // Update is called once per frame
         void Update()
         {
             if (slider != null)
             {
-                slider.value = progressValue;
+                slider.value = ProgressValue;
             }
             if (slider.value == slider.maxValue)
             {
@@ -50,6 +70,8 @@ namespace April
         private void MeshChange()
         {
             tomatoMesh.sharedMesh = slicedTomatoMesh.sharedMesh;
+            ingredientType = IngredientList.Tomato;
+            sliced = true;
         }
     }
 }

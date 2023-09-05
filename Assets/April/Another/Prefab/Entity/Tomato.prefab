@@ -186,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slicedTomatoMesh: {fileID: 1147347177949411972, guid: a5d7ba5b57cea404386160f08a26c615, type: 3}
   slider: {fileID: 3594971107687932905}
-  progressValue: 0
+  maxValue: 30
   onTable: 0
   speed: 10
 --- !u!1 &2837315828166870494

@@ -9,7 +9,9 @@ namespace April
     public class Beef : Food
     {
         public override MenuList MenuType => MenuList.Beef;
-        
+
+      
+
         public enum BeefState
         {
             Raw,

@@ -1,3 +1,5 @@
+
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,13 +10,22 @@ namespace April
     public class Dish : InteractionItem
     {
         public List<Food> ContainedFoodItems => mergedFoodList;
+
         public Renderer dishRenderer;
         public bool dirty;
         public Slider slider;
         public float progressValue;
+
         public Transform itemMergeRoot;
         public List<Food> mergedFoodList = new List<Food>();
-        public float offset= 0.5f;
+        public Salad salad;
+
+
+        public List<IngredientList> ingredients = new List<IngredientList>
+        {IngredientList.Cabbage,
+        IngredientList.Tomato
+        };
+        public float offset = 0.5f;
 
         public void AddItem(Food item, Vector3 offset)
         {
@@ -23,7 +34,42 @@ namespace April
             item.transform.localPosition = offset;
         }
 
-        public void RemoveItem(Food item,Transform parent = null)
+        public void AddItem(Ingredient item, Vector3 offset)
+        {
+            if (item.ingredientType.HasValue)
+            {
+                IngredientList ingredient = item.ingredientType.Value;
+                item.transform.SetParent(itemMergeRoot);
+                item.transform.localPosition = offset;
+                if (ingredients.Contains(ingredient))
+                {
+                    ingredients.Remove(ingredient);
+                }
+            }
+            if (CanCreateSalad())
+            {
+                Salad saladItem = Instantiate(salad);
+                foreach (Transform child in itemMergeRoot)
+                {
+                    Destroy(child.gameObject);
+                }
+                AddItem(saladItem, offset);
+            }
+        }
+
+        public bool CanCreateSalad()
+        {
+            if (ingredients.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void RemoveItem(Food item, Transform parent = null)
         {
             mergedFoodList.Remove(item);
         }

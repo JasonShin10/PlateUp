@@ -8,6 +8,7 @@ namespace April
     {
         Beef = 0,
         ThickBeef = 1,
+        Salad = 3,
 
     }
 

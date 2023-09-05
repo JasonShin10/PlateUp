@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -26,7 +25,7 @@ namespace April
 
         private void Update()
         {
-            if (buttonitem != null && PlayerController.Instance.isButtonPressed == true)
+            if (PlayerController.Instance.currentInteractionObject == this &&buttonitem != null && PlayerController.Instance.isButtonPressed == true)
             {
                 buttonitem.ButtonInteract();
             }
@@ -65,8 +64,19 @@ namespace April
                     if (item is Dish)
                     {
                         var dish = item as Dish;
+                        if (player.item is Ingredient)
+                        {
+                        var ingredient = player.item as Ingredient;
+                            if (ingredient.sliced == true)
+                            {
+                                dish.AddItem(ingredient, new Vector3(0, offset, 0)); 
+                            }
+                        }
+                        else if (player.item is Food)
+                        {
                         var food = player.item as Food;
                         dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
+                        }
                         player.item = null;
                     }
                     else
@@ -96,6 +106,10 @@ namespace April
                     if (item is IButtonInteract)
                     {
                         buttonitem = item as IButtonInteract;
+                        if ((int)buttonitem.ProgressValue != 0 && (int)buttonitem.ProgressValue != buttonitem.MaxValue)
+                        {
+                            return;
+                        }
                         buttonitem.HideUI();
                     }
                     player.item = item;

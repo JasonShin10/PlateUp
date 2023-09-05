@@ -4,11 +4,13 @@ using UnityEngine;
 
 public interface IButtonInteract
 {
-    public void ShowUI();
+    float ProgressValue { get; set; }
+     float MaxValue { get; set; }
+     void ShowUI();
 
-    public void HideUI();
+     void HideUI();
 
-    public void ButtonInteract();
+    void ButtonInteract();
 
 
 }

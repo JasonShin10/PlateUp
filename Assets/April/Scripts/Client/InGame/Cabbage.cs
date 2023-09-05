@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,20 +6,33 @@ using UnityEngine.UI;
 
 namespace April
 {
-    public class Cabbage : InteractionItem, IButtonInteract
+    public class Cabbage : Ingredient, IButtonInteract
     {
+        
         public MeshFilter slicedCabbageMesh;
         private MeshFilter cabbageMesh;
         public Slider slider;
-        public float progressValue;
-        public bool onTable;
+        [SerializeField] private float maxValue;
+        public float ProgressValue { get; set; }
+        public float MaxValue
+        {
+            get
+            {
+                return maxValue;
+            }
+            set
+            {
+                maxValue = value;
+            }
+        }
+        
         public float speed = 10f;
         // Start is called before the first frame update
         void Start()
         {
             cabbageMesh = GetComponentInChildren<MeshFilter>(true);
             slider = GetComponentInChildren<Slider>(true);
-            slider.maxValue = 90f;
+            slider.maxValue = MaxValue;
         }
         public void ShowUI()
         {
@@ -27,7 +41,10 @@ namespace April
 
         public void ButtonInteract()
         {
-            progressValue += speed * Time.deltaTime;
+            if (ProgressValue < maxValue)
+            {
+            ProgressValue += speed * Time.deltaTime;
+            }
         }
 
         public void HideUI()
@@ -40,7 +57,7 @@ namespace April
         {
             if (slider != null)
             {
-                slider.value = progressValue;
+                slider.value = ProgressValue;
             }
             if (slider.value == slider.maxValue)
             {
@@ -52,6 +69,8 @@ namespace April
         private void MeshChange()
         {
             cabbageMesh.sharedMesh = slicedCabbageMesh.sharedMesh;
+            ingredientType = IngredientList.Cabbage;
+            sliced = true;
         }
     }
 }

@@ -20,3 +20,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 989447c72f0416f4192758d7a19016fe, type: 3}
   - {fileID: 21300000, guid: ae49b887f72164c40b1b9926c7e59029, type: 3}
   - {fileID: 21300000, guid: 47f707cfc006d044390e8a3153685835, type: 3}
+  saladSprite:
+  - {fileID: 21300000, guid: 3f8c700be61a96746aa14b9b6e00c540, type: 3}

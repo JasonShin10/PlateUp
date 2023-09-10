@@ -128,14 +128,14 @@ namespace April
         }
         private void DoInteraction(InputAction.CallbackContext context)
         {
-            Debug.Log("DoInteraction");
+           
             currentInteractionObject?.Interact(this);
             
         }
 
         private void HoldInteraction(InputAction.CallbackContext context)
         {
-            Debug.Log("HoldInteraction");
+            
             isButtonPressed = true;
             if (currentInteractionObject is DishWasher)
             {
@@ -147,7 +147,7 @@ namespace April
 
         private void StopInteraction(InputAction.CallbackContext context)
         {
-            Debug.Log("StopInteraction");
+            
             isButtonPressed = false;
             if (currentInteractionObject != null)
             {

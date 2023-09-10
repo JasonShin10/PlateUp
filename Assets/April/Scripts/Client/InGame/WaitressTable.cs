@@ -12,7 +12,7 @@ namespace April
 
         public override InteractionObjectType InterationObjectType => InteractionObjectType.WaitressTable;
 
-        [field: SerializeField] public Transform IneractionPoint { get; private set; }
+        [field: SerializeField] public Transform InteractionPoint { get; private set; }
 
         private PlayerController player;
         private InteractionItem item;

@@ -32,8 +32,6 @@ namespace April
             var emptyJobWaiter = Character_Waitress.SpawnedWaitressList.Find(x => x.HasJobTask == false);
             if (emptyJobWaiter != null)
             {
-
-
                 emptyJobWaiter.ReceiveCustomerOrder(customer);
             }
         }

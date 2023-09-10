@@ -12,7 +12,7 @@ namespace April
         public bool IsUpdateEnable { get => isUpdateEnable; set=> isUpdateEnable = value; }
         public float TimeSpeedRate { get => timeSpeedRate; set => timeSpeedRate = value; }
 
-        private const float IngameSecondsPerOneDay = 60f;
+        private const float IngameSecondsPerOneDay = 10f;
 
         private float progressTime = 0;
         private bool isUpdateEnable = true;
@@ -44,6 +44,7 @@ namespace April
 
                 progressTime = 0f;
                 IsUpdateEnable = false;
+                IngameDaySystem.Instance.SetDay();
             }
         }
 

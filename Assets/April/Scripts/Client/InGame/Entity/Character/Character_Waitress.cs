@@ -15,11 +15,13 @@ namespace April
         public bool HasJobTask => hasJobTask;
 
         public Transform waitingPosition;
+        public DishTable dishTable;
         private Customer currentTargetCustomer;
         public WaitressTable waitressTable;
         public Dish dish;
         public Food food;
-        bool hasFood = false;
+        public TrashCan trashCan;
+
         public int foodState;
 
         private bool hasJobTask = false;
@@ -60,32 +62,9 @@ namespace April
 
         public void HandleFoodArrived()
         {
-            hasFood = true;
+           
             hasJobTask = true;
-            OnDestination -= OnDestinationCustomer;
-            this.SetDestination(waitressTable.IneractionPoint.position, OnWaitressArrivedTable);
-        }
-
-        public void FindWaitingOrderCustomer()
-        {
-            float minPatienceValue = float.MaxValue;
-            float minStateValue = float.MaxValue;
-            Customer minPatiecneCustomer = null;
-
-            foreach (Customer customer in IngameWaiterSystem.Instance.waitingOrderCustomerList)
-            {
-                if ((int)customer.state < minStateValue)
-                {
-                    minStateValue = (int)customer.state;
-                }
-                if (customer.patienceSlider.value < minPatienceValue)
-                {
-                    minPatienceValue = customer.patienceSlider.value;
-                    minPatiecneCustomer = customer;
-                }
-            }
-
-            ReceiveCustomerOrder(minPatiecneCustomer);
+            this.SetDestination(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
         }
 
         public void FindWaitingFoodCustomer()
@@ -114,42 +93,21 @@ namespace April
             {
                 ReceiveCustomerOrder(minPatiecneCustomer);
             }
+            else
+            {
+                hasJobTask = true;
+                this.SetDestination(trashCan.transform.position);
+                StartCoroutine(DelayedRegistDestinationCallback());
+                IEnumerator DelayedRegistDestinationCallback()
+                {
+                    yield return new WaitForEndOfFrame();
+
+                    OnDestination += OnWaitressArrivedTrashCan;
+                }
+            }
         }
 
-        //public void RegisterCustomer(Customer customer)
-        //{
-        //    customer.OnStateChange += HandleStateChange;
-        //}
-
-        //private void HandleStateChange(CustomerState oldState, Customer customer)
-        //{
-        //    switch (oldState)
-        //    {
-        //        case CustomerState.WaitingOrder:
-        //            IngameWaiterSystem.Instance.waitingOrderCustomerList.Remove(customer);
-        //            break;
-        //        case CustomerState.WaitingFood:
-        //            IngameWaiterSystem.Instance.waitingFoodCustomerList.Remove(customer);
-        //            break;
-        //        case CustomerState.Leaving:
-        //            IngameWaiterSystem.Instance.waitingOrderCustomerList.Remove(customer);
-        //            IngameWaiterSystem.Instance.waitingFoodCustomerList.Remove(customer);
-        //            break;
-
-        //    }
-
-        //    switch (customer.State)
-        //    {
-        //        case CustomerState.WaitingOrder:
-        //            IngameWaiterSystem.Instance.waitingOrderCustomerList.Add(customer);
-        //            break;
-        //        case CustomerState.WaitingFood:
-        //            IngameWaiterSystem.Instance.waitingFoodCustomerList.Add(customer);
-        //            break;
-        //        case CustomerState.Leaving:
-        //            break;
-        //    }
-        //}
+     
 
         private void OnDestinationCustomer()
         {
@@ -164,7 +122,7 @@ namespace April
                 }
                 else if (IngameWaiterSystem.Instance.waitingFoodCustomerList.Count > 0 && waitressTable.HasFood)
                 {
-                    this.SetDestination(waitressTable.IneractionPoint.position, OnWaitressArrivedTable);
+                    this.SetDestination(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
                 }
                 else
                 {
@@ -176,7 +134,6 @@ namespace April
 
         private void OnWaitressArrivedTable()
         {
-            
             waitressTable.WaitressInteract(this);
             if (dish)
             {
@@ -185,6 +142,26 @@ namespace April
                 FindWaitingFoodCustomer();
             }
         }
+
+        public void OnWaitressArrivedTrashCan()
+        {
+            trashCan.Interact(this);
+            this.SetDestination(dishTable.transform.position);
+            StartCoroutine(DelayedRegistDestinationCallback());
+            IEnumerator DelayedRegistDestinationCallback()
+            {
+                yield return new WaitForEndOfFrame();
+
+                OnDestination += OnWaitressArrivedDishTable;
+            }
+        }
+
+        public void OnWaitressArrivedDishTable()
+        {
+            dishTable.Interact(this);
+            this.SetDestination(waitingPosition.transform.position);
+        }
+
 
         private void FindCustomer()
         {

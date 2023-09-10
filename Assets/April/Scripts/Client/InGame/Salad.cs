@@ -7,5 +7,12 @@ namespace April
     public class Salad : Food
     {
         public override MenuList MenuType => MenuList.Salad;
+        public override int CookingState 
+        {
+            get
+            {
+                return 0;
+            }
+        }
     }
 }

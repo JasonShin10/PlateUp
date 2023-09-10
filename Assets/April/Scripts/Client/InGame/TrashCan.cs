@@ -11,12 +11,12 @@ namespace April
         public override InteractionObjectType InterationObjectType => InteractionObjectType.TrashCan;
 
         private PlayerController player;
-
+        private CharacterBase character;
         public Dish dish;
 
         void TrashCanInteract()
         {
-            if (player.item.TryGetComponent(out Dish dish))
+            if (character.item.TryGetComponent(out Dish dish))
             {
                 if (dish.ContainedFoodItems.Count > 0)
                 {
@@ -30,12 +30,10 @@ namespace April
         }
         public override void Interact(CharacterBase character)
         {
-            this.player = character as PlayerController;
-
-            if (this.player != null)
+            this.character = character;
+            if (this.character != null)
             {
                 TrashCanInteract();
-
             }
         }
 

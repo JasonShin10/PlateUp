@@ -67,7 +67,7 @@ namespace April
             if (IsAllEmptyTableSlot && CheckTableClean())
             {
                 customerAssigned = false;
-                Debug.Log("CustomerCheck");
+                
                 IngameCustomerWaitingSystem.Instance.NotifyCanTableCheckIn();
             }
         }

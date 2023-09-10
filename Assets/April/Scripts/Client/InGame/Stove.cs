@@ -77,7 +77,7 @@ namespace April
                 
                 // 참조를 없애겠다.
                 player.item = null;
-                Debug.Log("Item Insert To Stove!");
+               
             }
             else if (player.item == null)
             {

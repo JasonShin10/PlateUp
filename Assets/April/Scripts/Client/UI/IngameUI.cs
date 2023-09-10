@@ -12,17 +12,24 @@ namespace April
 
         public TextMeshProUGUI timeText;
         public TextMeshProUGUI totalAssets;
+        public TextMeshProUGUI currentStage;
 
         private int totalAssetsAmount = 0;
 
         private void Awake()
         {
             Instance = this;
+            Debug.Log(this.name);
         }
 
         private void OnDestroy()
         {
             Instance = null;
+        }
+
+        private void Start()
+        {
+            SetDayText(0);
         }
 
         public int TotalAssets
@@ -50,6 +57,12 @@ namespace April
             int seconds = (int)(elapsedTime % 60);
 
             timeText.text = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
+        }
+
+        public void SetDayText(int dayNumber)
+        {
+            Debug.Log(this.name);
+            currentStage.text = string.Format("Day{0}", dayNumber);
         }
     }
 

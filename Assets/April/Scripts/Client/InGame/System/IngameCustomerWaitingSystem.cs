@@ -85,7 +85,7 @@ namespace April
 
         public void NotifyCanTableCheckIn()
         {
-            // Waiting Customer Enter To Table
+           
             var firstSlot = waitingSlots[0];
             if (!firstSlot.IsExistCustomer)
                 return;
@@ -94,11 +94,11 @@ namespace April
             int targetGroupID = firstSlot.customer.groupID;
             if (Customer.TryGetCustomerGroup(targetGroupID, out var waitingCustomers))
             {
-                //Debug.Assert(waitingCustomers.Count < tableSlotCount);
+               
 
                 waitingCustomers.ForEach(customer =>
                 {
-                    Debug.Log("NotifiedTableCheckIn");
+                    
                     customer.SetCustomerState(CustomerState.Entering);
                 });
             }

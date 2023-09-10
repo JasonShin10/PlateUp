@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8135706f4aef40640ad2c650f6345c74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <IneractionPoint>k__BackingField: {fileID: 2738994366646312277}
+  <InteractionPoint>k__BackingField: {fileID: 0}
   offset: 0
 --- !u!1 &4575560349755772757
 GameObject:
@@ -141,7 +141,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8629825241044602428}
-  m_Mesh: {fileID: -8441411679736430982, guid: 1ccfea8d50d8ef943a758ac10d1e8f1e, type: 3}
+  m_Mesh: {fileID: 7988761917665062510, guid: a2e2a20df33b6714ebecf0740c4b1eef, type: 3}
 --- !u!23 &3114413448003132112
 MeshRenderer:
   m_ObjectHideFlags: 0

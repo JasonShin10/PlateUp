@@ -8,6 +8,7 @@ namespace April
         public override bool IsAutoInteractable => false;
         public override InteractionObjectType InterationObjectType => InteractionObjectType.DishTable;
         private PlayerController player;
+        private CharacterBase character;
         private List<Dish> dishes = new List<Dish>();
         public Dish dish;
         public float offset = 0.3f;
@@ -27,36 +28,36 @@ namespace April
 
         void DishTableInteract()
         {
-            if (player.item == null)
+            if (character.item == null)
             {
                 if (dishes.Count > 0)
                 {
                     Dish dish = dishes[dishes.Count - 1];
                     dishes.RemoveAt(dishes.Count - 1);
-                    dish.transform.SetParent(player.transform);
+                    dish.transform.SetParent(character.transform);
                     dish.transform.localPosition = Vector3.up + Vector3.forward;
                     offset -= dish.offset;
-                    player.item = dish;
+                    character.item = dish;
                 }
             }
             else
             {
-                if (player.item is Dish)
+                if (character.item is Dish)
                 {
-                    Dish dish = (Dish)player.item;
+                    Dish dish = (Dish)character.item;
                     dishes.Add(dish);
                     dish.transform.SetParent(this.transform);
                     dish.transform.localPosition = new Vector3(0, offset, 0);
                     offset += dish.offset;
-                    player.item = null;
+                    character.item = null;
                 }
-                else if (player.item is Food)
+                else if (character.item is Food)
                 {
-                    Food food = (Food)player.item;
+                    Food food = (Food)character.item;
                     Dish dish = dishes[dishes.Count - 1];
                     dishes.RemoveAt(dishes.Count - 1);
-                    player.item = dish;
-                    dish.transform.SetParent(player.transform);
+                    character.item = dish;
+                    dish.transform.SetParent(character.transform);
                     dish.transform.localPosition = Vector3.up + Vector3.forward;
                     dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
                     offset -= dish.offset;
@@ -66,9 +67,8 @@ namespace April
 
         public override void Interact(CharacterBase character)
         {
-            this.player = character as PlayerController;
-
-            if (this.player != null)
+            this.character = character;
+            if (this.character != null)
             {
                 DishTableInteract();
             }

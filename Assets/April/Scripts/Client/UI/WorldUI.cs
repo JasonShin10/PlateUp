@@ -37,7 +37,7 @@ public class WorldUI : UIBase
     // ThickBeef할때 오버로딩 해야할까?
     public void ShowBeefUI(Beef Beef)
     {
-        Debug.Log("111");
+        
 
         Slider sliderPrefab = Instantiate(BeefProgress,transform.position, Quaternion.identity, transform);
         sliderPrefab.maxValue = 90;

@@ -61,6 +61,7 @@ namespace April
             {
                 if (OnDestination != null)
                 {
+                    
                     OnDestination?.Invoke();
                     OnDestination = null;
                 }
@@ -85,10 +86,6 @@ namespace April
             }
         }
 
-        public void ResetDestinationCallback()
-        {
-            OnDestination = null;
-        }
 
         public void Exit()
         {

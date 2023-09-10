@@ -59,7 +59,7 @@ namespace April
 
         private void Escaping_performed(InputAction.CallbackContext context)
         {
-            Debug.Log(context);
+            
             if (context.performed)
             {
                 escapeUI.SetActive(!escapeUI.activeSelf);

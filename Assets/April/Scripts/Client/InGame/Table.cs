@@ -46,7 +46,7 @@ namespace April
                         var food = item as Food;
                         dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
                         item = null;
-                        Debug.Log("Something is already on table");
+                        
                         return;
                     }
                     else
@@ -56,7 +56,7 @@ namespace April
                         dish.transform.SetParent(this.transform);
                         dish.transform.localPosition = new Vector3(0, offset, 0);
                         player.item = null;
-                        Debug.Log("Dish Insert To Table!");
+                        
                     }
                 }
                 else
@@ -92,7 +92,7 @@ namespace April
                             item.transform.SetParent(this.transform);
                             item.transform.localPosition = new Vector3(0, offset, 0);
                             player.item = null;
-                            Debug.Log("Food Insert To Table!");
+                            
                         }
 
                     }

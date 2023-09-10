@@ -48,7 +48,7 @@ namespace April
 
         SysRandom random = new SysRandom();
         public override bool IsAutoInteractable => false;
-        //public override CharacterType CharacterType => CharacterType.Waitress;
+
 
         public override CharacterType CharacterType
         {
@@ -58,7 +58,7 @@ namespace April
             }
         }
 
-        //public PlayerController player;
+
         public CharacterBase character;
         public Chair target;
 
@@ -227,6 +227,10 @@ namespace April
                     firstState = (int)ThickBeef.ThickBeefState.Raw;
                     lastState = (int)ThickBeef.ThickBeefState.WellDone;
                     return new ThickBeef();
+                case MenuList.Salad:
+                    firstState = 0;
+                    lastState = 0;
+                    return new Salad();
                 default:
                     throw new ArgumentException("Invalid menu item");
             }
@@ -235,10 +239,11 @@ namespace April
         public void DecideMenu()
         {
             // Hint ? 
-            MyEnumTypes randomType = (MyEnumTypes)UnityEngine.Random.Range((int)MyEnumTypes.None, (int)MyEnumTypes.RandomMax);
+            //MyEnumTypes randomType = (MyEnumTypes)UnityEngine.Random.Range((int)MyEnumTypes.None, (int)MyEnumTypes.RandomMax);
 
             Array values = Enum.GetValues(typeof(MenuList));
-            MenuList randomMenu = (MenuList)values.GetValue(random.Next(values.Length));
+            MenuList randomMenu = (MenuList)UnityEngine.Random.Range((int)MenuList.Beef, (int)MenuList.Salad+1);
+           // MenuList randomMenu = (MenuList)values.GetValue(random.Next(values.Length));
             var food = GetFoodByMenu(randomMenu, out int firstState, out int lastState);
             int randomMenuInt = Convert.ToInt32(randomMenu);
 
@@ -247,6 +252,8 @@ namespace April
             orderImageDisplay.sprite = imageContainer.MenuSpriteGroups[randomMenuInt][randomMenuNum];
             orderedMenuType = 0;
             orderedMenuStateType = 0;
+            //orderedMenuType = randomMenu;
+            //orderedMenuStateType = randomMenuNum;
         }
 
         private void HandleEntering()

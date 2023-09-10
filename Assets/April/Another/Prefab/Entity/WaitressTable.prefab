@@ -33,7 +33,7 @@ Transform:
   - {fileID: 7574120715074459130}
   - {fileID: 2738994366646312277}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!65 &4935088980602742123
 BoxCollider:
@@ -68,8 +68,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8135706f4aef40640ad2c650f6345c74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <InteractionPoint>k__BackingField: {fileID: 0}
-  offset: 0
+  <InteractionPoint>k__BackingField: {fileID: 2738994366646312277}
+  offset: 0.5
 --- !u!1 &4575560349755772757
 GameObject:
   m_ObjectHideFlags: 0

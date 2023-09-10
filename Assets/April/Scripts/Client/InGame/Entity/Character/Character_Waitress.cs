@@ -2,34 +2,59 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Jobs;
 using UnityEditorInternal;
 using UnityEngine;
 
 namespace April
 {
+    [Serializable]
+    public class CharacterJobTaskData
+    {
+        public Vector3 destination;
+        public Action action;
+    }
+
     public class Character_Waitress : CharacterBase
     {
         public static List<Character_Waitress> SpawnedWaitressList = new List<Character_Waitress>();
         public override CharacterType CharacterType => CharacterType.Waitress;
-
-        public bool HasJobTask => hasJobTask;
+        public bool HasJobTask => currentJob != null;
 
         public Transform waitingPosition;
         public DishTable dishTable;
-        private Customer currentTargetCustomer;
         public WaitressTable waitressTable;
         public Dish dish;
         public Food food;
         public TrashCan trashCan;
-
         public int foodState;
 
-        private bool hasJobTask = false;
+        private Customer currentTargetCustomer;
+        private Queue<CharacterJobTaskData> jobTasks = new Queue<CharacterJobTaskData>();
+        private CharacterJobTaskData currentJob;
+
+        public event Action<CharacterJobTaskData> OnInsertedJob;
 
         protected override void Awake()
         {
             base.Awake();
             SpawnedWaitressList.Add(this);
+        }
+
+        public override void Start()
+        {
+            base.Start();
+
+            OnInsertedJob += OnReceivedNewJob;
+            waitressTable.OnFoodArrived += HandleFoodArrived;
+        }
+
+        private void OnReceivedNewJob(CharacterJobTaskData jobData)
+        {
+            if (currentJob != null)
+                return;
+
+            ExecuteJob();
         }
 
         protected override void OnDestroy()
@@ -40,31 +65,23 @@ namespace April
 
         public void ReceiveCustomerOrder(Customer customer)
         {
-            hasJobTask = true;
             currentTargetCustomer = customer;
-            this.SetDestination(currentTargetCustomer.transform.position);
+            AddJobTask(currentTargetCustomer.transform.position, OnDestinationCustomer);
 
-            StartCoroutine(DelayedRegistDestinationCallback());
-            IEnumerator DelayedRegistDestinationCallback()
-            {
-                yield return new WaitForEndOfFrame();
+            //this.SetDestination(currentTargetCustomer.transform.position);
+            //StartCoroutine(DelayedRegistDestinationCallback());
+            //IEnumerator DelayedRegistDestinationCallback()
+            //{
+            //    yield return new WaitForEndOfFrame();
 
-                OnDestination += OnDestinationCustomer;
-            }
-            
-        }
-
-        public override void Start()
-        {
-            base.Start();
-            waitressTable.OnFoodArrived += HandleFoodArrived;
+            //    OnDestination += OnDestinationCustomer;
+            //}
         }
 
         public void HandleFoodArrived()
         {
-           
-            hasJobTask = true;
-            this.SetDestination(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
+            AddJobTask(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
+            //this.SetDestination(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
         }
 
         public void FindWaitingFoodCustomer()
@@ -95,19 +112,18 @@ namespace April
             }
             else
             {
-                hasJobTask = true;
-                this.SetDestination(trashCan.transform.position);
-                StartCoroutine(DelayedRegistDestinationCallback());
-                IEnumerator DelayedRegistDestinationCallback()
-                {
-                    yield return new WaitForEndOfFrame();
+                AddJobTask(trashCan.transform.position, OnWaitressArrivedTrashCan);
 
-                    OnDestination += OnWaitressArrivedTrashCan;
-                }
+                //this.SetDestination(trashCan.transform.position);
+                //StartCoroutine(DelayedRegistDestinationCallback());
+                //IEnumerator DelayedRegistDestinationCallback()
+                //{
+                //    yield return new WaitForEndOfFrame();
+
+                //    OnDestination += OnWaitressArrivedTrashCan;
+                //}
             }
         }
-
-     
 
         private void OnDestinationCustomer()
         {
@@ -122,12 +138,12 @@ namespace April
                 }
                 else if (IngameWaiterSystem.Instance.waitingFoodCustomerList.Count > 0 && waitressTable.HasFood)
                 {
-                    this.SetDestination(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
+                    AddJobTask(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
+                    //this.SetDestination(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
                 }
                 else
                 {
                     this.SetDestination(waitingPosition.position);
-                    hasJobTask = false;
                 }
             }
         }
@@ -146,14 +162,16 @@ namespace April
         public void OnWaitressArrivedTrashCan()
         {
             trashCan.Interact(this);
-            this.SetDestination(dishTable.transform.position);
-            StartCoroutine(DelayedRegistDestinationCallback());
-            IEnumerator DelayedRegistDestinationCallback()
-            {
-                yield return new WaitForEndOfFrame();
+            AddJobTask(dishTable.transform.position, OnWaitressArrivedDishTable);
 
-                OnDestination += OnWaitressArrivedDishTable;
-            }
+            //this.SetDestination(dishTable.transform.position);
+            //StartCoroutine(DelayedRegistDestinationCallback());
+            //IEnumerator DelayedRegistDestinationCallback()
+            //{
+            //    yield return new WaitForEndOfFrame();
+
+            //    OnDestination += OnWaitressArrivedDishTable;
+            //}
         }
 
         public void OnWaitressArrivedDishTable()
@@ -162,13 +180,56 @@ namespace April
             this.SetDestination(waitingPosition.transform.position);
         }
 
-
-        private void FindCustomer()
+        public void AddJobTask(Vector3 destination, Action executeAction)
         {
+            var newJob = new CharacterJobTaskData()
+            {
+                destination = destination,
+                action = executeAction
+            };
+            jobTasks.Enqueue(newJob);
 
+            Debug.Log($"Job Task Count :{jobTasks.Count}");
+
+            StartCoroutine(DelayedNewJobTaskReceiveNotify());
+            IEnumerator DelayedNewJobTaskReceiveNotify()
+            {
+                yield return new WaitForEndOfFrame();
+
+                OnInsertedJob?.Invoke(newJob);
+            }
         }
+
+        public void ExecuteJob()
+        {
+            if (jobTasks.Count <= 0)
+                return;
+
+            var nextJob = jobTasks.Dequeue();
+            currentJob = nextJob;
+            currentJob.action += ClearJob;
+            this.SetDestination(nextJob.destination, nextJob.action);
+        }
+
+        private void ClearJob()
+        {
+            currentJob = null;
+
+            StartCoroutine(DelayedGetNextJob());
+            IEnumerator DelayedGetNextJob()
+            {
+                yield return new WaitForEndOfFrame();
+
+                ExecuteJob();
+            }
+        }
+
+        public void ForceExecuteJob(CharacterJobTaskData job)
+        {
+            currentJob = job;
+            this.SetDestination(job.destination, job.action);
+        }
+
     }
-
-
 }
 

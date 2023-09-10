@@ -31,10 +31,13 @@ namespace April
         public virtual bool IsAutoInteractable { get; }
         [field: SerializeField] public VisualizationCharacter Visualization { get; private set; }
         [field: SerializeField] public NavMeshAgent NavAgent { get; private set; }
+
+
         protected virtual void Awake()
         {
             NavAgent.stoppingDistance = 1f;
         }
+
         public virtual void Interact(CharacterBase character)
         {
 
@@ -44,6 +47,7 @@ namespace April
         {
             gameObject.layer = LayerMask.NameToLayer("InteractionObject");
         }
+
         protected virtual void OnDestroy()
         {
 
@@ -60,8 +64,7 @@ namespace April
             if (distanceBetweenDestination <= NavAgent.stoppingDistance)
             {
                 if (OnDestination != null)
-                {
-                    
+                {                    
                     OnDestination?.Invoke();
                     OnDestination = null;
                 }

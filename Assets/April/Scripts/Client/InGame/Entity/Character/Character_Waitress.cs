@@ -8,12 +8,7 @@ using UnityEngine;
 
 namespace April
 {
-    [Serializable]
-    public class CharacterJobTaskData
-    {
-        public Vector3 destination;
-        public Action action;
-    }
+
 
     public class Character_Waitress : CharacterBase
     {
@@ -30,10 +25,10 @@ namespace April
         public int foodState;
 
         private Customer currentTargetCustomer;
-        private Queue<CharacterJobTaskData> jobTasks = new Queue<CharacterJobTaskData>();
-        private CharacterJobTaskData currentJob;
+        private Queue<CharacterJobTaskBase> jobTasks = new Queue<CharacterJobTaskBase>();
+        private CharacterJobTaskBase currentJob;
 
-        public event Action<CharacterJobTaskData> OnInsertedJob;
+        public event Action<CharacterJobTaskBase> OnInsertedJob;
 
         protected override void Awake()
         {
@@ -49,7 +44,7 @@ namespace April
             waitressTable.OnFoodArrived += HandleFoodArrived;
         }
 
-        private void OnReceivedNewJob(CharacterJobTaskData jobData)
+        private void OnReceivedNewJob(CharacterJobTaskBase jobData)
         {
             if (currentJob != null)
                 return;
@@ -108,6 +103,10 @@ namespace April
 
             if (minPatiecneCustomer)
             {
+                /// Second Feedback Job Task Action Code
+                //ReceiveOrderJob roJob = new ReceiveOrderJob(minPatiecneCustomer, this);
+                //this.AddJobTask(roJob);
+
                 ReceiveCustomerOrder(minPatiecneCustomer);
             }
             else
@@ -182,10 +181,10 @@ namespace April
 
         public void AddJobTask(Vector3 destination, Action executeAction)
         {
-            var newJob = new CharacterJobTaskData()
+            var newJob = new CharacterJobTaskBase()
             {
                 destination = destination,
-                action = executeAction
+                executeAction = executeAction
             };
             jobTasks.Enqueue(newJob);
 
@@ -207,8 +206,8 @@ namespace April
 
             var nextJob = jobTasks.Dequeue();
             currentJob = nextJob;
-            currentJob.action += ClearJob;
-            this.SetDestination(nextJob.destination, nextJob.action);
+            currentJob.executeAction += ClearJob;
+            this.SetDestination(nextJob.destination, nextJob.executeAction);
         }
 
         private void ClearJob()
@@ -224,10 +223,10 @@ namespace April
             }
         }
 
-        public void ForceExecuteJob(CharacterJobTaskData job)
+        public void ForceExecuteJob(CharacterJobTaskBase job)
         {
             currentJob = job;
-            this.SetDestination(job.destination, job.action);
+            this.SetDestination(job.destination, job.executeAction);
         }
 
     }

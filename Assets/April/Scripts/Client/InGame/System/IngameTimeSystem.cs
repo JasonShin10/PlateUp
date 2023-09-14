@@ -16,7 +16,7 @@ namespace April
 
         private float progressTime = 0;
         private bool isUpdateEnable = true;
-        private float timeSpeedRate = 1.0f;
+        private float timeSpeedRate = 1f;
 
         private void Awake()
         {
@@ -45,6 +45,9 @@ namespace April
                 //IsUpdateEnable = false;
                 IngameDaySystem.Instance.SetDay();
                 UIManager.Show<UpgradeUI>(UIList.UpgradeUI);
+
+                Time.timeScale = 0f;
+
                 IsUpdateEnable = false;
                 IngameSecondsPerOneDay += 10f;
             }

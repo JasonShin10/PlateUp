@@ -20,6 +20,7 @@ namespace April
         public List<Action> buttonFunctions;
         public Action buttonFunction1;
         public Action buttonFunction2;
+
         private void Awake()
         {
             Instance = this;
@@ -29,15 +30,23 @@ namespace April
         {
             UIManager.Hide<UpgradeUI>(UIList.UpgradeUI);
         }
+
         private void OnDestroy()
         {
             Instance = null;
         }
+
         private void OnEnable()
         {
             buttonFunctions = new List<Action> { SpawnWaitress, UpgradeStove, IncreasePatience, IncreaseSpeed };
             PickRandomOption();
         }
+
+        private void OnDisable()
+        {
+            Time.timeScale = 1f;
+        }
+
         public void PickRandomOption()
         {
             int random1 = UnityEngine.Random.Range(0,buttonFunctions.Count);
@@ -46,8 +55,7 @@ namespace April
             buttonFunctions.Remove(buttonFunctions[random1]);
             int random2 = UnityEngine.Random.Range(0, buttonFunctions.Count);
             buttonFunction2 = buttonFunctions[random2];
-            option2Text.text = GetDescription(buttonFunctions[random2]);
-            
+            option2Text.text = GetDescription(buttonFunctions[random2]);            
         }
 
         private void SpawnWaitress()
@@ -87,6 +95,7 @@ namespace April
 
             return "";
         }
+
         public void TriggerOption1Function()
         {
             buttonFunction1?.Invoke();

@@ -184,10 +184,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098dad13e7f26c143a27f2fc7d208198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sliced: 0
   slicedTomatoMesh: {fileID: 1147347177949411972, guid: a5d7ba5b57cea404386160f08a26c615, type: 3}
   slider: {fileID: 3594971107687932905}
   maxValue: 30
-  onTable: 0
   speed: 10
 --- !u!1 &2837315828166870494
 GameObject:
@@ -395,7 +395,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5123654537593829807}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -2947953722988431853, guid: c0e2319084512b64b8cb850d4bb5c0cf, type: 3}
 --- !u!23 &7450966512567127286
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -416,7 +416,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e94d0c8e6ff06e849b22068082db6026, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

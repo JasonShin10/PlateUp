@@ -19,7 +19,7 @@ namespace April
         private void Awake()
         {
             Instance = this;
-            Debug.Log(this.name);
+           
         }
 
         private void OnDestroy()
@@ -61,7 +61,6 @@ namespace April
 
         public void SetDayText(int dayNumber)
         {
-            Debug.Log(this.name);
             currentStage.text = string.Format("Day{0}", dayNumber);
         }
     }

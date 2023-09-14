@@ -194,7 +194,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1048695
 --- !u!114 &2347618488923373982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c616b63ee548ff46bfca4e3f1140c74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <IsMouseCursorVisible>k__BackingField: 0
+  nameTag: {fileID: 0}
+  BeefProgress: {fileID: 0}
   characterTransform: {fileID: 0}
   offset: {x: 0, y: 8, z: 0}
   mainCamera: {fileID: 0}

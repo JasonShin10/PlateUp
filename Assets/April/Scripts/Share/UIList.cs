@@ -17,7 +17,7 @@ namespace April
         DummyUI,
         InteractionUI,
         WorldUI,
-
+        UpgradeUI,
 
 
         MAX_SCENE_POPUP,
@@ -28,6 +28,8 @@ namespace April
         SCENE_PANEL,
 
         IngameUI,
+
+
 
 
 

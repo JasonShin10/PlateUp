@@ -24,7 +24,6 @@ namespace April
                 if (PlayerController.Instance.isButtonPressed == true)
                 {
                     dish.progressValue += speed * Time.deltaTime;
-                    
                 }
               
                 if (dish.slider.value == dish.slider.maxValue)

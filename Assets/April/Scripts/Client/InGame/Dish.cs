@@ -9,8 +9,12 @@ namespace April
 {
     public class Dish : InteractionItem
     {
-        public List<Food> ContainedFoodItems => mergedFoodList;
+        //public List<Food> ContainedFoodItems => mergedFoodList;
 
+        public List<Food> ContainedFoodItems
+        {
+                get { return mergedFoodList; }
+        }
         public Renderer dishRenderer;
         public bool dirty;
         public Slider slider;

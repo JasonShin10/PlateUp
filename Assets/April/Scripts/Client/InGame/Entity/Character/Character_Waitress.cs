@@ -29,7 +29,8 @@ namespace April
         private CharacterJobTaskBase currentJob;
 
         public event Action<CharacterJobTaskBase> OnInsertedJob;
-
+        [Title("Visualization")]
+        public VisualizationCharacter visualization;
         protected override void Awake()
         {
             base.Awake();
@@ -44,6 +45,14 @@ namespace April
             waitressTable.OnFoodArrived += HandleFoodArrived;
         }
 
+        protected override void Update()
+        {
+            base.Update();
+            if (moving == true)
+            {
+                visualization.SetMovement(0.5f);
+            }
+        }
         private void OnReceivedNewJob(CharacterJobTaskBase jobData)
         {
             if (currentJob != null)
@@ -75,6 +84,7 @@ namespace April
 
         public void HandleFoodArrived()
         {
+            Debug.Log("HandleFoodArrived");
             AddJobTask(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
             //this.SetDestination(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
         }
@@ -135,11 +145,12 @@ namespace April
                 {
                     ReceiveCustomerOrder(IngameWaiterSystem.Instance.waitingOrderCustomerList[0]);
                 }
-                else if (IngameWaiterSystem.Instance.waitingFoodCustomerList.Count > 0 && waitressTable.HasFood)
-                {
-                    AddJobTask(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
-                    //this.SetDestination(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
-                }
+                //else if (IngameWaiterSystem.Instance.waitingFoodCustomerList.Count > 0 && waitressTable.HasFood)
+                //{
+                //    Debug.Log("OnDestinationCustomer");
+                //    AddJobTask(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
+                //    //this.SetDestination(waitressTable.InteractionPoint.position, OnWaitressArrivedTable);
+                //}
                 else
                 {
                     this.SetDestination(waitingPosition.position);

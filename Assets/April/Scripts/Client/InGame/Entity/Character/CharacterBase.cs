@@ -32,7 +32,7 @@ namespace April
         [field: SerializeField] public VisualizationCharacter Visualization { get; private set; }
         [field: SerializeField] public NavMeshAgent NavAgent { get; private set; }
 
-
+        public bool moving;
         protected virtual void Awake()
         {
             NavAgent.stoppingDistance = 1f;
@@ -63,12 +63,13 @@ namespace April
             distanceBetweenDestination = Vector3.Distance(transform.position, NavAgent.destination);
             if (distanceBetweenDestination <= NavAgent.stoppingDistance)
             {
+                moving = false;
                 if (OnDestination != null)
                 {                    
                     OnDestination?.Invoke();
                     OnDestination = null;
                 }
-            }
+            }          
         }
 
         public void SetDestination(Vector3 destination, Action onDestinationCallback = null)
@@ -80,6 +81,7 @@ namespace April
             }
             else
             {
+                moving = true;
                 NavAgent.SetDestination(destination);
 
                 if (onDestinationCallback != null)

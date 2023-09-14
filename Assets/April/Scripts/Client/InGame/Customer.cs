@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace April
             }
             return result.Count > 0;
         }
+        
 
         public event Action<CustomerState, Customer> OnStateChange;
 
@@ -68,11 +70,11 @@ namespace April
         public Food myFood;
 
         private InteractionItem foodDish;
-        public Color GraphicColor
-        {
-            get => graphicRenderer.material.color;
-            set => graphicRenderer.material.color = value;
-        }
+        //public Color GraphicColor
+        //{
+        //    get => graphicRenderer.material.color;
+        //    set => graphicRenderer.material.color = value;
+        //}
 
         private NavMeshAgent agent;
         public CustomerTable myTable;
@@ -95,6 +97,9 @@ namespace April
         public Transform waitingPos;
 
         private int money = 100;
+
+        [Title("Visualization")]
+        public VisualizationCharacter visualization;
         protected override void Awake()
         {
             SpawnedCustomers.Add(this);
@@ -123,12 +128,15 @@ namespace April
 
         protected override void Update()
         {
+           
             distanceBetweenDestination = Vector3.Distance(transform.position, agent.destination);
-            if (distanceBetweenDestination <= 0.1f)
+            if (distanceBetweenDestination <= 1f)
             {
+                moving = false;
                 onDestinationCallback?.Invoke();
                 if (state == CustomerState.Entering)
                 {
+                    visualization.SetInteractionSit(true);
                     SetCustomerState(CustomerState.WaitingOrder);
                 }
                 onDestinationCallback = null;
@@ -137,6 +145,10 @@ namespace April
                 {
                     patienceSlider.value -= Time.deltaTime;
                 }
+            }
+            if (moving == true)
+            {
+                visualization.SetMovement(0.5f);
             }
         }
 
@@ -283,7 +295,7 @@ namespace April
         private void HandleWaitingOrder()
         {            
             State = CustomerState.WaitingOrder;
-
+            
             IngameWaiterSystem.Instance.NotifyWaitingOrder(this);
 
             patienceSlider.value -= Time.deltaTime;
@@ -316,6 +328,7 @@ namespace April
 
         private void HandleLeaving()
         {
+            visualization.SetInteractionSit(false);
             state = CustomerState.Leaving;
             GoOut();
             IngameUI.Instance.AddAssets(100);
@@ -326,6 +339,7 @@ namespace April
         {
             onDestinationCallback += callbackOnDestination;
             agent.SetDestination(destination.position);
+            moving = true;
             if (destination == mySeat.position)
             {
                 onDestinationCallback += PatienceSliderActivate;
@@ -441,9 +455,6 @@ namespace April
                 }
             }
         }
-
         float maxTime = 3f;
-
-  
     }
 }

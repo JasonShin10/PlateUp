@@ -18,7 +18,8 @@ namespace April
         private InteractionItem item;
         private Dish dish;
         private Food food;
-        public float offset;
+        [SerializeField] private Transform spawnPoint; 
+        //public float offset;
         public event Action OnFoodArrived;
 
         public void WaitressInteract(Character_Waitress waitress)
@@ -52,9 +53,12 @@ namespace April
                     {
                         item = player.item;
                         dish = item as Dish;
+                        if (food)
+                        {
                         food = dish.ContainedFoodItems[0];
+                        }
                         dish.transform.SetParent(this.transform);
-                        dish.transform.localPosition = new Vector3(0, offset, 0);
+                        dish.transform.position = spawnPoint.position;
                         player.item = null;
                         OnFoodArrived?.Invoke();
                     }
@@ -74,7 +78,7 @@ namespace April
                         {
                             item = player.item;
                             item.transform.SetParent(this.transform);
-                            item.transform.localPosition = new Vector3(0, offset, 0);
+                            item.transform.position = spawnPoint.position;
                             player.item = null;
                         }
 

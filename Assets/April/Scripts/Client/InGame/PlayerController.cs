@@ -26,9 +26,6 @@ namespace April
         public bool runButtonPressed = false;
         [Title("Components")]
         public IRaycastInterface currentInteractionObject;
-        //public CharacterBase currentInteracionCharacter;
-        //public IRaycastInterface currentInteraction;
-
 
         public float interactionOffsetHeight = 0.8f;
         public LayerMask interactionObjectLayerMask;
@@ -234,6 +231,7 @@ namespace April
         {
             visualization.SetMovement(0);
         }
+
 
         public void ExitInteractionObject()
         {

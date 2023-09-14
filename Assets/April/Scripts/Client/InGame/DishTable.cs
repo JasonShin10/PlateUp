@@ -11,17 +11,19 @@ namespace April
         private CharacterBase character;
         private List<Dish> dishes = new List<Dish>();
         public Dish dish;
-        public float offset = 0.3f;
+        [SerializeField] private int dishCount;
+        [SerializeField] private Transform spawnPoint;
+        //public float offset = 0.3f;
 
 
         public override void Start()
         {
             base.Start();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < dishCount; i++)
             {
                 Dish newDish = Instantiate(dish, this.transform);
-                newDish.transform.localPosition = new Vector3(0, offset, 0);
-                offset += dish.offset;
+                newDish.transform.position = spawnPoint.position;
+                spawnPoint.position += new Vector3(0, dish.offset, 0);
                 dishes.Add(newDish);
             }
         }
@@ -36,7 +38,7 @@ namespace April
                     dishes.RemoveAt(dishes.Count - 1);
                     dish.transform.SetParent(character.transform);
                     dish.transform.localPosition = Vector3.up + Vector3.forward;
-                    offset -= dish.offset;
+                    spawnPoint.position -= new Vector3(0, dish.offset, 0);
                     character.item = dish;
                 }
             }
@@ -47,8 +49,8 @@ namespace April
                     Dish dish = (Dish)character.item;
                     dishes.Add(dish);
                     dish.transform.SetParent(this.transform);
-                    dish.transform.localPosition = new Vector3(0, offset, 0);
-                    offset += dish.offset;
+                    dish.transform.position = spawnPoint.position;
+                    spawnPoint.position += new Vector3(0, dish.offset, 0);
                     character.item = null;
                 }
                 else if (character.item is Food)
@@ -60,7 +62,7 @@ namespace April
                     dish.transform.SetParent(character.transform);
                     dish.transform.localPosition = Vector3.up + Vector3.forward;
                     dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
-                    offset -= dish.offset;
+                    spawnPoint.position -= new Vector3(0, dish.offset, 0);
                 }
             }
         }

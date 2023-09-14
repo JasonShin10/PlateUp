@@ -12,21 +12,29 @@ namespace April
         public const string AnimatorParameterName_MoveDelta = "MoveDelta";
         public const string AnimatorParameterName_IsInteraction_Cook = "IsInteraction_Cook";
         public const string AnimatorParameterName_IsInteraction_FoodContainer = "IsInteraction_FoodContainer";
+        public const string AnimatorParameterName_IsInteraction_Sit = "IsInteraction_Sit";
 
         private int AnimatorHashKey_MoveDelta;
         private int AnimatorHashKey_IsInteraction_Cook;
         private int AnimatorHashKey_IsInteraction_FoodContainer;
+        private int AnimatorHashKey_IsInteraction_Sit;
 
         private void Awake()
         {
             AnimatorHashKey_MoveDelta = Animator.StringToHash(AnimatorParameterName_MoveDelta);
             AnimatorHashKey_IsInteraction_Cook = Animator.StringToHash(AnimatorParameterName_IsInteraction_Cook);
             AnimatorHashKey_IsInteraction_FoodContainer = Animator.StringToHash(AnimatorParameterName_IsInteraction_FoodContainer);
+            AnimatorHashKey_IsInteraction_Sit = Animator.StringToHash (AnimatorParameterName_IsInteraction_Sit);
         }
 
         public void SetMovement(float movement)
         {
             Animator.SetFloat(AnimatorHashKey_MoveDelta, movement);
+        }
+
+       public void SetInteractionSit(bool isInteraction)
+        {
+            Animator.SetBool(AnimatorParameterName_IsInteraction_Sit, isInteraction);
         }
 
         public void SetInteractionFoodContainer(bool isInteraction)

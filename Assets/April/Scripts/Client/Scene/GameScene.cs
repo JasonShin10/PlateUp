@@ -14,6 +14,7 @@ namespace April
             yield return new WaitUntil(() => async.isDone);
 
             UIManager.Show<IngameUI>(UIList.IngameUI);
+            UIManager.Show<UpgradeUI>(UIList.UpgradeUI);
         }
 
         public override IEnumerator OnEnd()

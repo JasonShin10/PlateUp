@@ -34,6 +34,7 @@ namespace April
 
        public void SetInteractionSit(bool isInteraction)
         {
+            Animator.SetFloat(AnimatorHashKey_MoveDelta, 0f);
             Animator.SetBool(AnimatorParameterName_IsInteraction_Sit, isInteraction);
         }
 

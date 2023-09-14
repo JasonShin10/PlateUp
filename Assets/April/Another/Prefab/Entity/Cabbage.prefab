@@ -373,10 +373,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12792ba93b3c54a4db6fc2e5bcb4e4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sliced: 0
   slicedCabbageMesh: {fileID: 5251577506420107263, guid: 4b54714fe2785c148b17c832612ba94f, type: 3}
   slider: {fileID: 1135130878389303110}
   maxValue: 30
-  onTable: 0
   speed: 10
 --- !u!1 &7608110946748699002
 GameObject:
@@ -508,7 +508,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7956039150461865879}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 6997271560588137909, guid: 08dbc6c28b0d5b9499672beea628d254, type: 3}
 --- !u!23 &8519619863806868695
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -529,7 +529,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e94d0c8e6ff06e849b22068082db6026, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 5803455553572518503}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &2978227965819186984
 NavMeshAgent:
@@ -46,7 +46,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 5
   m_Acceleration: 8
-  avoidancePriority: 51
+  avoidancePriority: 55
   m_AngularSpeed: 180
   m_StoppingDistance: 0.3
   m_AutoTraverseOffMeshLink: 1
@@ -70,13 +70,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Visualization>k__BackingField: {fileID: 2983579533070094647}
   <NavAgent>k__BackingField: {fileID: 2978227965819186984}
+  moving: 0
   item: {fileID: 0}
   distanceBetweenDestination: 0
   waitingPosition: {fileID: 0}
+  dishTable: {fileID: 0}
   waitressTable: {fileID: 0}
   dish: {fileID: 0}
   food: {fileID: 0}
+  trashCan: {fileID: 0}
   foodState: 0
+  visualization: {fileID: 2983579533070094647}
 --- !u!1001 &7411289624632565525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -133,11 +137,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5746027299225456162, guid: 0eba46c56f32681439119a07af1d39e0, type: 3}
+      propertyPath: <Animator>k__BackingField
+      value: 
+      objectReference: {fileID: 678179871313657549}
+    - target: {fileID: 8048865308275597784, guid: 0eba46c56f32681439119a07af1d39e0, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 410f3a2b0e7be834c8eeed624ad41860, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0eba46c56f32681439119a07af1d39e0, type: 3}
+--- !u!95 &678179871313657549 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8048865308275597784, guid: 0eba46c56f32681439119a07af1d39e0, type: 3}
+  m_PrefabInstance: {fileID: 7411289624632565525}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2983579533070094647 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5746027299225456162, guid: 0eba46c56f32681439119a07af1d39e0, type: 3}

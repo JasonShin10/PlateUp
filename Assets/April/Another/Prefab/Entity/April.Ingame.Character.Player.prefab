@@ -33,7 +33,7 @@ Transform:
   - {fileID: 3129544764149851806}
   - {fileID: 965710229344226125}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &2770849709421854750
 CharacterController:
@@ -73,10 +73,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0900dcfeba12844ba2cc6bcf09afee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Visualization>k__BackingField: {fileID: 0}
+  <NavAgent>k__BackingField: {fileID: 0}
+  item: {fileID: 0}
+  distanceBetweenDestination: 0
   isButtonPressed: 0
   runButtonPressed: 0
-  currentInteractionObject: {fileID: 0}
-  item: {fileID: 0}
   interactionOffsetHeight: 0.8
   interactionObjectLayerMask:
     serializedVersion: 2
@@ -349,21 +351,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: April.Visualization.Character.Player
       objectReference: {fileID: 0}
+    - target: {fileID: 123558585814544395, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
       propertyPath: m_RootOrder
       value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -405,10 +399,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3913686034347861362, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
-      propertyPath: m_ConstrainProportionsScale
+    - target: {fileID: 4108358578401035382, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395149375594486985, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
+      propertyPath: m_CullingMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395149375594486985, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
+      propertyPath: m_ApplyRootMotion
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5746027299225456162, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
+      propertyPath: <Animator>k__BackingField
+      value: 
+      objectReference: {fileID: 6332411897905225509}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -430,3 +436,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071d5345cc7154b4eaefdf9d3cf5f04b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &6332411897905225509 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5395149375594486985, guid: 2827836fa32cac84b97a7b45c34eea5d, type: 3}
+  m_PrefabInstance: {fileID: 2107214960875783148}
+  m_PrefabAsset: {fileID: 0}

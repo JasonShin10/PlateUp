@@ -70,6 +70,11 @@ namespace April
                     Customer customerInstance = Instantiate(customerPrefab, spawnPoint.position, Quaternion.identity);
                     customerInstance.gameObject.SetActive(true);
                     customerInstance.isGroup = isGroupSpawn;
+                    customerInstance.CustomerJobType = CustomerJobTypes.Doctor;
+
+                    //Dictionary<CustomerJobTypes, VisualizationCharacter> visualizationPrefabs = new Dictionary<CustomerJobTypes, VisualizationCharacter>();
+                    //var visualPrefab = visualizationPrefabs[customerInstance.CustomerJobType];
+                    //VisualizationCharacter visualCharacter = Instantiate(visualPrefab, customerInstance.graphicRoot);
 
                     VisualizationCharacter visualCharacter = Instantiate(customerVisualizationList[num], customerInstance.graphicRoot);
                     visualCharacter.gameObject.SetActive(true);

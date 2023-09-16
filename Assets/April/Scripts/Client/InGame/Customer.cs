@@ -14,6 +14,14 @@ using SysRandom = System.Random;
 
 namespace April
 {
+    public enum CustomerJobTypes
+    {
+        Rich,
+        Bagger,
+        Worker,
+        Doctor,
+    }
+
     public class Customer : CharacterBase
     {
         public static List<Customer> SpawnedCustomers = new List<Customer>();
@@ -50,9 +58,9 @@ namespace April
 
 
         public override bool IsAutoInteractable => false;
-
-
         public override CharacterType CharacterType => CharacterType.Waitress;
+        
+        public CustomerJobTypes CustomerJobType { get; set; }
 
         private NavMeshAgent agent;
         private CharacterBase character;

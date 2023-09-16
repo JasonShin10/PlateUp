@@ -11,6 +11,7 @@ namespace April
         public bool IsAssigned => assignedCustomer != null;
 
         public Customer assignedCustomer;
+        public Transform seatTransform;
         public Transform position;
     }
 
@@ -21,7 +22,8 @@ namespace April
         public bool customerAssigned;
         public Stack<InteractionItem> dishes = new Stack<InteractionItem>();
         public override bool IsAutoInteractable => false;
-        // 하나라도 존재하면 트루 아니면 false / 
+
+
         public bool IsAllEmptyTableSlot => !tableSlots.Exists(x => x.assignedCustomer != null);
         public bool IsAllCustomerHasFood => customers.All(x => x.myFood != null);
         public int TableSlotCount => tableSlots.Count;
@@ -32,7 +34,7 @@ namespace April
 
         public List<TableSlotData> tableSlots = new List<TableSlotData>();
 
-
+        
         public void GroupCheck()
         {
             if (customers.Count == 2)

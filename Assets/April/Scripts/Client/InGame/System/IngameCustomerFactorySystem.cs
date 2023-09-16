@@ -9,8 +9,10 @@ namespace April
     {
         public static IngameCustomerFactorySystem Instance { get; private set; }
 
+        public List<Customer> customerList = new List<Customer>();
+
         public int isGroup;
-        public Customer customerPrefab;
+
         public Transform spawnPoint;
         [MinMaxSlider(2, 10, true)]
         public Vector2Int npcGroupSpawnRnage = new Vector2Int(2, 10);
@@ -24,7 +26,7 @@ namespace April
         private void Awake()
         {
             Instance = this;
-            customerPrefab.gameObject.SetActive(false);
+            //customerPrefab.gameObject.SetActive(false);
         }
 
         private void Start()
@@ -36,7 +38,11 @@ namespace April
         {
             Instance = null;
         }
-
+        public int GetRandom()
+        {
+            int randomNum = Random.Range(0, customerList.Count);
+            return randomNum;
+        }
         [Button("Spawn Customer")]
         public void SpawnCustomer()
         {
@@ -59,7 +65,8 @@ namespace April
             {
                 for (int i = 0; i < spawnCount; i++)
                 {
-                    Customer customerInstance = Instantiate(customerPrefab, spawnPoint.position, Quaternion.identity);
+                    int num = GetRandom();
+                    Customer customerInstance = Instantiate(customerList[num], spawnPoint.position, Quaternion.identity);
                     customerInstance.gameObject.SetActive(true);
                     customerInstance.isGroup = isGroupSpawn;
 

@@ -31,7 +31,8 @@ namespace April
         public virtual bool IsAutoInteractable { get; }
         [field: SerializeField] public VisualizationCharacter Visualization { get; private set; }
         [field: SerializeField] public NavMeshAgent NavAgent { get; private set; }
-
+        public Dish dish;
+        public Food food;
         public bool moving;
         protected virtual void Awake()
         {

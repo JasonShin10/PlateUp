@@ -9,8 +9,9 @@ namespace April
     public class Beef : Food
     {
         public override MenuList MenuType => MenuList.Beef;
+        private Renderer beefRenderer;
 
-      
+        public List<Material> stateMesh = new List<Material> ();
         public enum BeefState
         {
             Raw,
@@ -20,14 +21,14 @@ namespace April
         }
 
         public Slider slider;
-        private Renderer BeefRenderer;
-        Color BeefColor;
+      
 
         private void Start()
         {
+            beefRenderer = GetComponentInChildren<Renderer>(true);
+
             slider = GetComponentInChildren<Slider>(true);
-            slider.maxValue = 90f;
-            BeefRenderer = GetComponentInChildren<Renderer>(true);
+            slider.maxValue = 90f;         
         }
         public override int CookingState => (int)State;
 
@@ -38,28 +39,12 @@ namespace April
         //        return State.ToString();
         //    }
         //}
-        
+        [SerializeField] private BeefState state;
         public BeefState State
         {
-            get
-            {
-                if (progressValue <= 0)
-                {
-                    return BeefState.Raw;
-                }
-                else if (progressValue <= 40f)
-                {
-                    return BeefState.Medium;
-                }
-                else if (progressValue <= 90f)
-                {
-                    return BeefState.WellDone;
-                }
-                else
-                {
-                    return BeefState.Burned;
-                }
-            }
+            get { return state;}
+            private set { state = value; }
+
         }
 
         public override void ShowUI()
@@ -73,27 +58,49 @@ namespace April
         }
         void Update()
         {
-            switch (State)
-            {
-                case BeefState.Raw:
-                    BeefColor = Color.red;
-                    break;
-                case BeefState.Medium:
-                    BeefColor = new Color(0.8f, 0.3f, 0.1f);
-                    break;
-                case BeefState.WellDone:
-                    BeefColor = new Color(0.5f, 0.2f, 0.1f);
-                    break;
-                case BeefState.Burned:
-                    BeefColor = Color.black;
-                    break;
-            }
-            BeefRenderer.material.color = BeefColor;
-
             if (slider != null)
             {
                 slider.value = progressValue;
             }
+            if (progressValue <= 0)
+            {
+                if (State == BeefState.Raw)
+                {
+                    return;
+                }
+                State = BeefState.Raw;
+            }
+            else if (progressValue <= 40f)
+            {
+                if (State == BeefState.Medium)
+                {
+                    return;
+                }
+                State =  BeefState.Medium;
+                beefRenderer.sharedMaterial = stateMesh[0];
+            }
+            else if (progressValue <= 90f)
+            {
+                if (State == BeefState.WellDone)
+                {
+                    return;
+                }
+                State = BeefState.WellDone;
+                beefRenderer.sharedMaterial = stateMesh[1];
+            }
+            else
+            {
+                if (State == BeefState.Burned)
+                {
+                    return;
+                }
+                State =BeefState.Burned;
+                beefRenderer.sharedMaterial = stateMesh[2];
+            }
+
+            
+
+         
         }
     }
 

@@ -19,16 +19,21 @@ namespace April
         public Transform waitingPosition;
         public DishTable dishTable;
         public WaitressTable waitressTable;
-        public Dish dish;
-        public Food food;
+        //public Dish dish;
+        //public Food food;
         public TrashCan trashCan;
         public int foodState;
 
         private Customer currentTargetCustomer;
         private Queue<CharacterJobTaskBase> jobTasks = new Queue<CharacterJobTaskBase>();
+        [ShowInInspector]
+        private List<CharacterJobTaskBase> DisplayQueueInInspector
+        {
+            get { return new List<CharacterJobTaskBase>(jobTasks); }
+        }
         private CharacterJobTaskBase currentJob;
 
-        public event Action<CharacterJobTaskBase> OnInsertedJob;
+        public event Action OnInsertedJob;
         [Title("Visualization")]
         public VisualizationCharacter visualization;
         protected override void Awake()
@@ -53,7 +58,7 @@ namespace April
                 visualization.SetMovement(0.5f);
             }
         }
-        private void OnReceivedNewJob(CharacterJobTaskBase jobData)
+        private void OnReceivedNewJob()
         {
             if (currentJob != null)
                 return;
@@ -206,7 +211,7 @@ namespace April
             {
                 yield return new WaitForEndOfFrame();
 
-                OnInsertedJob?.Invoke(newJob);
+                OnInsertedJob?.Invoke();
             }
         }
 
@@ -229,7 +234,6 @@ namespace April
             IEnumerator DelayedGetNextJob()
             {
                 yield return new WaitForEndOfFrame();
-
                 ExecuteJob();
             }
         }

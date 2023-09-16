@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Claims;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -28,8 +29,7 @@ namespace April
             }
             return result.Count > 0;
         }
-        
-
+       
         public event Action<CustomerState, Customer> OnStateChange;
 
         public CustomerState State
@@ -48,58 +48,49 @@ namespace April
    
         public CustomerState state = CustomerState.Entering;
 
-        SysRandom random = new SysRandom();
+
         public override bool IsAutoInteractable => false;
 
 
-        public override CharacterType CharacterType
-        {
-            get
-            {
-                return CharacterType.Waitress;
-            }
-        }
-
+        public override CharacterType CharacterType => CharacterType.Waitress;
+        
+        private NavMeshAgent agent;
 
         public CharacterBase character;
-        public Chair target;
 
         public Transform exitTarget;
+        public Transform waitingPos;
 
+        [Title("InteractionItem")]
         public Food orderFood;
         public Food myFood;
-
         private InteractionItem foodDish;
-        //public Color GraphicColor
-        //{
-        //    get => graphicRenderer.material.color;
-        //    set => graphicRenderer.material.color = value;
-        //}
 
-        private NavMeshAgent agent;
-        public CustomerTable myTable;
-        public TableSlotData mySeat;
+        [Title("UI")]
         public Slider patienceSlider;
         public Image orderImageDisplay;
+        public Image speechBubble;
+        public TextMeshProUGUI text;
+        public SpeechBubbleTextContainer textContainer;
 
-        public Renderer graphicRenderer;
+        [Title("Visualization")]
+        public VisualizationCharacter visualization;
         public MenuImageContainer imageContainer;
+
+        public CustomerTable myTable;
+        public TableSlotData mySeat;
 
        
         private event Action onDestinationCallback;
 
-        // 질문 MenuList int로 바꾸어도 되는지
         public MenuList orderedMenuType;
         public int orderedMenuStateType;
 
         public bool isGroup;
         public int groupID;
-        public Transform waitingPos;
 
         private int money = 100;
 
-        [Title("Visualization")]
-        public VisualizationCharacter visualization;
         protected override void Awake()
         {
             SpawnedCustomers.Add(this);
@@ -113,6 +104,8 @@ namespace April
         public override void Start()
         {   
             base.Start();
+            int RandomNum = UnityEngine.Random.Range(0, textContainer.textContainer.Count);
+            text.text = textContainer.textContainer[RandomNum];
             patienceSlider.maxValue = 90f;
             patienceSlider.value = patienceSlider.maxValue;
             patienceSlider.gameObject.SetActive(false);
@@ -136,6 +129,8 @@ namespace April
                 onDestinationCallback?.Invoke();
                 if (state == CustomerState.Entering)
                 {
+                    transform.position = mySeat.seatTransform.position;
+                    visualization.transform.LookAt(myTable.transform);
                     visualization.SetInteractionSit(true);
                     SetCustomerState(CustomerState.WaitingOrder);
                 }
@@ -281,6 +276,7 @@ namespace April
             MoveToTarget(waitingPos);
         }
 
+
         private void PatienceSliderActivate()
         {
             patienceSlider.gameObject.SetActive(true);
@@ -295,8 +291,12 @@ namespace April
         private void HandleWaitingOrder()
         {            
             State = CustomerState.WaitingOrder;
-            
+            if (myTable.customerAssigned)
+            {
+                
             IngameWaiterSystem.Instance.NotifyWaitingOrder(this);
+                
+            }
 
             patienceSlider.value -= Time.deltaTime;
         }
@@ -330,6 +330,7 @@ namespace April
         {
             visualization.SetInteractionSit(false);
             state = CustomerState.Leaving;
+           
             GoOut();
             IngameUI.Instance.AddAssets(100);
 
@@ -343,7 +344,7 @@ namespace April
             if (destination == mySeat.position)
             {
                 onDestinationCallback += PatienceSliderActivate;
-                //SetCustomerState(CustomerState.WaitingOrder);
+                
             }
         }
 
@@ -370,7 +371,12 @@ namespace April
             SetCustomerState(CustomerState.Leaving);
             myTable.customers.Clear();
         }
-
+        IEnumerator ActivateSpeechBubble()
+        {
+            speechBubble.gameObject.SetActive(true);
+            yield return new WaitForSeconds(maxTime);
+            speechBubble.gameObject.SetActive(false);
+        }
         IEnumerator Eat(IEnumerable<Customer> customers)
         {
             yield return new WaitForSeconds(maxTime);

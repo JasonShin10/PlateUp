@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df10d575c2b88fc418ae787a1f3f9666, type: 3}
+  m_Name: Runtime Collection 1
+  m_EditorClassIdentifier: 
+  textContainer:
+  - '"That was delicious!"'
+  - '"I thoroughly enjoyed that meal."'
+  - '"The flavors were incredible!"'
+  - '"I''ve never tasted anything like that before."'
+  - '"That dish was truly exceptional."'
+  - '"I''ll definitely be coming back for more."'
+  - '"Everything was cooked to perfection."'
+  - '"This place is a culinary gem!"'
+  - '"I''m so glad I chose to eat here."'
+  - '"Compliments to the chef!"'

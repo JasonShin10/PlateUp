@@ -10,7 +10,7 @@ namespace April
         public override bool IsAutoInteractable => false;
         public override InteractionObjectType InterationObjectType => InteractionObjectType.TrashCan;
 
-        private PlayerController player;
+ 
         private CharacterBase character;
         public Dish dish;
 
@@ -22,7 +22,9 @@ namespace April
                 {
                     Food foodItem = dish.ContainedFoodItems[0];
 
-                   Destroy(foodItem.gameObject);
+                    Destroy(foodItem.gameObject);
+                    character.food = null;
+                    character.dish = null;
                     dish.ContainedFoodItems.Clear();
                     
                 }

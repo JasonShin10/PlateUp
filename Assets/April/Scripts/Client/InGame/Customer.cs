@@ -126,11 +126,13 @@ namespace April
             if (distanceBetweenDestination <= 1f)
             {
                 moving = false;
+                NavAgent.isStopped = true;
+                NavAgent.destination = transform.position;
                 onDestinationCallback?.Invoke();
                 if (state == CustomerState.Entering)
                 {
                     transform.position = mySeat.seatTransform.position;
-                    visualization.transform.LookAt(myTable.transform);
+                    transform.LookAt(myTable.transform, Vector3.up);
                     visualization.SetInteractionSit(true);
                     SetCustomerState(CustomerState.WaitingOrder);
                 }
@@ -343,8 +345,7 @@ namespace April
             moving = true;
             if (destination == mySeat.position)
             {
-                onDestinationCallback += PatienceSliderActivate;
-                
+                onDestinationCallback += PatienceSliderActivate;                
             }
         }
 

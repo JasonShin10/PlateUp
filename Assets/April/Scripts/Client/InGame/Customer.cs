@@ -29,7 +29,7 @@ namespace April
             }
             return result.Count > 0;
         }
-       
+
         public event Action<CustomerState, Customer> OnStateChange;
 
         public CustomerState State
@@ -45,7 +45,7 @@ namespace April
                 }
             }
         }
-   
+
         public CustomerState state = CustomerState.Entering;
 
 
@@ -53,10 +53,9 @@ namespace April
 
 
         public override CharacterType CharacterType => CharacterType.Waitress;
-        
-        private NavMeshAgent agent;
 
-        public CharacterBase character;
+        private NavMeshAgent agent;
+        private CharacterBase character;
 
         public Transform exitTarget;
         public Transform waitingPos;
@@ -74,13 +73,14 @@ namespace April
         public SpeechBubbleTextContainer textContainer;
 
         [Title("Visualization")]
+        public Transform graphicRoot;
         public VisualizationCharacter visualization;
         public MenuImageContainer imageContainer;
 
         public CustomerTable myTable;
         public TableSlotData mySeat;
 
-       
+
         private event Action onDestinationCallback;
 
         public MenuList orderedMenuType;
@@ -102,7 +102,7 @@ namespace April
         }
 
         public override void Start()
-        {   
+        {
             base.Start();
             int RandomNum = UnityEngine.Random.Range(0, textContainer.textContainer.Count);
             text.text = textContainer.textContainer[RandomNum];
@@ -121,7 +121,7 @@ namespace April
 
         protected override void Update()
         {
-           
+
             distanceBetweenDestination = Vector3.Distance(transform.position, agent.destination);
             if (distanceBetweenDestination <= 1f)
             {
@@ -251,8 +251,8 @@ namespace April
             //MyEnumTypes randomType = (MyEnumTypes)UnityEngine.Random.Range((int)MyEnumTypes.None, (int)MyEnumTypes.RandomMax);
 
             Array values = Enum.GetValues(typeof(MenuList));
-            MenuList randomMenu = (MenuList)UnityEngine.Random.Range((int)MenuList.Beef, (int)MenuList.Salad+1);
-           // MenuList randomMenu = (MenuList)values.GetValue(random.Next(values.Length));
+            MenuList randomMenu = (MenuList)UnityEngine.Random.Range((int)MenuList.Beef, (int)MenuList.Salad + 1);
+            // MenuList randomMenu = (MenuList)values.GetValue(random.Next(values.Length));
             var food = GetFoodByMenu(randomMenu, out int firstState, out int lastState);
             int randomMenuInt = Convert.ToInt32(randomMenu);
 
@@ -274,7 +274,7 @@ namespace April
         private void HandleWaiting()
         {
             state = CustomerState.Waiting;
-            
+
             MoveToTarget(waitingPos);
         }
 
@@ -291,13 +291,13 @@ namespace April
         }
 
         private void HandleWaitingOrder()
-        {            
+        {
             State = CustomerState.WaitingOrder;
             if (myTable.customerAssigned)
             {
-                
-            IngameWaiterSystem.Instance.NotifyWaitingOrder(this);
-                
+
+                IngameWaiterSystem.Instance.NotifyWaitingOrder(this);
+
             }
 
             patienceSlider.value -= Time.deltaTime;
@@ -315,7 +315,7 @@ namespace April
         private void HandleWaitingFriend()
         {
             state = CustomerState.WaitingFriend;
-            
+
             PatienceSliderReset();
             PatienceSliderActivate();
         }
@@ -332,7 +332,7 @@ namespace April
         {
             visualization.SetInteractionSit(false);
             state = CustomerState.Leaving;
-           
+
             GoOut();
             IngameUI.Instance.AddAssets(100);
 
@@ -345,12 +345,12 @@ namespace April
             moving = true;
             if (destination == mySeat.position)
             {
-                onDestinationCallback += PatienceSliderActivate;                
+                onDestinationCallback += PatienceSliderActivate;
             }
         }
 
         public override void Interact(CharacterBase character)
-        {            
+        {
             this.character = character;
             CustomerInteract();
         }
@@ -401,7 +401,7 @@ namespace April
         }
 
         public void CustomerInteract()
-       {
+        {
             if (state == CustomerState.WaitingOrder)
             {
                 myTable.ChangeCustomerState();

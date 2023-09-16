@@ -9,7 +9,8 @@ namespace April
     {
         public static IngameCustomerFactorySystem Instance { get; private set; }
 
-        public List<Customer> customerList = new List<Customer>();
+        public Customer customerPrefab;
+        public List<VisualizationCharacter> customerVisualizationList = new List<VisualizationCharacter>();
 
         public int isGroup;
 
@@ -18,7 +19,7 @@ namespace April
         public Vector2Int npcGroupSpawnRnage = new Vector2Int(2, 10);
         public List<CustomerTable> tables = new List<CustomerTable>();
 
-        public Character_Waitress waitress; 
+        public Character_Waitress waitress;
 
         private float currentTime;
         private float maxTime = 10f;
@@ -26,7 +27,6 @@ namespace April
         private void Awake()
         {
             Instance = this;
-            //customerPrefab.gameObject.SetActive(false);
         }
 
         private void Start()
@@ -40,9 +40,10 @@ namespace April
         }
         public int GetRandom()
         {
-            int randomNum = Random.Range(0, customerList.Count);
+            int randomNum = Random.Range(0, customerVisualizationList.Count);
             return randomNum;
         }
+
         [Button("Spawn Customer")]
         public void SpawnCustomer()
         {
@@ -66,19 +67,23 @@ namespace April
                 for (int i = 0; i < spawnCount; i++)
                 {
                     int num = GetRandom();
-                    Customer customerInstance = Instantiate(customerList[num], spawnPoint.position, Quaternion.identity);
+                    Customer customerInstance = Instantiate(customerPrefab, spawnPoint.position, Quaternion.identity);
                     customerInstance.gameObject.SetActive(true);
                     customerInstance.isGroup = isGroupSpawn;
+
+                    VisualizationCharacter visualCharacter = Instantiate(customerVisualizationList[num], customerInstance.graphicRoot);
+                    visualCharacter.gameObject.SetActive(true);
+                    customerInstance.visualization = visualCharacter;
 
                     customerInstance.waitingPos = waitingSlots[i].transform;
 
                     customerInstance.groupID = groupId;
                     customerInstance.SetCustomerState(CustomerState.Waiting);
-                    
+
                     customerInstance.exitTarget = this.transform;
                     //waitress.RegisterCustomer(customerInstance);
                     waitingSlots[i].customer = customerInstance;
-                    
+
                     var randomColor = new Color();
                     randomColor.r = Random.Range(0, 256) / 255f;
                     randomColor.g = Random.Range(0, 256) / 255f;

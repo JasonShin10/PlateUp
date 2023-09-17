@@ -129,7 +129,7 @@ namespace April
 
         protected override void Update()
         {
-
+            
             distanceBetweenDestination = Vector3.Distance(transform.position, agent.destination);
             if (distanceBetweenDestination <= 1f)
             {
@@ -146,14 +146,20 @@ namespace April
                 }
                 onDestinationCallback = null;
 
+            }
                 if (state == CustomerState.WaitingOrder || state == CustomerState.WaitingFood || state == CustomerState.WaitingFriend)
                 {
                     patienceSlider.value -= Time.deltaTime;
                 }
-            }
             if (moving == true)
             {
                 visualization.SetMovement(0.5f);
+            }
+
+            if (patienceSlider.value <=0f)
+            {
+                SetCustomerState(CustomerState.Leaving);
+                IngameLifeSystem.Instance.life--;          
             }
         }
 
@@ -335,6 +341,7 @@ namespace April
         }
         public void GoOut()
         {
+            mySeat.arrivedCustomer = null;
             mySeat.assignedCustomer = null;
             MoveToTarget(exitTarget.transform, () =>
             {

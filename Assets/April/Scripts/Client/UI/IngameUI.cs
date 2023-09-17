@@ -14,12 +14,14 @@ namespace April
         public TextMeshProUGUI totalAssets;
         public TextMeshProUGUI currentStage;
 
+
+
         private int totalAssetsAmount = 0;
 
         private void Awake()
         {
             Instance = this;
-           
+
         }
 
         private void OnDestroy()
@@ -63,7 +65,10 @@ namespace April
         {
             currentStage.text = string.Format("Day{0}", dayNumber);
         }
+        public void MakeSpeedFast()
+        {
+            Time.timeScale *= 2;
+        }
     }
-
 
 }

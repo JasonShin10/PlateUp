@@ -143,7 +143,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b099fd9190395e7428ccc91e85290a0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -172,7 +172,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2673254893945525463}
-  m_Mesh: {fileID: 3962392604961349191, guid: 610c01680284fa14ba5ec40bd8690a6f, type: 3}
+  m_Mesh: {fileID: -6210604492677306166, guid: 63f1b3e8510b0c74b8416049f2336881, type: 3}
 --- !u!1 &3733081119496532519
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,7 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f6467261faee5458615bec498c911c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dishRenderer: {fileID: 0}
+  dishRenderer: {fileID: 6589879393035367729}
   dirty: 0
   slider: {fileID: 0}
   progressValue: 0

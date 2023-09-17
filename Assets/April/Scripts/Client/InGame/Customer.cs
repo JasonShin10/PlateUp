@@ -59,7 +59,7 @@ namespace April
 
         public override bool IsAutoInteractable => false;
         public override CharacterType CharacterType => CharacterType.Waitress;
-        
+
         public CustomerJobTypes CustomerJobType { get; set; }
 
         private NavMeshAgent agent;
@@ -129,38 +129,42 @@ namespace April
 
         protected override void Update()
         {
-            
             distanceBetweenDestination = Vector3.Distance(transform.position, agent.destination);
             if (distanceBetweenDestination <= 1f)
             {
                 moving = false;
-                NavAgent.enabled = false;
                 NavAgent.isStopped = true;
                 NavAgent.destination = transform.position;
                 onDestinationCallback?.Invoke();
                 if (state == CustomerState.Entering)
                 {
-                    transform.position = mySeat.seatTransform.position;
-                    transform.LookAt(myTable.transform, Vector3.up);
-                    visualization.SetInteractionSit(true);
+                    StartCoroutine(DelayedRotateFixing());
+                    IEnumerator DelayedRotateFixing()
+                    {
+                        yield return new WaitForSeconds(0.1f);
+
+                        transform.position = mySeat.seatTransform.position;
+                        transform.LookAt(myTable.transform, Vector3.up);
+                        visualization.SetInteractionSit(true);
+                    }
                     SetCustomerState(CustomerState.WaitingOrder);
                 }
                 onDestinationCallback = null;
 
             }
-                if (state == CustomerState.WaitingOrder || state == CustomerState.WaitingFood || state == CustomerState.WaitingFriend)
-                {
-                    patienceSlider.value -= Time.deltaTime;
-                }
+            if (state == CustomerState.WaitingOrder || state == CustomerState.WaitingFood || state == CustomerState.WaitingFriend)
+            {
+                patienceSlider.value -= Time.deltaTime;
+            }
             if (moving == true)
             {
                 visualization.SetMovement(0.5f);
             }
 
-            if (patienceSlider.value <=0f)
+            if (patienceSlider.value <= 0f)
             {
                 SetCustomerState(CustomerState.Leaving);
-                IngameLifeSystem.Instance.life--;          
+                IngameLifeSystem.Instance.life--;
             }
         }
 
@@ -362,7 +366,6 @@ namespace April
 
         public void MoveToTarget(Transform destination, Action callbackOnDestination = null)
         {
-            NavAgent.enabled = true;
             onDestinationCallback += callbackOnDestination;
             agent.SetDestination(destination.position);
             moving = true;

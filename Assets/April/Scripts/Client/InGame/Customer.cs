@@ -212,6 +212,7 @@ namespace April
                     else
                     {
                         customerTable.customerAssigned = true;
+                        customerTable.alone = true;
                     }
                     foreach (TableSlotData chairPos in customerTable.tableSlots)
                     {
@@ -301,7 +302,12 @@ namespace April
         private void HandleWaitingOrder()
         {
             State = CustomerState.WaitingOrder;
-            if (myTable.customerAssigned)
+            mySeat.arrivedCustomer = this;
+            if (myTable.alone == true)
+            {
+                IngameWaiterSystem.Instance.NotifyWaitingOrder(this);
+            }
+            else if (myTable.IsAllCustomerArrived)
             {
 
                 IngameWaiterSystem.Instance.NotifyWaitingOrder(this);

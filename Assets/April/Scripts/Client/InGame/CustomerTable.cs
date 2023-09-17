@@ -11,6 +11,7 @@ namespace April
         public bool IsAssigned => assignedCustomer != null;
 
         public Customer assignedCustomer;
+        public Customer arrivedCustomer;
         public Transform seatTransform;
         public Transform position;
     }
@@ -18,12 +19,12 @@ namespace April
     public class CustomerTable : InteractionBase
     {
         public bool IsEmptyTable => !customerAssigned;
-
+        public bool alone = false;
         public bool customerAssigned;
         public Stack<InteractionItem> dishes = new Stack<InteractionItem>();
         public override bool IsAutoInteractable => false;
 
-
+        public bool IsAllCustomerArrived => !tableSlots.Exists(x => x.arrivedCustomer == null);
         public bool IsAllEmptyTableSlot => !tableSlots.Exists(x => x.assignedCustomer != null);
         public bool IsAllCustomerHasFood => customers.All(x => x.myFood != null);
         public int TableSlotCount => tableSlots.Count;

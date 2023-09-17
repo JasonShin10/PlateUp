@@ -134,6 +134,7 @@ namespace April
             if (distanceBetweenDestination <= 1f)
             {
                 moving = false;
+                NavAgent.enabled = false;
                 NavAgent.isStopped = true;
                 NavAgent.destination = transform.position;
                 onDestinationCallback?.Invoke();
@@ -361,6 +362,7 @@ namespace April
 
         public void MoveToTarget(Transform destination, Action callbackOnDestination = null)
         {
+            NavAgent.enabled = true;
             onDestinationCallback += callbackOnDestination;
             agent.SetDestination(destination.position);
             moving = true;

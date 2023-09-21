@@ -12,10 +12,13 @@ namespace April
     {
         public static IngameUpgradeSystem Instance { get; private set; }
 
+        [field: SerializeField] public StoveData RuntimeStoveData { get; set; }
+
         public Action buttonFunction1;
         public Action buttonFunction2;
 
         public List<Action> buttonFunctions;
+
 
 
         [Title("spawnWaitress")]
@@ -28,6 +31,7 @@ namespace April
 
         [Title("Stove")]
         public List<Stove> stoves;
+
         private void Awake()
         {
             Instance = this;
@@ -40,9 +44,13 @@ namespace April
 
         private void Start()
         {
-             //buttonFunctions = new List<Action> { SpawnWaitress, UpgradeStove, IncreasePatience, IncreaseSpeed };
-             buttonFunctions = new List<Action> { SpawnWaitress, SpawnWaitress, SpawnWaitress, SpawnWaitress };
+            //buttonFunctions = new List<Action> { SpawnWaitress, UpgradeStove, IncreasePatience, IncreaseSpeed };
+            buttonFunctions = new List<Action> { UpgradeStove, UpgradeStove, UpgradeStove, UpgradeStove };
+            //buttonFunctions = new List<Action> { SpawnWaitress, SpawnWaitress, SpawnWaitress, SpawnWaitress };
+
+            RuntimeStoveData.Initialize();
         }
+
         public void PickRandomOption(out string text1, out string text2)
         {
             int random1 = UnityEngine.Random.Range(0, buttonFunctions.Count);
@@ -68,10 +76,11 @@ namespace April
         private void UpgradeStove()
         {
             Debug.Log("UpgradeStove");
-            foreach(var stove in stoves)
-            {
-                stove.burningPower *= 2;
-            }
+            RuntimeStoveData.BurningPower *= 2;
+            //foreach (var stove in stoves)
+            //{
+            //    stove.burningPower *= 2;
+            //}
         }
 
         private void IncreasePatience()
@@ -100,6 +109,6 @@ namespace April
             return "";
         }
 
-       
+
     }
 }

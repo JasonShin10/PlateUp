@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using System;
-using static UnityEditor.Progress;
 
 namespace April
 {
@@ -11,13 +10,17 @@ namespace April
     {
         public override bool IsAutoInteractable => false;
         public override InteractionObjectType InterationObjectType => InteractionObjectType.Stove;
+        
+        [field: SerializeField] public StoveData RuntimeStoveData { get; set; }
+
 
         private PlayerController player;
         private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
-
         private InteractionItem item;
         private Food foodComponent;
+
         [SerializeField] private float offSet = 2.2f;
+
         //public static event Action<Beef> OnBeefCreated;
         protected override void Awake()
         {
@@ -30,7 +33,8 @@ namespace April
 
         }
 
-        public float burningPower = 3f;
+
+        // public float burningPower = 3f;
 
 
         void Update()
@@ -39,7 +43,7 @@ namespace April
             {
                 if (foodComponent.CookingState != (int)Beef.BeefState.Burned)
                 {
-                    foodComponent.progressValue += burningPower * Time.deltaTime;
+                    foodComponent.progressValue += RuntimeStoveData.BurningPower * Time.deltaTime;
                 }
             }
         }

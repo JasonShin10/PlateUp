@@ -67,8 +67,6 @@ namespace April
 #endif
         }
 
-
-
         public static Main Singleton { get; private set; } = null;
 
         public bool IsOnProgressSceneChange { get; private set; }

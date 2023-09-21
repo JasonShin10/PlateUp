@@ -12,6 +12,7 @@ namespace April
 
         Camera_PlayerFocus,
         Camera_TopView,
+        Camera_GameOver,
     }
 
     public class IngameCameraSystem : MonoBehaviour

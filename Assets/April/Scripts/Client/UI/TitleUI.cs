@@ -6,9 +6,14 @@ namespace April
 {
     public class TitleUI : UIBase
     {
-        public void OnClickHideUI()
+        public void OnClickStartButton()
         {
-            UIManager.Hide<TitleUI>(UIList.TitleUI);
+            Main.Singleton.ChangeScene(SceneType.Game);
+        }
+
+        public void OnClickExitButton()
+        {
+            Main.Singleton.Quit();
         }
     }
 }

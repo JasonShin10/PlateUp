@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,10 +27,10 @@ namespace April
             // 1.. UIManager 클래스의 싱글턴 인스턴스의 Initialize 메서드를 호출합니다. 
             // UIManager.Singleton이 싱글턴 인스턴스를 참조하고, Initialize()를 실행시킵니다.
             UIManager.Singleton.Initialize();
-            
+
             // 2.. ChangeScene 메서드를 호출하여 Title 씬으로 이동합니다. 
             // 이것은 초기화가 완료된 후 게임의 첫 번째 씬을 로드하는 것을 시작합니다.
-            ChangeScene(SceneType.Game);
+            ChangeScene(SceneType.Title);
         }
 
         public void ChangeScene(SceneType sceneType, Action sceneLoadCallback = null)
@@ -55,6 +56,15 @@ namespace April
                     }
                     break;
             }
+        }
+
+        public void Quit()
+        {
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
 
 
@@ -105,7 +115,7 @@ namespace April
             // 8.. 씬 변경이 시작되었음을 나타내는 플래그를 설정합니다.
             IsOnProgressSceneChange = true;
 
-            
+
             UIManager.Singleton.HideAllUI();
             // 9.. 현재 씬이 존재하면, 씬의 종료 동작을 실행하고 씬을 파괴합니다.
             if (CurrentScene)

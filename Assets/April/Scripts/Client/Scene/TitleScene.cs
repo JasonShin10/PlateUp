@@ -16,7 +16,7 @@ namespace April
 
             //UIManager.Show<TitleUI>(UIList.TitleUI);
             //10
-            UIManager.Show<DummyUI>(UIList.DummyUI);
+            UIManager.Show<TitleUI>(UIList.TitleUI);
         }
 
         public override IEnumerator OnEnd()

@@ -28,9 +28,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5803455553572518503}
+  - {fileID: 2985750307417547443}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -42,7 +43,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3579668940153952815}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -334000983
   m_Radius: 0.5
   m_Speed: 5
   m_Acceleration: 8
@@ -68,19 +69,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07cb591d191ba2e4aa77896a3d18f4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Visualization>k__BackingField: {fileID: 2983579533070094647}
   <NavAgent>k__BackingField: {fileID: 2978227965819186984}
+  dish: {fileID: 0}
+  food: {fileID: 0}
   moving: 0
+  spawnPos: {fileID: 2985750307417547443}
   item: {fileID: 0}
   distanceBetweenDestination: 0
   waitingPosition: {fileID: 0}
   dishTable: {fileID: 0}
   waitressTable: {fileID: 0}
-  dish: {fileID: 0}
-  food: {fileID: 0}
   trashCan: {fileID: 0}
   foodState: 0
   visualization: {fileID: 2983579533070094647}
+--- !u!1 &5457447477897201994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2985750307417547443}
+  m_Layer: 0
+  m_Name: ItemSpawnPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2985750307417547443
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5457447477897201994}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2568460441186687352}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &7411289624632565525
 PrefabInstance:
   m_ObjectHideFlags: 0

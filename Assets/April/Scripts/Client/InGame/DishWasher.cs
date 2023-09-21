@@ -55,7 +55,7 @@ namespace April
                     player.item = dish;
                     dish.HideUI();
                     player.item.transform.SetParent(player.transform);
-                    player.item.transform.localPosition = Vector3.up + Vector3.forward;
+                    player.item.transform.position = player.spawnPos.position;
                     dish.progressValue = 0;
                     dish = null;
                     Exit();

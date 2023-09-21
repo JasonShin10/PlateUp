@@ -17,8 +17,8 @@ namespace April
 
         public virtual void Hide(UnityAction callback = null)
         {
-            gameObject.SetActive(false);
             callback?.Invoke();
+            gameObject.SetActive(false);
         }
     }
 }

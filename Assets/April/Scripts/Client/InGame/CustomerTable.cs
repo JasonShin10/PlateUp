@@ -35,7 +35,7 @@ namespace April
 
         public List<TableSlotData> tableSlots = new List<TableSlotData>();
 
-        
+
         public void GroupCheck()
         {
             if (customers.Count == 2)
@@ -44,18 +44,19 @@ namespace April
             }
         }
 
+
         public void ChangeCustomerState()
         {
             foreach (TableSlotData tableSlot in tableSlots)
             {
                 if (tableSlot.assignedCustomer != null)
                 {
-                tableSlot.assignedCustomer.DecideMenu();
-                tableSlot.assignedCustomer.PatienceSliderReset();
-                tableSlot.assignedCustomer.SetCustomerState(CustomerState.WaitingFood);
-                tableSlot.assignedCustomer.orderImageDisplay.gameObject.SetActive(true);
+                    tableSlot.assignedCustomer.DecideMenu();
+                    tableSlot.assignedCustomer.PatienceSliderReset();
+                    tableSlot.assignedCustomer.SetCustomerState(CustomerState.WaitingFood);
+                    tableSlot.assignedCustomer.orderImageDisplay.gameObject.SetActive(true);
 
-                IngameWaiterSystem.Instance.RemoveWaitingOrder(tableSlot.assignedCustomer);
+                    IngameWaiterSystem.Instance.RemoveWaitingOrder(tableSlot.assignedCustomer);
 
                 }
 
@@ -65,12 +66,14 @@ namespace April
             }
         }
 
+
         public void CustomerCheck()
         {
+
             if (IsAllEmptyTableSlot && CheckTableClean())
             {
                 customerAssigned = false;
-                
+
                 IngameCustomerWaitingSystem.Instance.NotifyCanTableCheckIn();
             }
         }
@@ -82,7 +85,7 @@ namespace April
 
             character.item = dishes.Pop();
             character.item.transform.SetParent(character.transform);
-            character.item.transform.localPosition = Vector3.up + Vector3.forward;
+            character.item.transform.position = character.spawnPos.position;
             CustomerCheck();
         }
 

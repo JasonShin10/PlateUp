@@ -20,6 +20,7 @@ namespace April
         private InteractionUI_ActionItem currentSelectedItem = null;
         private int currentSelectedItemIndex = 0;
 
+
         private void Awake()
         {
             actionItemPrefab.gameObject.SetActive(false);

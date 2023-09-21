@@ -29,13 +29,13 @@ namespace April
         {IngredientList.Cabbage,
         IngredientList.Tomato
         };
-        public float offset = 0.5f;
-
+        public float offset = 0.1f;
+        public Transform spawnPoint;
         public void AddItem(Food item, Vector3 offset)
         {
             mergedFoodList.Add(item);
             item.transform.SetParent(itemMergeRoot);
-            item.transform.localPosition = offset;
+            item.transform.position = offset;
         }
 
         public void AddItem(Ingredient item, Vector3 offset)
@@ -44,7 +44,7 @@ namespace April
             {
                 IngredientList ingredient = item.ingredientType.Value;
                 item.transform.SetParent(itemMergeRoot);
-                item.transform.localPosition = offset;
+                item.transform.position = offset;
                 if (ingredients.Contains(ingredient))
                 {
                     ingredients.Remove(ingredient);

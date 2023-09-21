@@ -18,6 +18,8 @@ namespace April
         private IButtonInteract buttonitem;
 
         public Transform spawnPoint;
+
+        public Dish dish;
         //public float offset = 0.3f;
         private new void Start()
         {
@@ -43,9 +45,9 @@ namespace April
                    
                     if (item is Food)
                     {
-                        var dish = player.item as Dish;
+                        dish = player.item as Dish;
                         var food = item as Food;
-                        dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
+                        dish.AddItem(food, dish.spawnPoint.position);
                         item = null;
                         
                         return;
@@ -53,7 +55,7 @@ namespace April
                     else
                     {
                         item = player.item;
-                        var dish = item as Dish;
+                        dish = item as Dish;
                         dish.transform.SetParent(this.transform);
                         dish.transform.position = spawnPoint.position;
                         player.item = null;
@@ -64,19 +66,19 @@ namespace April
                 {
                     if (item is Dish)
                     {
-                        var dish = item as Dish;
+                        dish = item as Dish;
                         if (player.item is Ingredient)
                         {
                         var ingredient = player.item as Ingredient;
                             if (ingredient.sliced == true)
                             {
-                                dish.AddItem(ingredient, spawnPoint.position); 
+                                dish.AddItem(ingredient, dish.spawnPoint.position); 
                             }
                         }
                         else if (player.item is Food)
                         {
                         var food = player.item as Food;
-                        dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
+                        dish.AddItem(food, dish.spawnPoint.position);
                         }
                         player.item = null;
                     }
@@ -115,7 +117,7 @@ namespace April
                     }
                     player.item = item;
                     item.transform.SetParent(player.transform);
-                    item.transform.position = Vector3.up + Vector3.forward;
+                    item.transform.position = player.spawnPos.position;
                     item = null;
                 }
             }

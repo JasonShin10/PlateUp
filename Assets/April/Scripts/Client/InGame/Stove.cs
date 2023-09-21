@@ -84,7 +84,7 @@ namespace April
                 player.item = foodComponent;
                 foodComponent.HideUI();
                 player.item.transform.SetParent(player.transform);
-                player.item.transform.localPosition = Vector3.up + Vector3.forward;
+                player.item.transform.position = player.spawnPos.position;
                 foodComponent = null;
             }
         }

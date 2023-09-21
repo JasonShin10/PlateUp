@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Security.Claims;
 using TMPro;
 using Unity.VisualScripting;
@@ -39,6 +40,8 @@ namespace April
         }
 
         public event Action<CustomerState, Customer> OnStateChange;
+
+        
 
         public CustomerState State
         {
@@ -91,12 +94,15 @@ namespace April
 
         private event Action onDestinationCallback;
 
+        public static event Action onLooseLife;
         public MenuList orderedMenuType;
         public int orderedMenuStateType;
 
         public bool isGroup;
         public int groupID;
 
+
+        public bool patience;
         private int money = 100;
 
         protected override void Awake()
@@ -135,6 +141,7 @@ namespace April
                 moving = false;
                 NavAgent.isStopped = true;
                 NavAgent.destination = transform.position;
+                        NavAgent.isStopped = false;
                 onDestinationCallback?.Invoke();
                 if (state == CustomerState.Entering)
                 {
@@ -154,7 +161,7 @@ namespace April
             }
             if (state == CustomerState.WaitingOrder || state == CustomerState.WaitingFood || state == CustomerState.WaitingFriend)
             {
-                patienceSlider.value -= Time.deltaTime;
+                patienceSlider.value -= 5*Time.deltaTime;
             }
             if (moving == true)
             {
@@ -163,8 +170,9 @@ namespace April
 
             if (patienceSlider.value <= 0f)
             {
+                patience = false;
                 SetCustomerState(CustomerState.Leaving);
-                IngameLifeSystem.Instance.life--;
+               
             }
         }
 
@@ -214,6 +222,7 @@ namespace April
                     }
                     if (isGroup)
                     {
+                        customerTable.alone = false;
                         if (state != CustomerState.Waiting)
                         {
                             customerTable.customers.Add(this);
@@ -320,12 +329,10 @@ namespace April
             }
             else if (myTable.IsAllCustomerArrived)
             {
-
                 IngameWaiterSystem.Instance.NotifyWaitingOrder(this);
-
             }
 
-            patienceSlider.value -= Time.deltaTime;
+            patienceSlider.value -=  Time.deltaTime;
         }
 
         private void HandleWaitingFood()
@@ -346,22 +353,34 @@ namespace April
         }
         public void GoOut()
         {
-            mySeat.arrivedCustomer = null;
-            mySeat.assignedCustomer = null;
+
             MoveToTarget(exitTarget.transform, () =>
             {
                 IngameCustomerFactorySystem.Instance.RemoveCustomer(this);
             });
         }
+        private void ResetTableVariables()
+        {
+            mySeat.arrivedCustomer = null;
+            mySeat.assignedCustomer = null;
 
+        }
         private void HandleLeaving()
         {
-            visualization.SetInteractionSit(false);
             state = CustomerState.Leaving;
-
+            visualization.SetInteractionSit(false);
+            PatienceSliderReset();
+            ResetTableVariables();
+            myTable.CustomerCheck();
+            
+            if (patience == false)
+            {
+            onLooseLife?.Invoke();
+            }
+            IngameWaiterSystem.Instance.RemoveCustomer(this);
             GoOut();
             IngameUI.Instance.AddAssets(100);
-
+            StartCoroutine(ActivateSpeechBubble());
         }
 
         public void MoveToTarget(Transform destination, Action callbackOnDestination = null)
@@ -396,7 +415,7 @@ namespace April
             emptyDish.GetDirty();
 
             SetCustomerState(CustomerState.Leaving);
-            myTable.customers.Clear();
+            
         }
         IEnumerator ActivateSpeechBubble()
         {

@@ -29,7 +29,7 @@ namespace April
                 waitress.dish = dish;
                 waitress.item = item;
                 dish.transform.SetParent(waitress.transform);
-                dish.transform.localPosition = Vector3.up + Vector3.forward;
+                dish.transform.position = waitress.spawnPos.position;
                 dish = null;
             }
         }
@@ -92,7 +92,7 @@ namespace April
                 {
                     player.item = item;
                     item.transform.SetParent(player.transform);
-                    item.transform.localPosition = Vector3.up + Vector3.forward;
+                    item.transform.position = player.spawnPos.position;
                     item = null;
                     food = null;
                     dish = null;

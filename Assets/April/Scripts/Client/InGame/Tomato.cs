@@ -9,10 +9,11 @@ namespace April
 {
     public class Tomato : Ingredient, IButtonInteract
     {
-        
-        public MeshFilter slicedTomatoMesh;
-        private MeshFilter tomatoMesh;
+        public GameObject slicedTomato;
+        public GameObject tomato;
         public Slider slider;
+
+
         [SerializeField] private float maxValue;
         public float ProgressValue { get; set; }
         public float MaxValue
@@ -31,7 +32,7 @@ namespace April
         // Start is called before the first frame update
         void Start()
         {
-            tomatoMesh = GetComponentInChildren<MeshFilter>(true);
+         
             slider = GetComponentInChildren<Slider>(true);
             slider.maxValue = MaxValue;
         }
@@ -69,8 +70,9 @@ namespace April
 
         private void MeshChange()
         {
-            tomatoMesh.sharedMesh = slicedTomatoMesh.sharedMesh;
             ingredientType = IngredientList.Tomato;
+            tomato.SetActive(false);
+            slicedTomato.SetActive(true);
             sliced = true;
         }
     }

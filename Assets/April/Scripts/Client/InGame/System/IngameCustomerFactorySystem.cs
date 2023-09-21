@@ -17,7 +17,6 @@ namespace April
         public Transform spawnPoint;
         [MinMaxSlider(2, 10, true)]
         public Vector2Int npcGroupSpawnRnage = new Vector2Int(2, 10);
-        public List<CustomerTable> tables = new List<CustomerTable>();
 
         public Character_Waitress waitress;
 
@@ -89,13 +88,7 @@ namespace April
                     //waitress.RegisterCustomer(customerInstance);
                     waitingSlots[i].customer = customerInstance;
 
-                    var randomColor = new Color();
-                    randomColor.r = Random.Range(0, 256) / 255f;
-                    randomColor.g = Random.Range(0, 256) / 255f;
-                    randomColor.b = Random.Range(0, 256) / 255f;
-                    randomColor.a = Random.Range(0, 256) / 255f;
-
-                    //customerInstance.GraphicColor = randomColor;
+                   
                 }
 
                 IngameCustomerWaitingSystem.Instance.CheckWaitingCustomerPossibleEnter();

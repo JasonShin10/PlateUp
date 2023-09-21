@@ -41,7 +41,7 @@ namespace April
             var newFoodItem = Instantiate(beef);
             newFoodItem.transform.localScale = beef.transform.localScale;
             newFoodItem.transform.SetParent(player.transform);
-            newFoodItem.transform.localPosition = Vector3.up + Vector3.forward;
+            newFoodItem.transform.position = player.spawnPos.position;
             newFoodItem.gameObject.SetActive(true);
             player.item = newFoodItem;
         }

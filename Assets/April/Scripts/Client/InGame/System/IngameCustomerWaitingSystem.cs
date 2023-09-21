@@ -94,8 +94,6 @@ namespace April
             int targetGroupID = firstSlot.customer.groupID;
             if (Customer.TryGetCustomerGroup(targetGroupID, out var waitingCustomers))
             {
-               
-
                 waitingCustomers.ForEach(customer =>
                 {
                     
@@ -109,7 +107,6 @@ namespace April
                 waitingSlots[i].customer = null;
             }
 
-            // Waiting Customers Move Forward Slot
             ShiftWaitingCustomers();
         }
 

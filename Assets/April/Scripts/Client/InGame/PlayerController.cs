@@ -24,6 +24,8 @@ namespace April
         }
         public bool isButtonPressed = false;
         public bool runButtonPressed = false;
+
+
         [Title("Components")]
         public IRaycastInterface currentInteractionObject;
 

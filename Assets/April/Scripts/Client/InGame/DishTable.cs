@@ -7,12 +7,12 @@ namespace April
     {
         public override bool IsAutoInteractable => false;
         public override InteractionObjectType InterationObjectType => InteractionObjectType.DishTable;
-        private PlayerController player;
+
         private CharacterBase character;
         private List<Dish> dishes = new List<Dish>();
         public Dish dish;
         [SerializeField] private int dishCount;
-        [SerializeField] private Transform spawnPoint;
+        public Transform spawnPoint;
         //public float offset = 0.3f;
 
 
@@ -37,7 +37,7 @@ namespace April
                     Dish dish = dishes[dishes.Count - 1];
                     dishes.RemoveAt(dishes.Count - 1);
                     dish.transform.SetParent(character.transform);
-                    dish.transform.localPosition = Vector3.up + Vector3.forward;
+                    dish.transform.position = character.spawnPos.position;
                     spawnPoint.position -= new Vector3(0, dish.offset, 0);
                     character.item = dish;
                 }
@@ -60,8 +60,8 @@ namespace April
                     dishes.RemoveAt(dishes.Count - 1);
                     character.item = dish;
                     dish.transform.SetParent(character.transform);
-                    dish.transform.localPosition = Vector3.up + Vector3.forward;
-                    dish.AddItem(food, new Vector3(0, food.offsetOnDish, 0));
+                    dish.transform.position = character.spawnPos.position;
+                    dish.AddItem(food, dish.spawnPoint.position);
                     spawnPoint.position -= new Vector3(0, dish.offset, 0);
                 }
             }

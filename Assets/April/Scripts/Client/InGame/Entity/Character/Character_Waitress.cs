@@ -19,9 +19,8 @@ namespace April
         public Transform waitingPosition;
         public DishTable dishTable;
         public WaitressTable waitressTable;
-        //public Dish dish;
-        //public Food food;
         public TrashCan trashCan;
+
         public int foodState;
 
         private Customer currentTargetCustomer;
@@ -36,6 +35,7 @@ namespace April
         public event Action OnInsertedJob;
         [Title("Visualization")]
         public VisualizationCharacter visualization;
+
         protected override void Awake()
         {
             base.Awake();
@@ -48,6 +48,7 @@ namespace April
 
             OnInsertedJob += OnReceivedNewJob;
             waitressTable.OnFoodArrived += HandleFoodArrived;
+            GetOrder();
         }
 
         protected override void Update()
@@ -70,6 +71,14 @@ namespace April
         {
             base.OnDestroy();
             SpawnedWaitressList.Remove(this);
+        }
+
+        public void Setup(Transform spawnP, DishTable dishT, WaitressTable waitressT, TrashCan trashC)
+        {
+            waitingPosition = spawnP;
+            dishTable = dishT;
+            waitressTable = waitressT;
+            trashCan = trashC;            
         }
 
         public void ReceiveCustomerOrder(Customer customer)
@@ -136,6 +145,14 @@ namespace April
 
                 //    OnDestination += OnWaitressArrivedTrashCan;
                 //}
+            }
+        }
+
+        private void GetOrder()
+        {
+            if (IngameWaiterSystem.Instance.waitingOrderCustomerList.Count > 0)
+            {
+                ReceiveCustomerOrder(IngameWaiterSystem.Instance.waitingOrderCustomerList[0]);
             }
         }
 

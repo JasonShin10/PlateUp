@@ -22,20 +22,20 @@ namespace April
             Instance = null;
         }
 
-        public void CheckCustomer()
-        {
-            if (waitingOrderCustomerList.Count > 0)
-            {
-                var emptyJobwaiter = Character_Waitress.SpawnedWaitressList.Find(x => x.HasJobTask == false);
-                foreach (var customer in waitingOrderCustomerList)
-                {
-                    if (emptyJobwaiter != null)
-                    {
-                        emptyJobwaiter.ReceiveCustomerOrder(customer);
-                    }
-                }
-            }
-        }
+        //public void CheckCustomer()
+        //{
+        //    if (waitingOrderCustomerList.Count > 0)
+        //    {
+        //        var emptyJobwaiter = Character_Waitress.SpawnedWaitressList.Find(x => x.HasJobTask == false);
+        //        foreach (var customer in waitingOrderCustomerList)
+        //        {
+        //            if (emptyJobwaiter != null)
+        //            {
+        //                emptyJobwaiter.ReceiveCustomerOrder(customer);
+        //            }
+        //        }
+        //    }
+        //}
 
         public void NotifyWaitingOrder(Customer customer)
         {
@@ -73,6 +73,18 @@ namespace April
         public void RemoveWaitingFood(Customer customer)
         {
             waitingFoodCustomerList.Remove(customer);
+        }
+
+        public void RemoveCustomer(Customer customer)
+        {
+            if ( waitingFoodCustomerList.Contains(customer))
+            {
+                waitingFoodCustomerList.Remove(customer);
+            }
+            else if ( waitingOrderCustomerList.Contains(customer))
+            {
+                waitingOrderCustomerList.Remove(customer);
+            }
         }
     }
 }

@@ -35,6 +35,7 @@ namespace April
         public Food food;
         public bool moving;
 
+        public Transform spawnPos;
         protected virtual void Awake()
         {
             NavAgent.stoppingDistance = 1f;

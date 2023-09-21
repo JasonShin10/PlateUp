@@ -8,10 +8,12 @@ namespace April
 {
     public class Cabbage : Ingredient, IButtonInteract
     {
-        
-        public MeshFilter slicedCabbageMesh;
-        private MeshFilter cabbageMesh;
+
+        public GameObject slicedCabbage;
+        public GameObject cabbage;
         public Slider slider;
+
+
         [SerializeField] private float maxValue;
         public float ProgressValue { get; set; }
         public float MaxValue
@@ -30,7 +32,8 @@ namespace April
         // Start is called before the first frame update
         void Start()
         {
-            cabbageMesh = GetComponentInChildren<MeshFilter>(true);
+
+  
             slider = GetComponentInChildren<Slider>(true);
             slider.maxValue = MaxValue;
         }
@@ -68,8 +71,10 @@ namespace April
 
         private void MeshChange()
         {
-            cabbageMesh.sharedMesh = slicedCabbageMesh.sharedMesh;
+
             ingredientType = IngredientList.Cabbage;
+            cabbage.SetActive(false);
+            slicedCabbage.SetActive(true);
             sliced = true;
         }
     }

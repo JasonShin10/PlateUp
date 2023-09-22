@@ -3897,7 +3897,7 @@ Transform:
   - {fileID: 3319870654254980974}
   - {fileID: 8653313658755858419}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &7258705656166383141
 CharacterController:
@@ -3950,7 +3950,7 @@ MonoBehaviour:
   interactionObjectLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  playerSpeed: 5
+  <RuntimePlayerData>k__BackingField: {fileID: 11400000, guid: f67f527bbd7663f4a9ea9eecbb2cbc6b, type: 2}
   playerTurnSmoothTime: 0
   playerName: Jack
   playerNameText: {fileID: 442746644411884503}

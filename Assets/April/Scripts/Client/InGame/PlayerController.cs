@@ -33,7 +33,7 @@ namespace April
         public LayerMask interactionObjectLayerMask;
 
         [Title("Settings")]
-        public float playerSpeed = 5f;
+        [field: SerializeField] public PlayerData RuntimePlayerData { get; set; }
         public float playerTurnSmoothTime;
 
         [Title("UI")]
@@ -224,7 +224,7 @@ namespace April
             characterController.transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, angle, 0f) * Vector3.forward;
-            characterController.Move(moveDir.normalized * playerSpeed * Time.deltaTime);
+            characterController.Move(moveDir.normalized * RuntimePlayerData.PlayerSpeed * Time.deltaTime);
 
             visualization.SetMovement(movementInput.magnitude);
         }

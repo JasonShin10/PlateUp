@@ -13,24 +13,20 @@ namespace April
         public static IngameUpgradeSystem Instance { get; private set; }
 
         [field: SerializeField] public StoveData RuntimeStoveData { get; set; }
+        [field: SerializeField] public CustomerData RuntimeCustomerData { get; set; }
+        [field: SerializeField] public PlayerData RuntimePlayerData { get; set; }
 
         public Action buttonFunction1;
         public Action buttonFunction2;
 
         public List<Action> buttonFunctions;
 
-
-
         [Title("spawnWaitress")]
         public Character_Waitress waitress;
         public Transform spawnPos;
-
         public DishTable dishTable;
         public TrashCan trashCan;
         public WaitressTable waitressTable;
-
-        [Title("Stove")]
-        public List<Stove> stoves;
 
         private void Awake()
         {
@@ -44,9 +40,8 @@ namespace April
 
         private void Start()
         {
-            //buttonFunctions = new List<Action> { SpawnWaitress, UpgradeStove, IncreasePatience, IncreaseSpeed };
-            buttonFunctions = new List<Action> { UpgradeStove, UpgradeStove, UpgradeStove, UpgradeStove };
-            //buttonFunctions = new List<Action> { SpawnWaitress, SpawnWaitress, SpawnWaitress, SpawnWaitress };
+            buttonFunctions = new List<Action> { SpawnWaitress, UpgradeStove, IncreasePatience, IncreaseSpeed };
+           
 
             RuntimeStoveData.Initialize();
         }
@@ -77,21 +72,18 @@ namespace April
         {
             Debug.Log("UpgradeStove");
             RuntimeStoveData.BurningPower *= 2;
-            //foreach (var stove in stoves)
-            //{
-            //    stove.burningPower *= 2;
-            //}
         }
 
         private void IncreasePatience()
         {
             Debug.Log("IncreasePatience");
+            RuntimeCustomerData.PaitenceValue *= 2;
         }
 
         private void IncreaseSpeed()
         {
             Debug.Log("IncreaseSpeed");
-
+            RuntimePlayerData.PlayerSpeed += 1;
         }
         private string GetDescription(Action action)
         {

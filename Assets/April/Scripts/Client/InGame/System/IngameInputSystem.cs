@@ -27,12 +27,12 @@ namespace April
 
         private void DoRun(InputAction.CallbackContext context)
         {
-            player.playerSpeed *= 2;
+            player.RuntimePlayerData.PlayerSpeed *= 2;
         }
 
         private void StopRun(InputAction.CallbackContext context)
         {
-            player.playerSpeed /= 2;
+            player.RuntimePlayerData.PlayerSpeed /= 2;
         }
 
         private void OnMovementCanceled(InputAction.CallbackContext context)

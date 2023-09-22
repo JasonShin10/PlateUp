@@ -41,7 +41,7 @@ namespace April
 
         public event Action<CustomerState, Customer> OnStateChange;
 
-        
+        [field: SerializeField] public CustomerData RuntimeCustomerData { get; set; }
 
         public CustomerState State
         {
@@ -102,7 +102,7 @@ namespace April
         public int groupID;
 
 
-        public bool patience;
+        public bool patience = true;
         private int money = 100;
 
         protected override void Awake()
@@ -112,7 +112,7 @@ namespace April
 
             agent = GetComponent<NavMeshAgent>();
             orderImageDisplay = GetComponentInChildren<Image>(true);
-            patienceSlider = GetComponentInChildren<Slider>(true);
+            
         }
 
         public override void Start()
@@ -161,7 +161,7 @@ namespace April
             }
             if (state == CustomerState.WaitingOrder || state == CustomerState.WaitingFood || state == CustomerState.WaitingFriend)
             {
-                patienceSlider.value -= 5*Time.deltaTime;
+                patienceSlider.value -= RuntimeCustomerData.PaitenceValue * Time.deltaTime;
             }
             if (moving == true)
             {

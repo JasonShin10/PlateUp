@@ -12,7 +12,7 @@ namespace April
         public bool IsUpdateEnable { get => isUpdateEnable; set=> isUpdateEnable = value; }
         public float TimeSpeedRate { get => timeSpeedRate; set => timeSpeedRate = value; }
 
-        private float IngameSecondsPerOneDay = 60f;
+        private float IngameSecondsPerOneDay = 1000f;
 
         private float progressTime = 0;
         private bool isUpdateEnable = true;

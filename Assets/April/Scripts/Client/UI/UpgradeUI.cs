@@ -18,8 +18,8 @@ namespace April
         public TextMeshProUGUI option1Text;
         public TextMeshProUGUI option2Text;
 
-       
-
+        public Sprite nonClickImage;
+        public Sprite clickImage;
 
         private void Awake()
         {
@@ -45,19 +45,37 @@ namespace April
 
         private void OnDisable()
         {
-            Time.timeScale = 1f;
+            
         }
 
-        public void TriggerOption1Function()
+        public void OnClickFunction1()
         {
+            option1.image.sprite = clickImage;
+            Time.timeScale = 1f;
+            StartCoroutine(DelayedFunction1());
+        
+        }
+
+        private IEnumerator DelayedFunction1()
+        {
+            yield return new WaitForSeconds(0.5f);
             IngameUpgradeSystem.Instance.buttonFunction1?.Invoke();
+            option1.image.sprite = nonClickImage;
             UIManager.Hide<UpgradeUI>(UIList.UpgradeUI);
             IngameTimeSystem.Instance.IsUpdateEnable = true;
         }
-
-        public void TriggerOption2Function()
+        public void OnClickFunction2()
         {
+            option2.image.sprite = clickImage;
+            Time.timeScale = 1f;
+            StartCoroutine(DelayedFunction2());
+        }
+
+        private IEnumerator DelayedFunction2()
+        {
+            yield return new WaitForSeconds(0.5f);
             IngameUpgradeSystem.Instance.buttonFunction2?.Invoke();
+            option2.image.sprite = nonClickImage;
             UIManager.Hide<UpgradeUI>(UIList.UpgradeUI);
             IngameTimeSystem.Instance.IsUpdateEnable = true;
         }

@@ -71,23 +71,6 @@ namespace April
         public Transform exitTarget;
         public Transform waitingPos;
 
-        [Title("InteractionItem")]
-        public Food orderFood;
-        public Food myFood;
-        private InteractionItem foodDish;
-
-        [Title("UI")]
-        public Slider patienceSlider;
-        public Image orderImageDisplay;
-        public Image speechBubble;
-        public TextMeshProUGUI text;
-        public SpeechBubbleTextContainer textContainer;
-
-        [Title("Visualization")]
-        public Transform graphicRoot;
-        public VisualizationCharacter visualization;
-        public MenuImageContainer imageContainer;
-
         public CustomerTable myTable;
         public TableSlotData mySeat;
 
@@ -101,9 +84,26 @@ namespace April
         public bool isGroup;
         public int groupID;
 
-
         public bool patience = true;
         private int money = 100;
+
+        [Title("InteractionItem")]
+        public Food orderFood;
+        public Food myFood;
+        private InteractionItem foodDish;
+
+        [Title("UI")]
+        public Slider patienceSlider;
+        public Image orderImageDisplay;
+        public Image speechBubble;
+        public Image angryEmoji;
+        public TextMeshProUGUI text;
+        public SpeechBubbleTextContainer textContainer;
+        public MenuImageContainer imageContainer;
+
+        [Title("Visualization")]
+        public Transform graphicRoot;
+        public VisualizationCharacter visualization;
 
         protected override void Awake()
         {
@@ -372,15 +372,23 @@ namespace April
             PatienceSliderReset();
             ResetTableVariables();
             myTable.CustomerCheck();
-            
+
             if (patience == false)
             {
-            onLooseLife?.Invoke();
+                onLooseLife?.Invoke();
+                IngameWaiterSystem.Instance.RemoveCustomer(this);
+                GoOut();
+                IngameUI.Instance.AddAssets(100);
+                StartCoroutine(ActivateSpeechBubble());
+                
             }
-            IngameWaiterSystem.Instance.RemoveCustomer(this);
-            GoOut();
-            IngameUI.Instance.AddAssets(100);
-            StartCoroutine(ActivateSpeechBubble());
+            else
+            {
+                IngameWaiterSystem.Instance.RemoveCustomer(this);
+                GoOut();
+                IngameUI.Instance.AddAssets(100);
+                StartCoroutine(ActivateSpeechBubble());
+            }
         }
 
         public void MoveToTarget(Transform destination, Action callbackOnDestination = null)
@@ -420,6 +428,11 @@ namespace April
         IEnumerator ActivateSpeechBubble()
         {
             speechBubble.gameObject.SetActive(true);
+            if (patience == false)
+            {
+                text.gameObject.SetActive(false);
+                angryEmoji.gameObject.SetActive(true);
+            }
             yield return new WaitForSeconds(maxTime);
             speechBubble.gameObject.SetActive(false);
         }

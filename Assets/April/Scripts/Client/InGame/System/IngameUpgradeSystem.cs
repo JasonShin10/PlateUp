@@ -60,29 +60,25 @@ namespace April
 
         private void SpawnWaitress()
         {
-            Debug.Log("SpawnWaitress");
+
             var newWaitress = Instantiate(waitress);
             newWaitress.Setup(spawnPos, dishTable, waitressTable, trashCan);
             newWaitress.transform.position = spawnPos.position;
-            Debug.Log("Waitress created at: " + newWaitress.transform.position);
             buttonFunctions.Remove(this.SpawnWaitress);
         }
 
         private void UpgradeStove()
         {
-            Debug.Log("UpgradeStove");
             RuntimeStoveData.BurningPower *= 2;
         }
 
         private void IncreasePatience()
         {
-            Debug.Log("IncreasePatience");
-            RuntimeCustomerData.PaitenceValue *= 2;
+            RuntimeCustomerData.PaitenceValue /= 2;
         }
 
         private void IncreaseSpeed()
         {
-            Debug.Log("IncreaseSpeed");
             RuntimePlayerData.PlayerSpeed += 1;
         }
         private string GetDescription(Action action)

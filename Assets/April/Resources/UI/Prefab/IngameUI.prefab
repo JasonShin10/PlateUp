@@ -294,10 +294,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <IsMouseCursorVisible>k__BackingField: 0
-  timeText: {fileID: 0}
   totalAssets: {fileID: 6838039962566211571}
   currentStage: {fileID: 5634989133273283063}
-  timeSilder: {fileID: 5824219952464122867}
+  timeSlider: {fileID: 5824219952464122867}
   hearts:
   - {fileID: 1436604628904408774}
   - {fileID: 8332252331462910241}
@@ -699,7 +698,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 848322047924071254, guid: c0ab26d8c7ba44546918b093c6c9f576, type: 3}
       propertyPath: m_Name
-      value: Status_Coin
+      value: Coin
       objectReference: {fileID: 0}
     - target: {fileID: 6079422370753797050, guid: c0ab26d8c7ba44546918b093c6c9f576, type: 3}
       propertyPath: m_Pivot.x
@@ -949,7 +948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5507283075459486793, guid: 4e594129964cec14cac4d9f32e29c011, type: 3}
       propertyPath: m_Name
-      value: Slider_Basic01_IconType
+      value: Time
       objectReference: {fileID: 0}
     - target: {fileID: 9163778427447164913, guid: 4e594129964cec14cac4d9f32e29c011, type: 3}
       propertyPath: m_Pivot.x
@@ -1036,7 +1035,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1527614143543415627, guid: 4e594129964cec14cac4d9f32e29c011, type: 3}
+    - {fileID: 7114740610370725445, guid: 4e594129964cec14cac4d9f32e29c011, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e594129964cec14cac4d9f32e29c011, type: 3}

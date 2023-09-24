@@ -18,7 +18,8 @@ namespace April
         InteractionUI,
         WorldUI,
         UpgradeUI,
-
+        GameOverUI,
+        ClearUI,
 
         MAX_SCENE_POPUP,
 

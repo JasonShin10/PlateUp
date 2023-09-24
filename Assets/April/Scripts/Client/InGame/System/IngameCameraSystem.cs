@@ -20,7 +20,7 @@ namespace April
         public static IngameCameraSystem Instance { get; private set; }
 
         [Sirenix.OdinInspector.Title("Camera Settings")]
-        [SerializeField] private CameraModeType currentCameraMode = CameraModeType.Camera_PlayerFocus;
+        [SerializeField] private CameraModeType currentCameraMode = CameraModeType.Camera_TopView;
 
 
         [Sirenix.OdinInspector.Title("Cameras")]
@@ -47,7 +47,7 @@ namespace April
             InputManager.Singleton.InputMaster.PlayerControl.CameraRotateHorizontal.performed += CameraRotateHorizontal;
             InputManager.Singleton.InputMaster.PlayerControl.CameraRotateVertical.performed += CameraRotateVertical;
 
-            ChangeCamera(CameraModeType.Camera_PlayerFocus);
+            ChangeCamera(CameraModeType.Camera_TopView);
         }
 
 
@@ -83,21 +83,28 @@ namespace April
 
 
 
-        [Sirenix.OdinInspector.Button("Change Camera")]
+        //[Sirenix.OdinInspector.Button("Change Camera")]
         public void ChangeCamera(CameraModeType cameraMode)
         {
             if (currentCameraMode == cameraMode)
+            {
+
                 return;
+            }
 
             if (Cameras.TryGetValue(currentCameraMode, out var currentCamera))
             {
+
                 currentCamera.gameObject.SetActive(false);
             }
 
+
             if (Cameras.TryGetValue(cameraMode, out var targetCamera))
             {
+
                 targetCamera.gameObject.SetActive(true);
             }
+
 
             currentCameraMode = cameraMode;
         }

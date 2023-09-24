@@ -15,6 +15,8 @@ namespace April
 
             UIManager.Show<IngameUI>(UIList.IngameUI);
             UIManager.Show<UpgradeUI>(UIList.UpgradeUI);
+            UIManager.Show<GameOverUI>(UIList.GameOverUI);
+            UIManager.Show<ClearUI>(UIList.ClearUI);
         }
 
         public override IEnumerator OnEnd()

@@ -11,10 +11,10 @@ namespace April
     {
         public static IngameUI Instance { get; private set; }
 
-        public TextMeshProUGUI timeText;
+        //public TextMeshProUGUI timeText;
         public TextMeshProUGUI totalAssets;
         public TextMeshProUGUI currentStage;
-        public Slider timeSilder;
+        public Slider timeSlider;
         public Image[] hearts;
         private int totalAssetsAmount = 0;
 
@@ -32,7 +32,7 @@ namespace April
         private void Start()
         {
             SetDayText(0);
-            timeSilder.maxValue = 60;
+            timeSlider.maxValue = 60;
         }
 
     
@@ -62,7 +62,11 @@ namespace April
             //int seconds = (int)(elapsedTime % 60);
 
             //timeText.text = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
-            timeSilder.value = elapsedTime;
+            timeSlider.value = elapsedTime;
+            if(timeSlider.value >= timeSlider.maxValue)
+            {
+                ClearUI.Instance.CaculateScore(totalAssetsAmount);
+            }
         }
 
         public void SetDayText(int dayNumber)

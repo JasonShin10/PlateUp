@@ -77,7 +77,7 @@ namespace April
 
         private event Action onDestinationCallback;
 
-        public static event Action onLooseLife;
+        public static event Action OnLooseLife;
         public MenuList orderedMenuType;
         public int orderedMenuStateType;
 
@@ -375,7 +375,7 @@ namespace April
 
             if (patience == false)
             {
-                onLooseLife?.Invoke();
+                OnLooseLife?.Invoke();
                 IngameWaiterSystem.Instance.RemoveCustomer(this);
                 GoOut();
                 IngameUI.Instance.AddAssets(100);

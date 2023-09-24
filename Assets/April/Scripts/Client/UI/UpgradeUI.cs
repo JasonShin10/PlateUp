@@ -51,7 +51,7 @@ namespace April
         public void OnClickFunction1()
         {
             option1.image.sprite = clickImage;
-            Time.timeScale = 1f;
+            IngameTimeSystem.Instance.SetTimeScale(1f);
             StartCoroutine(DelayedFunction1());
         
         }
@@ -67,7 +67,7 @@ namespace April
         public void OnClickFunction2()
         {
             option2.image.sprite = clickImage;
-            Time.timeScale = 1f;
+            IngameTimeSystem.Instance.SetTimeScale(1f);
             StartCoroutine(DelayedFunction2());
         }
 

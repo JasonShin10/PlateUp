@@ -11,7 +11,6 @@ namespace April
 
         public Customer customerPrefab;
         public List<VisualizationCharacter> customerVisualizationList = new List<VisualizationCharacter>();
-
         public int isGroup;
 
         public Transform spawnPoint;

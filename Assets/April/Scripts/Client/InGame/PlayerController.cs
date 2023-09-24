@@ -2,13 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEditor.UI;
-using TMPro;
-using System.Xml.Serialization;
-using System;
 using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
-using System.Globalization;
 
 namespace April
 {
@@ -66,8 +61,11 @@ namespace April
         {
             InputManager.Singleton.InputMaster.PlayerControl.Interact.performed += DoInteraction;
             InputManager.Singleton.InputMaster.PlayerControl.HoldInteract.performed += HoldInteraction;
-            InputManager.Singleton.InputMaster.PlayerControl.HoldInteract.canceled +=StopInteraction;
+            InputManager.Singleton.InputMaster.PlayerControl.HoldInteract.canceled += StopInteraction;
             InputManager.Singleton.InputMaster.PlayerControl.Interact.canceled += StopInteraction;
+
+            IngameLifeSystem.Instance.OnLifeCountChanged += OnLifeChanged;
+
             //InputManager.Singleton.InputMaster.PlayerControl.Click.performed += MouseClick;
             //InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed += CursorEnable;
 
@@ -81,6 +79,12 @@ namespace April
             InputManager.Singleton.InputMaster.PlayerControl.HoldInteract.performed -= HoldInteraction;
             InputManager.Singleton.InputMaster.PlayerControl.HoldInteract.canceled -= StopInteraction;
             InputManager.Singleton.InputMaster.PlayerControl.Interact.canceled -= StopInteraction;
+
+            if (IngameLifeSystem.Instance)
+            {
+                IngameLifeSystem.Instance.OnLifeCountChanged -= OnLifeChanged;
+            }
+
             //InputManager.Singleton.InputMaster.PlayerControl.Click.performed -= MouseClick;
             //InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed -= CursorEnable;
         }
@@ -127,14 +131,14 @@ namespace April
         }
         private void DoInteraction(InputAction.CallbackContext context)
         {
-           
+
             currentInteractionObject?.Interact(this);
-            
+
         }
 
         private void HoldInteraction(InputAction.CallbackContext context)
         {
-            
+
             isButtonPressed = true;
             if (currentInteractionObject is DishWasher)
             {
@@ -146,7 +150,7 @@ namespace April
 
         private void StopInteraction(InputAction.CallbackContext context)
         {
-            
+
             isButtonPressed = false;
             if (currentInteractionObject != null)
             {
@@ -219,6 +223,9 @@ namespace April
 
         public void Move(Vector2 movementInput)
         {
+            if (false == IngameLifeSystem.Instance.HasRemainLife)
+                return;
+
             float targetAngle = Mathf.Atan2(movementInput.x, movementInput.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(characterController.transform.eulerAngles.y, targetAngle, ref playerTurningCurrentVelocity, playerTurnSmoothTime);
             characterController.transform.rotation = Quaternion.Euler(0f, angle, 0f);
@@ -240,6 +247,24 @@ namespace April
             if (currentInteractionObject != null)
             {
                 currentInteractionObject.Exit();
+            }
+        }
+
+        private void OnLifeChanged(int remainLife)
+        {
+            IngameUI.Instance.SetLife(remainLife);
+
+            // Game Over
+            if (remainLife <= 0)
+            {
+                UIManager.Show<GameOverUI>(UIList.GameOverUI);
+                IngameCameraSystem.Instance.ChangeCamera(CameraModeType.Camera_GameOver);
+
+                IngameTimeSystem.Instance.SetTimeScale(1f);
+                IngameTimeSystem.Instance.IsUpdateEnable = false;
+                IngameCustomerFactorySystem.Instance.enabled = false;
+
+                //visualization.SetGameOverAnimation(true);
             }
         }
     }

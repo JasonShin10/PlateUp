@@ -9,7 +9,7 @@ namespace April
 {
     public class IngameUI : UIBase
     {
-        public static IngameUI Instance { get; private set; }
+        public static IngameUI Instance => UIManager.Singleton.GetUI<IngameUI>(UIList.IngameUI);
 
         //public TextMeshProUGUI timeText;
         public TextMeshProUGUI totalAssets;
@@ -18,24 +18,11 @@ namespace April
         public Image[] hearts;
         private int totalAssetsAmount = 0;
 
-        private void Awake()
-        {
-            Instance = this;
-
-        }
-
-        private void OnDestroy()
-        {
-            Instance = null;
-        }
-
         private void Start()
         {
             SetDayText(0);
             timeSlider.maxValue = 60;
-        }
-
-    
+        }    
 
         public int TotalAssets
         {
@@ -73,9 +60,18 @@ namespace April
         {
             currentStage.text = string.Format("Day{0}", dayNumber);
         }
+
         public void MakeSpeedFast()
         {
-            Time.timeScale *= 2;
+            IngameTimeSystem.Instance.SetTimeScale(Time.timeScale * 2f);
+        }
+
+        public void SetLife(int remainLife)
+        {
+            for (int i = 0; i < hearts.Length; i++)
+            {
+                hearts[i].enabled = i < remainLife;
+            }
         }
     }
 

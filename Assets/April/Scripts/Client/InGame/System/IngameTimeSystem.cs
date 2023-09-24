@@ -53,11 +53,9 @@ namespace April
             }
         }
 
-        [Button("Change Time Speed")]
-        public void SetTimeSpeed(float speed)
+        public void SetTimeScale(float scale)
         {
-            TimeSpeedRate = speed;
-            //Time.timeScale = speed;
+            Time.timeScale = scale;
         }
     }
 }

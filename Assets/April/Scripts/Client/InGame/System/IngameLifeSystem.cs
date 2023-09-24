@@ -1,5 +1,6 @@
 using April;
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,26 +9,23 @@ public class IngameLifeSystem : MonoBehaviour
 {
     public static IngameLifeSystem Instance { get; private set; }
 
-    public int life = 2;
+    public bool HasRemainLife => life > 0;
+    public int RemainLife => life;
 
-    public CinemachineVirtualCameraBase camera1;
-    public CinemachineVirtualCameraBase camera2;
+    public int life = 2;
+    public event Action<int> OnLifeCountChanged;
+
     public void Start()
     {
-        Customer.onLooseLife += takeLife; 
+        Customer.OnLooseLife += TakeLife;
     }
 
-    public void takeLife()
+    public void TakeLife()
     {
-        IngameUI.Instance.hearts[life].enabled = false;
-        if (life <= 0)
-        {
-            UIManager.Show<GameOverUI>(UIList.GameOverUI);
-            camera2.gameObject.SetActive(true);
-            camera1.gameObject.SetActive(false);
-        }
         life--;
+        OnLifeCountChanged?.Invoke(life);
     }
+
     private void Awake()
     {
         Instance = this;

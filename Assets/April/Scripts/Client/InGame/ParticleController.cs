@@ -18,8 +18,7 @@ namespace April
 
         public void StopParticle()
         {
-
-            //myParticleSystem.Stop();
+            myParticleSystem.Stop();
         }
     }
 }

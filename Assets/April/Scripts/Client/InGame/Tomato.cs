@@ -32,8 +32,6 @@ namespace April
         // Start is called before the first frame update
         void Start()
         {
-         
-            slider = GetComponentInChildren<Slider>(true);
             slider.maxValue = MaxValue;
         }
         public void ShowUI()

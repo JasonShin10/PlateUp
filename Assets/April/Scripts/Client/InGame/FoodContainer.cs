@@ -46,6 +46,7 @@ namespace April
             player.item = newFoodItem;
         }
 
+    
         void BeefInteract()
         {
             if (player.item == null)

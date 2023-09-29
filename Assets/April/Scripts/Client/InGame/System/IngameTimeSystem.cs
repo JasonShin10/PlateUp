@@ -12,8 +12,8 @@ namespace April
         public bool IsUpdateEnable { get => isUpdateEnable; set=> isUpdateEnable = value; }
         public float TimeSpeedRate { get => timeSpeedRate; set => timeSpeedRate = value; }
 
-        private float IngameSecondsPerOneDay = 1000f;
-
+        private float ingameSecondsPerOneDay = 30f;
+        public float countDownTime = 200;
         private float progressTime = 0;
         private bool isUpdateEnable = true;
         private float timeSpeedRate = 1f;
@@ -36,20 +36,24 @@ namespace April
             progressTime += (Time.deltaTime * timeSpeedRate);
             var ingameUI = UIManager.Singleton.GetUI<IngameUI>(UIList.IngameUI);
             ingameUI.SetTimeText(progressTime);
+            ingameUI.ActivateClearUI();
 
-            if (progressTime > IngameSecondsPerOneDay)
+            if (progressTime > ingameSecondsPerOneDay)
             {
                 // To do : Change to Next Day Progress ?
                 // To do : Game Stop ?
 
                 //IsUpdateEnable = false;
                 IngameDaySystem.Instance.SetDay();
+                IngameCustomerFactorySystem.Instance.MakeSpawnFast();
                 UIManager.Show<UpgradeUI>(UIList.UpgradeUI);
+
+                IsUpdateEnable = false;
+                IngameCustomerFactorySystem.Instance.enabled = false;
 
                 Time.timeScale = 0f;
 
-                IsUpdateEnable = false;
-                IngameSecondsPerOneDay += 10f;
+                ingameSecondsPerOneDay += 60f;
             }
         }
 

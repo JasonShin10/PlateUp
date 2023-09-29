@@ -11,7 +11,7 @@ namespace April
 {
     public class UpgradeUI : UIBase
     {
-        public static UpgradeUI Instance { get; private set; }
+        public static UpgradeUI Instance => UIManager.Singleton.GetUI<UpgradeUI>(UIList.UpgradeUI);
 
         public Button option1;
         public Button option2;
@@ -21,19 +21,10 @@ namespace April
         public Sprite nonClickImage;
         public Sprite clickImage;
 
-        private void Awake()
-        {
-            Instance = this;
-        }
 
         void Start()
         {
             UIManager.Hide<UpgradeUI>(UIList.UpgradeUI);
-        }
-
-        private void OnDestroy()
-        {
-            Instance = null;
         }
 
         private void OnEnable()
@@ -41,19 +32,18 @@ namespace April
             IngameUpgradeSystem.Instance.PickRandomOption(out string text1, out string text2);
             option1Text.text = text1;
             option2Text.text = text2;
-        }
 
+        }
         private void OnDisable()
         {
             
         }
-
         public void OnClickFunction1()
         {
             option1.image.sprite = clickImage;
             IngameTimeSystem.Instance.SetTimeScale(1f);
             StartCoroutine(DelayedFunction1());
-        
+
         }
 
         private IEnumerator DelayedFunction1()
@@ -63,6 +53,7 @@ namespace April
             option1.image.sprite = nonClickImage;
             UIManager.Hide<UpgradeUI>(UIList.UpgradeUI);
             IngameTimeSystem.Instance.IsUpdateEnable = true;
+            IngameCustomerFactorySystem.Instance.enabled = true;
         }
         public void OnClickFunction2()
         {
@@ -78,6 +69,7 @@ namespace April
             option2.image.sprite = nonClickImage;
             UIManager.Hide<UpgradeUI>(UIList.UpgradeUI);
             IngameTimeSystem.Instance.IsUpdateEnable = true;
+            IngameCustomerFactorySystem.Instance.enabled = true;
         }
     }
 }

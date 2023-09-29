@@ -9,7 +9,6 @@ namespace April
         Beef = 0,
         ThickBeef = 1,
         Salad = 2,
-
     }
 
     public enum MyEnumTypes

@@ -13,24 +13,29 @@ namespace April
         public List<Material> stateMesh = new List<Material>();
         public enum ThickBeefState
         {
+            Frozen,
             Raw,
             Medium,
             WellDone,
             Burned
         }
         public Slider slider;
-        [SerializeField] private BeefState state;
+        [SerializeField] private ThickBeefState state;
         public ThickBeefState CurrentThickBeefState { get; set; } = ThickBeefState.Raw;
 
-        public BeefState State
+        public ThickBeefState State
         {
             get { return state; }
             private set { state = value; }
-
         }
 
         public override int CookingState => (int)State;
-
+        private void Start()
+        {
+            thickBeefRenderer = GetComponentInChildren<Renderer>(true);
+            slider.maxValue = 90f;
+            State = ThickBeefState.Frozen;
+        }
         public override void ShowUI()
         {
             slider.gameObject.SetActive(true);
@@ -42,47 +47,49 @@ namespace April
         }
         void Update()
         {
+
             if (slider != null)
             {
                 slider.value = progressValue;
             }
-            if (progressValue <= 0)
+
+            if (progressValue >= 20f && progressValue < 40f)
             {
-                if (State == BeefState.Raw)
+                if (State == ThickBeefState.Raw)
                 {
                     return;
                 }
-                State = BeefState.Raw;
-            }
-            else if (progressValue <= 40f)
-            {
-                if (State == BeefState.Medium)
-                {
-                    return;
-                }
-                State = BeefState.Medium;
+                State = ThickBeefState.Raw;
                 thickBeefRenderer.sharedMaterial = stateMesh[0];
             }
-            else if (progressValue <= 90f)
+            else if (progressValue >= 40f && progressValue < 60f)
             {
-                if (State == BeefState.WellDone)
+                if (State == ThickBeefState.Medium)
                 {
                     return;
                 }
-                State = BeefState.WellDone;
+                State = ThickBeefState.Medium;
                 thickBeefRenderer.sharedMaterial = stateMesh[1];
             }
-            else
+            else if (progressValue >= 60f && progressValue < 80f)
             {
-                if (State == BeefState.Burned)
+                if (State == ThickBeefState.WellDone)
                 {
                     return;
                 }
-                State = BeefState.Burned;
+                State = ThickBeefState.WellDone;
                 thickBeefRenderer.sharedMaterial = stateMesh[2];
             }
-
-
+            else if (progressValue >= slider.maxValue)
+            {
+                if (State == ThickBeefState.Burned)
+                {
+                    return;
+                }
+                State = ThickBeefState.Burned;
+                thickBeefRenderer.sharedMaterial = stateMesh[3];
+                slider.gameObject.SetActive(false);
+            }
 
 
         }

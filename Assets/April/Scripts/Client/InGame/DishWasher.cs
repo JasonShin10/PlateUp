@@ -21,7 +21,7 @@ namespace April
         {
             if (dish != null && dish.dirty == true)
             {
-                if (PlayerController.Instance.isButtonPressed == true)
+                if (PlayerController.Instance.isButtonPressed == true && PlayerController.Instance.currentInteractionObject == this)
                 {
                     dish.progressValue += speed * Time.deltaTime;
                 }

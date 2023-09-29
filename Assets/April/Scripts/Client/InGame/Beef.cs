@@ -12,8 +12,10 @@ namespace April
         private Renderer beefRenderer;
 
         public List<Material> stateMesh = new List<Material> ();
+
         public enum BeefState
         {
+            Frozen,
             Raw,
             Medium,
             WellDone,
@@ -21,14 +23,12 @@ namespace April
         }
 
         public Slider slider;
-      
 
         private void Start()
         {
             beefRenderer = GetComponentInChildren<Renderer>(true);
-
-            slider = GetComponentInChildren<Slider>(true);
-            slider.maxValue = 90f;         
+            slider.maxValue = 90f;
+            State = BeefState.Frozen;
         }
         public override int CookingState => (int)State;
 
@@ -40,11 +40,11 @@ namespace April
         //    }
         //}
         [SerializeField] private BeefState state;
+
         public BeefState State
         {
             get { return state;}
             private set { state = value; }
-
         }
 
         public override void ShowUI()
@@ -62,45 +62,45 @@ namespace April
             {
                 slider.value = progressValue;
             }
-            if (progressValue <= 0)
+      
+            if (progressValue >= 20f && progressValue < 40f)
             {
                 if (State == BeefState.Raw)
                 {
                     return;
                 }
-                State = BeefState.Raw;
+                State =  BeefState.Raw;
+                beefRenderer.sharedMaterial = stateMesh[0];
             }
-            else if (progressValue <= 40f)
+            else if (progressValue >= 40f && progressValue < 60f)
             {
                 if (State == BeefState.Medium)
                 {
                     return;
                 }
-                State =  BeefState.Medium;
-                beefRenderer.sharedMaterial = stateMesh[0];
+                State = BeefState.Medium;
+                beefRenderer.sharedMaterial = stateMesh[1];
+                
             }
-            else if (progressValue <= 90f)
+            else if (progressValue >= 60f && progressValue < 80f)
             {
                 if (State == BeefState.WellDone)
                 {
                     return;
                 }
-                State = BeefState.WellDone;
-                beefRenderer.sharedMaterial = stateMesh[1];
+                State =BeefState.WellDone;
+                beefRenderer.sharedMaterial = stateMesh[2];
             }
-            else
+            else if (progressValue >= slider.maxValue)
             {
                 if (State == BeefState.Burned)
                 {
                     return;
                 }
-                State =BeefState.Burned;
-                beefRenderer.sharedMaterial = stateMesh[2];
+                State = BeefState.Burned;
+                beefRenderer.sharedMaterial = stateMesh[3];
+                slider.gameObject.SetActive(false);
             }
-
-            
-
-         
         }
     }
 

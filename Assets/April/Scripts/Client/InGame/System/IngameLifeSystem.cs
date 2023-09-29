@@ -15,13 +15,18 @@ public class IngameLifeSystem : MonoBehaviour
     public int life = 2;
     public event Action<int> OnLifeCountChanged;
 
-    public void Start()
+    private void Start()
     {
+        
         Customer.OnLooseLife += TakeLife;
     }
 
     public void TakeLife()
     {
+        if (IngameEndSystem.Instance.End == true)
+        {
+            return;
+        }
         life--;
         OnLifeCountChanged?.Invoke(life);
     }

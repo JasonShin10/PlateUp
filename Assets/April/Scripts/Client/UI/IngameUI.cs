@@ -21,7 +21,7 @@ namespace April
         private void Start()
         {
             SetDayText(0);
-            timeSlider.maxValue = 60;
+            timeSlider.maxValue = IngameTimeSystem.Instance.countDownTime;
         }    
 
         public int TotalAssets
@@ -33,7 +33,7 @@ namespace April
             set
             {
                 totalAssetsAmount = value;
-                totalAssets.text = string.Format("Money : {0:###,###,##0}", totalAssetsAmount);
+                totalAssets.text = string.Format("{0:###,###,##0}", totalAssetsAmount);
             }
         }
 
@@ -44,14 +44,14 @@ namespace April
 
         public void SetTimeText(float elapsedTime)
         {
-            //int hours = (int)(elapsedTime / 3600);
-            //int minutes = (int)((elapsedTime % 3600) / 60);
-            //int seconds = (int)(elapsedTime % 60);
-
-            //timeText.text = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
             timeSlider.value = elapsedTime;
-            if(timeSlider.value >= timeSlider.maxValue)
+        }
+
+        public void ActivateClearUI()
+        {
+            if (timeSlider.value >= timeSlider.maxValue)
             {
+                IngameEndSystem.Instance.HandleGameOver();
                 ClearUI.Instance.CaculateScore(totalAssetsAmount);
             }
         }
@@ -63,7 +63,8 @@ namespace April
 
         public void MakeSpeedFast()
         {
-            IngameTimeSystem.Instance.SetTimeScale(Time.timeScale * 2f);
+            //IngameTimeSystem.Instance.SetTimeScale(Time.timeScale * 2f);
+            IngameUpgradeSystem.Instance.SpawnWaitress();
         }
 
         public void SetLife(int remainLife)

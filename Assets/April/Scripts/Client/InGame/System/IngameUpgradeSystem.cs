@@ -58,7 +58,7 @@ namespace April
             buttonFunctions.Add(buttonFunction1);
         }
 
-        private void SpawnWaitress()
+        public void SpawnWaitress()
         {
 
             var newWaitress = Instantiate(waitress);
@@ -74,7 +74,7 @@ namespace April
 
         private void IncreasePatience()
         {
-            RuntimeCustomerData.PaitenceValue /= 2;
+            RuntimeCustomerData.PaitenceValue /= 1.5f;
         }
 
         private void IncreaseSpeed()

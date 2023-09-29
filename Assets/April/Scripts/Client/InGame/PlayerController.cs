@@ -25,6 +25,7 @@ namespace April
         public IRaycastInterface currentInteractionObject;
 
         public float interactionOffsetHeight = 0.8f;
+
         public LayerMask interactionObjectLayerMask;
 
         [Title("Settings")]
@@ -42,6 +43,7 @@ namespace April
         private bool isMouseOverGUI;
         private float playerTurningCurrentVelocity;
 
+        private InteractionBase interactionBase;
         protected override void Awake()
         {
             Instance = this;
@@ -65,6 +67,7 @@ namespace April
             InputManager.Singleton.InputMaster.PlayerControl.Interact.canceled += StopInteraction;
 
             IngameLifeSystem.Instance.OnLifeCountChanged += OnLifeChanged;
+            IngameEndSystem.Instance.OnGameCleared += OnGameCleared;
 
             //InputManager.Singleton.InputMaster.PlayerControl.Click.performed += MouseClick;
             //InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed += CursorEnable;
@@ -83,6 +86,10 @@ namespace April
             if (IngameLifeSystem.Instance)
             {
                 IngameLifeSystem.Instance.OnLifeCountChanged -= OnLifeChanged;
+            }
+            if (IngameEndSystem.Instance)
+            {
+                IngameEndSystem.Instance.OnGameCleared -= OnGameCleared;
             }
 
             //InputManager.Singleton.InputMaster.PlayerControl.Click.performed -= MouseClick;
@@ -111,9 +118,7 @@ namespace April
                 case FoodContainer _:
                     this.visualization.SetInteractionFoodContainer(true);
                     break;
-                case DishWasher _:
-                    this.visualization.SetInteractionCook(true);
-                    break;
+               
             }
         }
 
@@ -124,9 +129,7 @@ namespace April
                 case FoodContainer _:
                     this.visualization.SetInteractionFoodContainer(false);
                     break;
-                case DishWasher _:
-                    this.visualization.SetInteractionCook(false);
-                    break;
+               
             }
         }
         private void DoInteraction(InputAction.CallbackContext context)
@@ -140,6 +143,11 @@ namespace April
         {
 
             isButtonPressed = true;
+            if (currentInteractionObject != null)
+            {
+            this.visualization.SetInteractionCook(true);
+
+            }
             if (currentInteractionObject is DishWasher)
             {
                 var dishWasher = (DishWasher)currentInteractionObject;
@@ -152,6 +160,7 @@ namespace April
         {
 
             isButtonPressed = false;
+            this.visualization.SetInteractionCook(false);
             if (currentInteractionObject != null)
             {
                 DeactivateInteraction_Animation(currentInteractionObject as InteractionBase);
@@ -187,16 +196,23 @@ namespace April
                     if (currentInteractionObject != interaction)
                     {
                         currentInteractionObject = interaction;
-                        if (interaction is InteractionBase interactionBase)
+                        
+                        if (currentInteractionObject is InteractionBase interactionBase)
                         {
+                            this.interactionBase?.TakeOutOutLineMaterial();
+                            this.interactionBase = interactionBase;
+                            this.interactionBase?.PutOutLineMaterial();
                             if (interactionBase.IsAutoInteractable)
                             {
+
                                 interactionBase.Interact(this);
                                 ActivateInteraction_Animation(interactionBase);
+
                             }
                         }
-                        else if (interaction is CharacterBase interactionCharacter)
+                        else if (currentInteractionObject is CharacterBase interactionCharacter)
                         {
+                           
                             if (interactionCharacter.IsAutoInteractable)
                             {
                                 interactionCharacter.Interact(this);
@@ -205,9 +221,14 @@ namespace April
                         }
                     }
                 }
+                else
+                {
+                    this.interactionBase?.TakeOutOutLineMaterial();
+                }
             }
             else
             {
+                this.interactionBase?.TakeOutOutLineMaterial();
                 UIManager.Hide<InteractionUI>(UIList.InteractionUI);
                 DeactivateInteraction_Animation(currentInteractionObject as InteractionBase);
                 currentInteractionObject = null;
@@ -219,6 +240,7 @@ namespace April
                 Vector3 gravity = Physics.gravity;
                 characterController.Move(gravity * Time.deltaTime);
             }
+          
         }
 
         public void Move(Vector2 movementInput)
@@ -258,15 +280,29 @@ namespace April
             if (remainLife <= 0)
             {
                 UIManager.Show<GameOverUI>(UIList.GameOverUI);
+
                 IngameCameraSystem.Instance.ChangeCamera(CameraModeType.Camera_GameOver);
 
                 IngameTimeSystem.Instance.SetTimeScale(1f);
+
                 IngameTimeSystem.Instance.IsUpdateEnable = false;
+
                 IngameCustomerFactorySystem.Instance.enabled = false;
 
+                visualization.SetGameOver(true);
                 //visualization.SetGameOverAnimation(true);
             }
         }
+
+        private void OnGameCleared()
+        {
+            IngameCameraSystem.Instance.ChangeCamera(CameraModeType.Camera_GameOver);
+            IngameTimeSystem.Instance.SetTimeScale(1f);
+            IngameTimeSystem.Instance.IsUpdateEnable = false;
+            IngameCustomerFactorySystem.Instance.enabled = false;
+            visualization.SetVictory(true);
+        }
+
     }
 }
 

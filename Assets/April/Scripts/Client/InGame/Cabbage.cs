@@ -33,8 +33,6 @@ namespace April
         void Start()
         {
 
-  
-            slider = GetComponentInChildren<Slider>(true);
             slider.maxValue = MaxValue;
         }
         public void ShowUI()

@@ -9,26 +9,16 @@ namespace April
 
     public class GameOverUI : UIBase
     {
-        public static GameOverUI Instance { get; private set; }
+        public static GameOverUI Instance => UIManager.Singleton.GetUI<GameOverUI>(UIList.GameOverUI);
 
         public Button restart;
         public Button exit;
         public Sprite nonClickImage;
         public Sprite clickImage;
 
-        private void Awake()
-        {
-            Instance = this;
-        }
-
         void Start()
         {
             UIManager.Hide<GameOverUI>(UIList.GameOverUI);
-        }
-
-        private void OnDestroy()
-        {
-            Instance = null;
         }
 
         public void OnRestart()

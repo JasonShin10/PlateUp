@@ -18,7 +18,7 @@ namespace April
         private List<InteractActionData> interactActionDatas = new List<InteractActionData>();
         private InteractionItem item;
         private Food foodComponent;
-
+        public Transform spawnPoint;
         [SerializeField] private float offSet = 2.2f;
 
         //public static event Action<Beef> OnBeefCreated;
@@ -59,7 +59,7 @@ namespace April
 
         void StoveInteract()
         {
-            // 플레이어가 아이템을 가지고 있다면
+
             if (player.item != null)
             {
                 this.item = player.item;
@@ -72,14 +72,11 @@ namespace April
                     return;
                 }
 
-
-                // Beef에 붙어있는 slider을 켜라
-
                 foodComponent.ShowUI();
                 foodComponent.transform.SetParent(this.transform);
-                foodComponent.transform.localPosition = new Vector3(0, offSet,0);
+                foodComponent.transform.position = spawnPoint.position;
                 
-                // 참조를 없애겠다.
+               
                 player.item = null;
                
             }

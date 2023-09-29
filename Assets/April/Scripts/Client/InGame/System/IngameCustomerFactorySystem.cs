@@ -20,7 +20,8 @@ namespace April
         public Character_Waitress waitress;
 
         private float currentTime;
-        private float maxTime = 10f;
+        private float spawnMaxTime = 20f;
+        private float spawnDecreaseTime = 3f;
 
         private void Awake()
         {
@@ -97,7 +98,7 @@ namespace April
         void Update()
         {
             currentTime += Time.deltaTime;
-            if (currentTime > maxTime)
+            if (currentTime > spawnMaxTime)
             {
                 SpawnCustomer();
                 currentTime = 0;
@@ -107,6 +108,11 @@ namespace April
         public void RemoveCustomer(Customer customer)
         {
             Destroy(customer.gameObject);
+        }
+
+        public void MakeSpawnFast()
+        {
+            spawnMaxTime -= spawnDecreaseTime;
         }
     }
 }

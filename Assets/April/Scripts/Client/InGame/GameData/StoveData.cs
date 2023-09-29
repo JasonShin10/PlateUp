@@ -12,7 +12,7 @@ namespace April
 
         public void Initialize()
         {
-            BurningPower = 1f;
+            BurningPower = 5f;
         }
 
         public void OnValidate()

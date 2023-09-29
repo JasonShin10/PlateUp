@@ -25,7 +25,9 @@ namespace April
             = new Dictionary<InteractionObjectType, List<InteractionBase>>();
 
         //public RuntimeCollection_InteractionObjects runtimeCollection;
-
+        public MeshRenderer meshRenderer;
+        public Material outLineMaterial;
+        private string materialName = "OutLineMaterial";
         public abstract bool IsAutoInteractable { get; }
         public abstract InteractionObjectType InterationObjectType { get; }
         public abstract void Interact(CharacterBase character);
@@ -44,8 +46,20 @@ namespace April
         public virtual void Start()
         {
             gameObject.layer = LayerMask.NameToLayer("InteractionObject");
-        }
 
+        }
+        public void PutOutLineMaterial()
+        {
+            meshRenderer.enabled = true;
+        }
+        private void Update()
+        {
+            
+        }
+        public void TakeOutOutLineMaterial()
+        {
+            meshRenderer.enabled = false;
+        }
         void RegistObject()
         {
 

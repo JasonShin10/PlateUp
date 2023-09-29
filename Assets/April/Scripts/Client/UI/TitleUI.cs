@@ -7,20 +7,13 @@ namespace April
 {
     public class TitleUI : UIBase
     {
-        public static TitleUI Instance { get; private set; }
+        public static TitleUI Instance => UIManager.Singleton.GetUI<TitleUI>(UIList.TitleUI);
 
         public Button start;
         public Button exit;
         public Sprite nonClickImage;
         public Sprite clickImage;
-        private void Awake()
-        {
-            Instance = this;
-        }
-        private void OnDestroy()
-        {
-            Instance = null;
-        }
+   
         public void OnClickStartButton()
         {
             start.image.sprite = clickImage;

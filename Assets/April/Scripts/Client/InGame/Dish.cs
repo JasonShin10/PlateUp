@@ -9,8 +9,6 @@ namespace April
 {
     public class Dish : InteractionItem
     {
-        //public List<Food> ContainedFoodItems => mergedFoodList;
-
         public List<Food> ContainedFoodItems
         {
                 get { return mergedFoodList; }
@@ -81,7 +79,6 @@ namespace April
         void Start()
         {
             dishRenderer = GetComponentInChildren<Renderer>();
-            slider = GetComponentInChildren<Slider>(true);
             slider.maxValue = 90f;
         }
 

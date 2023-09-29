@@ -26,10 +26,10 @@ namespace April
         private Customer currentTargetCustomer;
         private Queue<CharacterJobTaskBase> jobTasks = new Queue<CharacterJobTaskBase>();
         [ShowInInspector]
-        private List<CharacterJobTaskBase> DisplayQueueInInspector
-        {
-            get { return new List<CharacterJobTaskBase>(jobTasks); }
-        }
+        //private List<CharacterJobTaskBase> DisplayQueueInInspector
+        //{
+        //    get { return new List<CharacterJobTaskBase>(jobTasks); }
+        //}
         private CharacterJobTaskBase currentJob;
 
         public event Action OnInsertedJob;
@@ -57,6 +57,10 @@ namespace April
             if (moving == true)
             {
                 visualization.SetMovement(0.5f);
+            }
+            else
+            {
+                visualization.SetMovement(0);
             }
         }
         private void OnReceivedNewJob()

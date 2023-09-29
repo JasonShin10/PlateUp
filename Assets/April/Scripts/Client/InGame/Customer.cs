@@ -120,7 +120,7 @@ namespace April
             base.Start();
             int RandomNum = UnityEngine.Random.Range(0, textContainer.textContainer.Count);
             text.text = textContainer.textContainer[RandomNum];
-            patienceSlider.maxValue = 90f;
+            patienceSlider.maxValue = 360f;
             patienceSlider.value = patienceSlider.maxValue;
             patienceSlider.gameObject.SetActive(false);
             orderImageDisplay.gameObject.SetActive(false);
@@ -166,6 +166,10 @@ namespace April
             if (moving == true)
             {
                 visualization.SetMovement(0.5f);
+            }
+            else
+            {
+                visualization.SetMovement(0f);
             }
 
             if (patienceSlider.value <= 0f)
@@ -266,8 +270,8 @@ namespace April
                     lastState = (int)ThickBeef.ThickBeefState.WellDone;
                     return new ThickBeef();
                 case MenuList.Salad:
-                    firstState = 0;
-                    lastState = 0;
+                    firstState = 1;
+                    lastState = 1;
                     return new Salad();
                 default:
                     throw new ArgumentException("Invalid menu item");
@@ -276,22 +280,23 @@ namespace April
 
         public void DecideMenu()
         {
-            // Hint ? 
+            
             //MyEnumTypes randomType = (MyEnumTypes)UnityEngine.Random.Range((int)MyEnumTypes.None, (int)MyEnumTypes.RandomMax);
 
             Array values = Enum.GetValues(typeof(MenuList));
             MenuList randomMenu = (MenuList)UnityEngine.Random.Range((int)MenuList.Beef, (int)MenuList.Salad + 1);
-            // MenuList randomMenu = (MenuList)values.GetValue(random.Next(values.Length));
+            
             var food = GetFoodByMenu(randomMenu, out int firstState, out int lastState);
             int randomMenuInt = Convert.ToInt32(randomMenu);
 
             int randomMenuNum = UnityEngine.Random.Range(firstState, lastState + 1);
 
-            orderImageDisplay.sprite = imageContainer.MenuSpriteGroups[randomMenuInt][randomMenuNum];
-            orderedMenuType = 0;
-            orderedMenuStateType = 0;
-            //orderedMenuType = randomMenu;
-            //orderedMenuStateType = randomMenuNum;
+            orderImageDisplay.sprite = imageContainer.MenuSpriteGroups[randomMenuInt][randomMenuNum-1];
+            orderImageDisplay.SetNativeSize();
+            //orderedMenuType = 0;
+            //orderedMenuStateType = 0;
+            orderedMenuType = randomMenu;
+            orderedMenuStateType = randomMenuNum; 
         }
 
         private void HandleEntering()
@@ -303,7 +308,7 @@ namespace April
         private void HandleWaiting()
         {
             state = CustomerState.Waiting;
-
+            moving = false;
             MoveToTarget(waitingPos);
         }
 
@@ -353,7 +358,6 @@ namespace April
         }
         public void GoOut()
         {
-
             MoveToTarget(exitTarget.transform, () =>
             {
                 IngameCustomerFactorySystem.Instance.RemoveCustomer(this);
@@ -378,9 +382,8 @@ namespace April
                 OnLooseLife?.Invoke();
                 IngameWaiterSystem.Instance.RemoveCustomer(this);
                 GoOut();
-                IngameUI.Instance.AddAssets(100);
                 StartCoroutine(ActivateSpeechBubble());
-                
+                orderImageDisplay.gameObject.SetActive(false);
             }
             else
             {
@@ -425,17 +428,6 @@ namespace April
             SetCustomerState(CustomerState.Leaving);
             
         }
-        IEnumerator ActivateSpeechBubble()
-        {
-            speechBubble.gameObject.SetActive(true);
-            if (patience == false)
-            {
-                text.gameObject.SetActive(false);
-                angryEmoji.gameObject.SetActive(true);
-            }
-            yield return new WaitForSeconds(maxTime);
-            speechBubble.gameObject.SetActive(false);
-        }
         IEnumerator Eat(IEnumerable<Customer> customers)
         {
             yield return new WaitForSeconds(maxTime);
@@ -456,6 +448,22 @@ namespace April
             }
 
             myTable.customers.Clear();
+        }
+        IEnumerator ActivateSpeechBubble()
+        {
+            speechBubble.gameObject.SetActive(true);
+            if (patience == false)
+            {
+                text.gameObject.SetActive(false);
+                angryEmoji.gameObject.SetActive(true);
+            }
+            else
+            {
+                text.gameObject.SetActive(true);
+                angryEmoji.gameObject.SetActive(false);
+            }
+            yield return new WaitForSeconds(maxTime);
+            speechBubble.gameObject.SetActive(false);
         }
 
         public void CustomerInteract()
@@ -521,5 +529,6 @@ namespace April
             }
         }
         float maxTime = 3f;
+
     }
 }

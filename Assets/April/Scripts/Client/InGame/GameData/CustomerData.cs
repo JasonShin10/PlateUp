@@ -8,7 +8,7 @@ namespace April
     [CreateAssetMenu(fileName = "New Customer Data", menuName = "April/Create Customer Data")]
     public class CustomerData : ScriptableObject
     {
-        public int PaitenceValue;
+        public float PaitenceValue;
         // Start is called before the first frame update
         public void Initialize()
         {

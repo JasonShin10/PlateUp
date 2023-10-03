@@ -15,7 +15,7 @@ namespace April
 
         public Transform spawnPoint;
         [MinMaxSlider(2, 10, true)]
-        public Vector2Int npcGroupSpawnRnage = new Vector2Int(2, 10);
+        public Vector2Int npcGroupSpawnRange = new Vector2Int(2, 10);
 
         public Character_Waitress waitress;
 
@@ -51,11 +51,10 @@ namespace April
 
             int rand = Random.Range(0, 2);
             bool isGroupSpawn = rand % 2 == 0;
-            //bool isGroupSpawn = false;
             int spawnCount = 1;
             if (isGroupSpawn)
             {
-                spawnCount = Random.Range(npcGroupSpawnRnage.x, npcGroupSpawnRnage.y + 1);
+                spawnCount = Random.Range(npcGroupSpawnRange.x, npcGroupSpawnRange.y + 1);
             }
 
             if (spawnCount > IngameCustomerWaitingSystem.Instance.EmptyWaitingSlotCount)
@@ -71,10 +70,6 @@ namespace April
                     customerInstance.isGroup = isGroupSpawn;
                     customerInstance.CustomerJobType = CustomerJobTypes.Doctor;
 
-                    //Dictionary<CustomerJobTypes, VisualizationCharacter> visualizationPrefabs = new Dictionary<CustomerJobTypes, VisualizationCharacter>();
-                    //var visualPrefab = visualizationPrefabs[customerInstance.CustomerJobType];
-                    //VisualizationCharacter visualCharacter = Instantiate(visualPrefab, customerInstance.graphicRoot);
-
                     VisualizationCharacter visualCharacter = Instantiate(customerVisualizationList[num], customerInstance.graphicRoot);
                     visualCharacter.gameObject.SetActive(true);
                     customerInstance.visualization = visualCharacter;
@@ -85,12 +80,8 @@ namespace April
                     customerInstance.SetCustomerState(CustomerState.Waiting);
 
                     customerInstance.exitTarget = this.transform;
-                    //waitress.RegisterCustomer(customerInstance);
                     waitingSlots[i].customer = customerInstance;
-
-                   
                 }
-
                 IngameCustomerWaitingSystem.Instance.CheckWaitingCustomerPossibleEnter();
             }
         }

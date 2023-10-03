@@ -13,14 +13,14 @@ namespace April
         public Customer assignedCustomer;
         public Customer arrivedCustomer;
         public Transform seatTransform;
-        public Transform position;
+        public Transform foodTransform;
     }
 
     public class CustomerTable : InteractionBase
     {
-        public bool IsEmptyTable => !customerAssigned;
-        public bool alone = false;
-        public bool customerAssigned;
+        public bool IsEmptyTable => !hasCustomerAssigned;
+        public bool isAlone = false;
+        public bool hasCustomerAssigned;
         public Stack<InteractionItem> dishes = new Stack<InteractionItem>();
         public override bool IsAutoInteractable => false;
 
@@ -40,12 +40,12 @@ namespace April
         {
             if (customers.Count == 2)
             {
-                customerAssigned = true;
+                hasCustomerAssigned = true;
             }
         }
 
 
-        public void ChangeCustomerState()
+        public void HandleOrder()
         {
             foreach (TableSlotData tableSlot in tableSlots)
             {
@@ -54,25 +54,18 @@ namespace April
                     tableSlot.assignedCustomer.DecideMenu();
                     tableSlot.assignedCustomer.PatienceSliderReset();
                     tableSlot.assignedCustomer.SetCustomerState(CustomerState.WaitingFood);
-                    tableSlot.assignedCustomer.orderImageDisplay.gameObject.SetActive(true);
 
                     IngameWaiterSystem.Instance.RemoveWaitingOrder(tableSlot.assignedCustomer);
-
                 }
-
-
-
-
             }
         }
 
 
         public void CustomerCheck()
         {
-
             if (IsAllEmptyTableSlot && CheckTableClean())
             {
-                customerAssigned = false;
+                hasCustomerAssigned = false;
 
                 IngameCustomerWaitingSystem.Instance.NotifyCanTableCheckIn();
             }

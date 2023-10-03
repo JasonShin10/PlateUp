@@ -9,6 +9,7 @@ namespace April
         Beef = 0,
         ThickBeef = 1,
         Salad = 2,
+        RandomMax,
     }
 
     public enum MyEnumTypes
@@ -16,11 +17,6 @@ namespace April
         None = 0,
         MyType_1 = 1,
         MyType_2 = 2,
-        MyType_3 = 3,
-        MyType_4 = 4,
-        MyType_5 = 5,
-        MyType_6 = 6,
-
         RandomMax,
     }
 

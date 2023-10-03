@@ -12,7 +12,7 @@ public class IngameLifeSystem : MonoBehaviour
     public bool HasRemainLife => life > 0;
     public int RemainLife => life;
 
-    public int life = 2;
+    [SerializeField] private int life = 2;
     public event Action<int> OnLifeCountChanged;
 
     private void Start()

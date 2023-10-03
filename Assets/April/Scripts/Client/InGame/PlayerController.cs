@@ -96,20 +96,20 @@ namespace April
             //InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed -= CursorEnable;
         }
 
-        //private void MouseClick(InputAction.CallbackContext context)
-        //{
-        //    if (!isMouseOverGUI)
-        //    {
-        //        Cursor.visible = false;
-        //        Cursor.lockState = CursorLockMode.Locked;
-        //    }
-        //}
+        private void MouseClick(InputAction.CallbackContext context)
+        {
+            if (!isMouseOverGUI)
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
 
-        //private void CursorEnable(InputAction.CallbackContext context)
-        //{
-        //    Cursor.visible = true;
-        //    Cursor.lockState = CursorLockMode.None;
-        //}
+        private void CursorEnable(InputAction.CallbackContext context)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
 
         private void ActivateInteraction_Animation(InteractionBase currentInteraction)
         {
@@ -134,14 +134,11 @@ namespace April
         }
         private void DoInteraction(InputAction.CallbackContext context)
         {
-
             currentInteractionObject?.Interact(this);
-
         }
 
         private void HoldInteraction(InputAction.CallbackContext context)
         {
-
             isButtonPressed = true;
             if (currentInteractionObject != null)
             {
@@ -153,7 +150,6 @@ namespace April
                 var dishWasher = (DishWasher)currentInteractionObject;
                 dishWasher.particleController.PlayParticle();
             }
-
         }
 
         private void StopInteraction(InputAction.CallbackContext context)
@@ -234,7 +230,6 @@ namespace April
                 currentInteractionObject = null;
             }
 
-
             if (!characterController.isGrounded)
             {
                 Vector3 gravity = Physics.gravity;
@@ -276,7 +271,6 @@ namespace April
         {
             IngameUI.Instance.SetLife(remainLife);
 
-            // Game Over
             if (remainLife <= 0)
             {
                 UIManager.Show<GameOverUI>(UIList.GameOverUI);
@@ -290,7 +284,6 @@ namespace April
                 IngameCustomerFactorySystem.Instance.enabled = false;
 
                 visualization.SetGameOver(true);
-                //visualization.SetGameOverAnimation(true);
             }
         }
 

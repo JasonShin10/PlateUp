@@ -66,37 +66,34 @@ namespace April
             }
         }
 
-        public bool TryGetEmptySlot(out int id, out IngameCustomerWaitingSystem_SlotData slot)
-        {
-            for (int i = 0; i < waitingSlots.Count; i++)
-            {
-                if (waitingSlots[i].customer == null)
-                {
-                    id = waitingIdentifyIncreament++;
-                    slot = waitingSlots[i];
-                    return true;
-                }
-            }
+        //public bool TryGetEmptySlot(out int id, out IngameCustomerWaitingSystem_SlotData slot)
+        //{
+        //    for (int i = 0; i < waitingSlots.Count; i++)
+        //    {
+        //        if (waitingSlots[i].customer == null)
+        //        {
+        //            id = waitingIdentifyIncreament++;
+        //            slot = waitingSlots[i];
+        //            return true;
+        //        }
+        //    }
 
-            id = -1;
-            slot = null;
-            return false;
-        }
+        //    id = -1;
+        //    slot = null;
+        //    return false;
+        //}
 
         public void NotifyCanTableCheckIn()
-        {
-           
+        {           
             var firstSlot = waitingSlots[0];
             if (!firstSlot.IsExistCustomer)
                 return;
-
 
             int targetGroupID = firstSlot.customer.groupID;
             if (Customer.TryGetCustomerGroup(targetGroupID, out var waitingCustomers))
             {
                 waitingCustomers.ForEach(customer =>
-                {
-                    
+                {                   
                     customer.SetCustomerState(CustomerState.Entering);
                 });
             }
@@ -106,7 +103,6 @@ namespace April
             {
                 waitingSlots[i].customer = null;
             }
-
             ShiftWaitingCustomers();
         }
 
@@ -127,7 +123,6 @@ namespace April
                         continue;
                     }
                 }
-
             }
         }
 

@@ -54,7 +54,7 @@ namespace April
         protected override void Update()
         {
             base.Update();
-            if (moving == true)
+            if (isMoving == true)
             {
                 visualization.SetMovement(0.5f);
             }

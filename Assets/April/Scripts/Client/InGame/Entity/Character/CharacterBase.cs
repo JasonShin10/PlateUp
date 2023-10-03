@@ -33,7 +33,7 @@ namespace April
 
         public Dish dish;
         public Food food;
-        public bool moving;
+        public bool isMoving;
 
         public Transform spawnPos;
         protected virtual void Awake()
@@ -66,7 +66,7 @@ namespace April
             distanceBetweenDestination = Vector3.Distance(transform.position, NavAgent.destination);
             if (distanceBetweenDestination <= NavAgent.stoppingDistance)
             {
-                moving = false;
+                isMoving = false;
                 if (OnDestination != null)
                 {                    
                     OnDestination?.Invoke();
@@ -84,7 +84,7 @@ namespace April
             }
             else
             {
-                moving = true;
+                isMoving = true;
                 NavAgent.SetDestination(destination);
 
                 if (onDestinationCallback != null)

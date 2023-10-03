@@ -33,7 +33,7 @@ namespace April
         private void Start()
         {
             thickBeefRenderer = GetComponentInChildren<Renderer>(true);
-            slider.maxValue = 90f;
+            slider.maxValue = 160f;
             State = ThickBeefState.Frozen;
         }
         public override void ShowUI()
@@ -53,7 +53,7 @@ namespace April
                 slider.value = progressValue;
             }
 
-            if (progressValue >= 20f && progressValue < 40f)
+            if (progressValue >= 40f && progressValue < 80f)
             {
                 if (State == ThickBeefState.Raw)
                 {
@@ -62,7 +62,7 @@ namespace April
                 State = ThickBeefState.Raw;
                 thickBeefRenderer.sharedMaterial = stateMesh[0];
             }
-            else if (progressValue >= 40f && progressValue < 60f)
+            else if (progressValue >= 80f && progressValue < 120f)
             {
                 if (State == ThickBeefState.Medium)
                 {
@@ -71,7 +71,7 @@ namespace April
                 State = ThickBeefState.Medium;
                 thickBeefRenderer.sharedMaterial = stateMesh[1];
             }
-            else if (progressValue >= 60f && progressValue < 80f)
+            else if (progressValue >= 120f && progressValue < 160f)
             {
                 if (State == ThickBeefState.WellDone)
                 {

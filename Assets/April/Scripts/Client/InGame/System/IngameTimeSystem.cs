@@ -13,7 +13,7 @@ namespace April
         public float TimeSpeedRate { get => timeSpeedRate; set => timeSpeedRate = value; }
 
         private float ingameSecondsPerOneDay = 30f;
-        public float countDownTime = 200;
+        public float countDownTime = 60;
         private float progressTime = 0;
         private bool isUpdateEnable = true;
         private float timeSpeedRate = 1f;

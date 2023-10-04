@@ -62,12 +62,6 @@ namespace April
                 return;
 
             waitingFoodCustomerList.Add(customer);
-
-            //var emptyJobWaiter = Character_Waitress.SpawnedWaitressList.Find(x => x.HasJobTask == false);
-            //if (emptyJobWaiter != null)
-            //{
-            //    emptyJobWaiter.HandleFoodArrived();
-            //}
         }
 
         public void RemoveWaitingFood(Customer customer)

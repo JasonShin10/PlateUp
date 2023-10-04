@@ -19,7 +19,6 @@ namespace April
         private Dish dish;
         private Food food;
         [SerializeField] private Transform spawnPoint; 
-        //public float offset;
         public event Action OnFoodArrived;
 
         public void WaitressInteract(Character_Waitress waitress)

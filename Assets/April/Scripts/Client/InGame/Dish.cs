@@ -11,7 +11,7 @@ namespace April
     {
         public List<Food> ContainedFoodItems
         {
-                get { return mergedFoodList; }
+            get { return mergedFoodList; }
         }
         public Renderer dishRenderer;
         public bool dirty;
@@ -23,10 +23,7 @@ namespace April
         public Salad salad;
 
 
-        public List<IngredientList> ingredients = new List<IngredientList>
-        {IngredientList.Cabbage,
-        IngredientList.Tomato
-        };
+        public List<IngredientList> ingredients = new List<IngredientList> { IngredientList.Cabbage, IngredientList.Tomato };
         public float offset = 0.1f;
         public Transform spawnPoint;
         public void AddItem(Food item, Vector3 offset)
@@ -61,14 +58,7 @@ namespace April
 
         public bool CanCreateSalad()
         {
-            if (ingredients.Count == 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return ingredients.Count == 0;
         }
 
         public void RemoveItem(Food item, Transform parent = null)

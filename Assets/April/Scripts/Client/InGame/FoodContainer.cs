@@ -36,17 +36,7 @@ namespace April
             containerCamera.gameObject.SetActive(false);
         }
 
-        public void SpawnBeefToPlayer(Food beef)
-        {
-            var newFoodItem = Instantiate(beef);
-            newFoodItem.transform.localScale = beef.transform.localScale;
-            newFoodItem.transform.SetParent(player.transform);
-            newFoodItem.transform.position = player.spawnPos.position;
-            newFoodItem.gameObject.SetActive(true);
-            player.item = newFoodItem;
-        }
 
-    
         void BeefInteract()
         {
             if (player.item == null)
@@ -62,19 +52,25 @@ namespace April
                 SpawnBeefToPlayer(thickBeefPrefab);
             }
         }
+        public void SpawnBeefToPlayer(Food beef)
+        {
+            var newBeef = Instantiate(beef);
+            newBeef.transform.localScale = beef.transform.localScale;
+            newBeef.transform.SetParent(player.transform);
+            newBeef.transform.position = player.spawnPos.position;
+            newBeef.gameObject.SetActive(true);
+            player.item = newBeef;
+        }
+
         public override void Interact(CharacterBase character)
         {
-
             this.player = character as PlayerController;
 
             if (this.player != null)
             {
-
-            var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
-            interactUI.InitActions(interactActionDatas);
-
-
-            containerCamera.gameObject.SetActive(true);
+                var interactUI = UIManager.Show<InteractionUI>(UIList.InteractionUI);
+                interactUI.InitActions(interactActionDatas);
+                containerCamera.gameObject.SetActive(true);
             }
         }
 

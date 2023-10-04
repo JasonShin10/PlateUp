@@ -58,7 +58,7 @@ namespace April
 
         public void SetDayText(int dayNumber)
         {
-            currentStage.text = string.Format("Day{0}", dayNumber);
+            //currentStage.text = string.Format("Day{0}", dayNumber);
         }
 
         public void MakeSpeedFast()

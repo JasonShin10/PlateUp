@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -13,7 +14,7 @@ namespace April
 
         public PlayerController player;
 
-        private InteractionItem item;
+        private InteractionItem tableItem;
 
         private IButtonInteract buttonitem;
 
@@ -34,94 +35,132 @@ namespace April
             }
         }
 
-  
-        void TableInteract()
+        private void HandleTableInteractions()
         {
-          
             if (player.item != null)
             {
                 if (player.item is Dish)
                 {
-                   
-                    if (item is Food)
-                    {
-                        dish = player.item as Dish;
-                        var food = item as Food;
-                        dish.AddItem(food, dish.spawnPoint.position);
-                        item = null;
-                        
-                        return;
-                    }
-                    else
-                    {
-                        item = player.item;
-                        dish = item as Dish;
-                        dish.transform.SetParent(this.transform);
-                        dish.transform.position = spawnPoint.position;
-                        player.item = null;
-                        
-                    }
+                    HandlePlayerHoldingDish();
                 }
                 else
                 {
-                    if (item is Dish)
-                    {
-                        dish = item as Dish;
-                        if (player.item is Ingredient)
-                        {
-                        var ingredient = player.item as Ingredient;
-                            if (ingredient.sliced == true)
-                            {
-                                dish.AddItem(ingredient, dish.spawnPoint.position); 
-                            }
-                        }
-                        else if (player.item is Food)
-                        {
-                        var food = player.item as Food;
-                        dish.AddItem(food, dish.spawnPoint.position);
-                        }
-                        player.item = null;
-                    }
-                    else
-                    {
-                        if (item == null)
-                        {
-                            item = player.item;
-                            if (item is IButtonInteract)
-                            {
-                                buttonitem = item as IButtonInteract;
-                                buttonitem.ShowUI();
-                            }
-                            item.transform.SetParent(this.transform);
-                            item.transform.position = spawnPoint.position;
-                            player.item = null;
-                            
-                        }
-
-                    }
-
+                    HandlePlayerHoldingOtherItem();
                 }
             }
             else
             {
-                if (item != null)
-                {
-                    if (item is IButtonInteract)
-                    {
-                        buttonitem = item as IButtonInteract;
-                        if ((int)buttonitem.ProgressValue != 0 && (int)buttonitem.ProgressValue != buttonitem.MaxValue)
-                        {
-                            return;
-                        }
-                        buttonitem.HideUI();
-                    }
-                    player.item = item;
-                    item.transform.SetParent(player.transform);
-                    item.transform.position = player.spawnPos.position;
-                    item = null;
-                }
+                HandlePlayerHoldingNothing();
             }
         }
+
+        private void HandlePlayerHoldingDish()
+        {
+            if (tableItem is Food)
+            {
+                AddFoodToDish();
+            }
+            else
+            {
+                MoveDishToTable();
+            }
+        }
+
+        private void HandlePlayerHoldingOtherItem()
+        {
+            if (tableItem is Dish)
+            {
+                AddPlayerItemToDish();
+            }
+            else
+            {
+                MoveItemToTable();
+            }
+        }
+
+        private void HandlePlayerHoldingNothing()
+        {
+            if (tableItem != null)
+            {
+                MoveTableItemToPlayer();
+            }
+        }
+
+        private void AddFoodToDish()
+        {
+            dish = player.item as Dish;
+            var food = tableItem as Food;
+            dish.AddItem(food, dish.spawnPoint.position);
+            tableItem = null;
+        }
+
+        private void MoveDishToTable()
+        {
+            tableItem = player.item;
+            dish = tableItem as Dish;
+            dish.transform.SetParent(this.transform);
+            dish.transform.position = spawnPoint.position;
+            player.item = null;
+        }
+
+        private void AddPlayerItemToDish()
+        {
+            dish = tableItem as Dish;
+            if (player.item is Ingredient)
+            {
+                var ingredient = player.item as Ingredient;
+                if (ingredient.sliced == true)
+                {
+                    dish.AddItem(ingredient, dish.spawnPoint.position);
+                }
+            }
+            else if (player.item is Food)
+            {
+                var food = player.item as Food;
+                dish.AddItem(food, dish.spawnPoint.position);
+            }
+            player.item = null;
+        }
+
+        private void MoveItemToTable()
+        {
+            if (tableItem == null)
+            {
+                tableItem = player.item;
+                if (tableItem is IButtonInteract)
+                {
+                    buttonitem = tableItem as IButtonInteract;
+                    buttonitem.ShowUI();
+                }
+                tableItem.transform.SetParent(this.transform);
+                tableItem.transform.position = spawnPoint.position;
+                player.item = null;
+            }
+        }
+
+
+        private void MoveTableItemToPlayer()
+        {
+            if (tableItem is IButtonInteract)
+            {
+                buttonitem = tableItem as IButtonInteract;
+                if ((int)buttonitem.ProgressValue != 0 && (int)buttonitem.ProgressValue != buttonitem.MaxValue)
+                {
+                    return;
+                }
+                buttonitem.HideUI();
+            }
+            player.item = tableItem;
+            tableItem.transform.SetParent(player.transform);
+            tableItem.transform.position = player.spawnPos.position;
+            tableItem = null;
+        }
+
+
+
+
+
+     
 
         public override void Interact(CharacterBase character)
         {
@@ -129,7 +168,7 @@ namespace April
 
             if (this.player != null)
             {
-                TableInteract();
+                HandleTableInteractions();
             }
         }
 

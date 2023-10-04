@@ -19,18 +19,33 @@ namespace April
 
         public void Update()
         {
-            if (dish != null && dish.dirty == true)
+            if (DishNeedsCleaning())
             {
-                if (PlayerController.Instance.isButtonPressed == true && PlayerController.Instance.currentInteractionObject == this)
-                {
-                    dish.progressValue += speed * Time.deltaTime;
-                }
-              
-                if (dish.slider.value == dish.slider.maxValue)
-                {
-                    dish.GetClean();
-                    dish.transform.position = cleanDishPivot.position;
-                }
+                UpdateCleaningProgress();
+                CompleteCleaningDish();
+            }
+        }
+
+        private bool DishNeedsCleaning()
+        {
+            return dish != null && dish.dirty;
+        }
+
+        private void UpdateCleaningProgress()
+        {
+            if (PlayerController.Instance.isButtonPressed &&
+                PlayerController.Instance.currentInteractionObject == this)
+            {
+                dish.progressValue += speed * Time.deltaTime;
+            }
+        }
+
+        private void CompleteCleaningDish()
+        {
+            if (dish.slider.value == dish.slider.maxValue)
+            {
+                dish.GetClean();
+                dish.transform.position = cleanDishPivot.position;
             }
         }
 
@@ -39,30 +54,53 @@ namespace April
         {
             if (player.item != null)
             {
-                dish = player.item as Dish;
-                if (dish != null && dish.dirty == true)
-                {
-                    player.item.transform.SetParent(this.transform);
-                    player.item.transform.position = dirtyDishPivot.position;
-                    player.item = null;
-                    dish.ShowUI();
-                }
+                HandleDirtyDish();
             }
             else
             {
-                if (dish.dirty == false)
-                {
-                    player.item = dish;
-                    dish.HideUI();
-                    player.item.transform.SetParent(player.transform);
-                    player.item.transform.position = player.spawnPos.position;
-                    dish.progressValue = 0;
-                    dish = null;
-                    Exit();
-                }
+                HandleCleanDish();
             }
         }
 
+        private void HandleDirtyDish()
+        {
+            dish = player.item as Dish;
+            if (dish != null && dish.dirty == true)
+            {
+                MoveDishToWasher();
+                dish.ShowUI();
+            }
+        }
+
+        private void HandleCleanDish()
+        {
+            if (dish.dirty == false)
+            {
+                MoveDishToPlayer();
+                ResetDish();
+            }
+        }
+
+        private void MoveDishToWasher()
+        {
+            player.item.transform.SetParent(this.transform);
+            player.item.transform.position = dirtyDishPivot.position;
+            player.item = null;
+        }
+
+        private void MoveDishToPlayer()
+        {
+            player.item = dish;
+            dish.HideUI();
+            player.item.transform.SetParent(player.transform);
+            player.item.transform.position = player.spawnPos.position;
+        }
+
+        private void ResetDish()
+        {
+            dish.progressValue = 0;
+            dish = null;
+        }
         public override void Interact(CharacterBase character)
         {
             this.player = character as PlayerController;
@@ -70,13 +108,12 @@ namespace April
             if (this.player != null)
             {
                 DishWasherInteract();
-
             }
         }
 
         public override void Exit()
         {
-            //this.player.visualization.SetInteractionCook(false);
+
         }
     }
 

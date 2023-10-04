@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
+using UnityEditor.PackageManager;
 
 namespace April
 {
@@ -132,6 +133,7 @@ namespace April
                
             }
         }
+
         private void DoInteraction(InputAction.CallbackContext context)
         {
             currentInteractionObject?.Interact(this);
@@ -174,68 +176,88 @@ namespace April
             return mousePosition.x >= 0 && mousePosition.x <= Screen.width && mousePosition.y >= 0 && mousePosition.y <= Screen.height;
         }
 
-        protected override void Update()
+
+
+ 
+
+        public void CheckMouseOverGUI()
         {
             if (EventSystem.current != null)
                 isMouseOverGUI = EventSystem.current.IsPointerOverGameObject();
             else
                 isMouseOverGUI = false;
+        }
 
+        public void HandleRayCastInteraction()
+        {
             Ray ray = new Ray(transform.position + Vector3.up, transform.forward);
             Debug.DrawRay(ray.origin, ray.direction);
             if (Physics.Raycast(ray, out var hitInfo, 1.5f, interactionObjectLayerMask, QueryTriggerInteraction.Collide))
             {
-                bool FoundInteractionObject = hitInfo.transform.TryGetComponent(out IRaycastInterface interaction);
-
-                if (FoundInteractionObject)
-                {
-                    if (currentInteractionObject != interaction)
-                    {
-                        currentInteractionObject = interaction;
-                        
-                        if (currentInteractionObject is InteractionBase interactionBase)
-                        {
-                            this.interactionBase?.TakeOutOutLineMaterial();
-                            this.interactionBase = interactionBase;
-                            this.interactionBase?.PutOutLineMaterial();
-                            if (interactionBase.IsAutoInteractable)
-                            {
-
-                                interactionBase.Interact(this);
-                                ActivateInteraction_Animation(interactionBase);
-
-                            }
-                        }
-                        else if (currentInteractionObject is CharacterBase interactionCharacter)
-                        {
-                           
-                            if (interactionCharacter.IsAutoInteractable)
-                            {
-                                interactionCharacter.Interact(this);
-
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    this.interactionBase?.TakeOutOutLineMaterial();
-                }
+                FoundInteractionObject(hitInfo);
             }
             else
             {
-                this.interactionBase?.TakeOutOutLineMaterial();
-                UIManager.Hide<InteractionUI>(UIList.InteractionUI);
-                DeactivateInteraction_Animation(currentInteractionObject as InteractionBase);
-                currentInteractionObject = null;
+                NoInteractonObject();
             }
+        }
 
+        public void FoundInteractionObject(RaycastHit hitInfo)
+        {
+            bool FoundInteractionObject = hitInfo.transform.TryGetComponent(out IRaycastInterface interaction);
+
+            if (FoundInteractionObject)
+            {
+                if (currentInteractionObject != interaction)
+                {
+                    currentInteractionObject = interaction;
+
+                    if (currentInteractionObject is InteractionBase interactionBase)
+                    {
+                        this.interactionBase?.TakeOutOutLineMaterial();
+                        this.interactionBase = interactionBase;
+                        this.interactionBase?.PutOutLineMaterial();
+                        if (interactionBase.IsAutoInteractable)
+                        {
+                            interactionBase.Interact(this);
+                            ActivateInteraction_Animation(interactionBase);
+                        }
+                    }
+                    else if (currentInteractionObject is CharacterBase interactionCharacter)
+                    {
+                        if (interactionCharacter.IsAutoInteractable)
+                        {
+                            interactionCharacter.Interact(this);
+                        }
+                    }
+                }
+            }
+        }
+
+ 
+        public void NoInteractonObject()
+        {
+            this.interactionBase?.TakeOutOutLineMaterial();
+            UIManager.Hide<InteractionUI>(UIList.InteractionUI);
+            DeactivateInteraction_Animation(currentInteractionObject as InteractionBase);
+            currentInteractionObject = null;
+        }
+
+        public void ApplyGravityWhenNotGrounded()
+        {
             if (!characterController.isGrounded)
             {
                 Vector3 gravity = Physics.gravity;
                 characterController.Move(gravity * Time.deltaTime);
             }
-          
+        }
+        protected override void Update()
+        {
+            CheckMouseOverGUI();
+
+            HandleRayCastInteraction();
+
+            ApplyGravityWhenNotGrounded();          
         }
 
         public void Move(Vector2 movementInput)

@@ -52,6 +52,7 @@ namespace April
                 SpawnBeefToPlayer(thickBeefPrefab);
             }
         }
+
         public void SpawnBeefToPlayer(Food beef)
         {
             var newBeef = Instantiate(beef);

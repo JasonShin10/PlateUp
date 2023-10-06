@@ -12,13 +12,6 @@ namespace April
 
         public float offsetOnDish;
 
-        public virtual void ShowUI()
-        {
-
-        }
-        public virtual void HideUI()
-        {
-
-        }
+        
     }
 }

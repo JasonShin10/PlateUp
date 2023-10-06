@@ -130,7 +130,7 @@ namespace April
                 if (tableItem is IButtonInteract)
                 {
                     buttonitem = tableItem as IButtonInteract;
-                    buttonitem.ShowUI();
+                    tableItem.ShowUI();
                 }
                 tableItem.transform.SetParent(this.transform);
                 tableItem.transform.position = spawnPoint.position;
@@ -148,7 +148,7 @@ namespace April
                 {
                     return;
                 }
-                buttonitem.HideUI();
+                tableItem.HideUI();
             }
             player.item = tableItem;
             tableItem.transform.SetParent(player.transform);

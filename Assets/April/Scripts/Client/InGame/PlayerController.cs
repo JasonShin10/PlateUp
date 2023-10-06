@@ -60,6 +60,7 @@ namespace April
         {
 
         }
+
         private void OnEnable()
         {
             InputManager.Singleton.InputMaster.PlayerControl.Interact.performed += DoInteraction;
@@ -69,12 +70,6 @@ namespace April
 
             IngameLifeSystem.Instance.OnLifeCountChanged += OnLifeChanged;
             IngameEndSystem.Instance.OnGameCleared += OnGameCleared;
-
-            //InputManager.Singleton.InputMaster.PlayerControl.Click.performed += MouseClick;
-            //InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed += CursorEnable;
-
-
-            playerNameText.text = playerName;
         }
 
         private void OnDisable()
@@ -92,9 +87,6 @@ namespace April
             {
                 IngameEndSystem.Instance.OnGameCleared -= OnGameCleared;
             }
-
-            //InputManager.Singleton.InputMaster.PlayerControl.Click.performed -= MouseClick;
-            //InputManager.Singleton.InputMaster.PlayerControl.CursorEnable.performed -= CursorEnable;
         }
 
         private void MouseClick(InputAction.CallbackContext context)

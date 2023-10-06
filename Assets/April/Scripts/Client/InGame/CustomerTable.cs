@@ -60,7 +60,18 @@ namespace April
             }
         }
 
+        public void AssignGroup(Customer customer)
+        {
+            isAlone = false;
+            customers.Add(customer);
+            GroupCheck();
+        }
 
+        public void AssignSingle()
+        {
+            hasCustomerAssigned = true;
+            isAlone = true;
+        }
         public void CustomerCheck()
         {
             if (IsAllEmptyTableSlot && CheckTableClean())

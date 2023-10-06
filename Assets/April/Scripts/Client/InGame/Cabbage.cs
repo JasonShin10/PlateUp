@@ -15,18 +15,7 @@ namespace April
 
 
         [SerializeField] private float maxValue;
-        public float ProgressValue { get; set; }
-        public float MaxValue
-        {
-            get
-            {
-                return maxValue;
-            }
-            set
-            {
-                maxValue = value;
-            }
-        }
+      
         
         public float speed = 10f;
         // Start is called before the first frame update
@@ -35,12 +24,12 @@ namespace April
 
             slider.maxValue = MaxValue;
         }
-        public void ShowUI()
+        public override void ShowUI()
         {
             slider.gameObject.SetActive(true);
         }
 
-        public void ButtonInteract()
+        public override void ButtonInteract()
         {
             if (ProgressValue < maxValue)
             {
@@ -48,7 +37,7 @@ namespace April
             }
         }
 
-        public void HideUI()
+        public override void  HideUI()
         {
             slider.gameObject.SetActive(false);
         }

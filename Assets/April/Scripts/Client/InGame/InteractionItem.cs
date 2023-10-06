@@ -6,7 +6,14 @@ namespace April
 {
     public class InteractionItem : MonoBehaviour
     {
-        
+        public virtual void ShowUI()
+        {
+
+        }
+        public virtual void HideUI()
+        {
+
+        }
     }
 }
 

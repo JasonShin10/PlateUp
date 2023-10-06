@@ -103,7 +103,7 @@ namespace April
 
             foreach (Customer customer in IngameWaiterSystem.Instance.waitingFoodCustomerList)
             {
-                if (customer.orderedMenuType == food.MenuType && customer.orderedMenuStateType == food.CookingState)
+                if (customer.orderedMenuType == (int)food.MenuType && customer.orderedMenuStateType == food.CookingState)
                 {
                     if ((int)customer.state < minStateValue)
                     {

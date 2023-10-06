@@ -78,7 +78,7 @@ namespace April
         private event Action onDestinationCallback;
 
         public static event Action OnLooseLife;
-        public MenuList orderedMenuType;
+        public int orderedMenuType;
         public int orderedMenuStateType;
 
         public bool isGroup;
@@ -224,34 +224,46 @@ namespace April
                     {
                         continue;
                     }
-                    if (isGroup)
+                    AssignCustomerToTable(customerTable);
+                    if (TryAssignCustomerToSeat(customerTable))
                     {
-                        customerTable.isAlone = false;
-                        customerTable.customers.Add(this);
-                        customerTable.GroupCheck();
-                    }
-                    else
-                    {
-                        customerTable.hasCustomerAssigned = true;
-                        customerTable.isAlone = true;
-                    }
-                    foreach (TableSlotData tableSlot in customerTable.tableSlots)
-                    {
-                        if (tableSlot.IsAssigned == true)
-                        {
-                            continue;
-                        }
-                        myTable = customerTable;
-                        mySeat = tableSlot;
-                        mySeat.assignedCustomer = this;
-                        MoveToTarget(mySeat.seatTransform, () =>
-                        {
-                            transform.LookAt(myTable.transform.position, Vector3.up);
-                        });
                         return;
                     }
                 }
             }
+        }
+
+        private void AssignCustomerToTable(CustomerTable table)
+        {
+            if (isGroup)
+            {
+                table.AssignGroup(this);
+            }
+            else
+            {
+                table.AssignSingle();
+            }
+
+        }
+
+        private bool TryAssignCustomerToSeat(CustomerTable table)
+        {
+            foreach (TableSlotData tableSlot in table.tableSlots)
+            {
+                if (tableSlot.IsAssigned == true)
+                {
+                    continue;
+                }
+                myTable = table;
+                mySeat = tableSlot;
+                mySeat.assignedCustomer = this;
+                MoveToTarget(mySeat.seatTransform, () =>
+                {
+                    transform.LookAt(myTable.transform.position, Vector3.up);
+                });
+                return true;
+            }
+            return false;
         }
 
         public Food GetFoodByMenu(MenuList menu, out int firstState, out int lastState)
@@ -280,14 +292,18 @@ namespace April
             MenuList randomMenu = (MenuList)UnityEngine.Random.Range(0, (int)MenuList.RandomMax);
 
             var food = GetFoodByMenu(randomMenu, out int firstState, out int lastState);
-            int randomMenuInt = Convert.ToInt32(randomMenu);
-            int randomMenuNum = UnityEngine.Random.Range(firstState, lastState + 1);
+            int randomMenuNum = Convert.ToInt32(randomMenu);
+            int randomMenuStateNum = UnityEngine.Random.Range(firstState, lastState + 1);
+            ShowOrderImageDisplay(randomMenuNum, randomMenuStateNum);
+        }
 
-            orderImageDisplay.sprite = imageContainer.MenuSpriteGroups[randomMenuInt][randomMenuNum - 1];
+        public void ShowOrderImageDisplay(int MenuNum, int MenuStateNum)
+        {
+            orderImageDisplay.sprite = imageContainer.MenuSpriteGroups[MenuNum][MenuStateNum - 1];
             orderImageDisplay.SetNativeSize();
             orderImageDisplay.gameObject.SetActive(true);
-            orderedMenuType = randomMenu;
-            orderedMenuStateType = randomMenuNum;
+            orderedMenuType = MenuNum;
+            orderedMenuStateType = MenuStateNum;
         }
 
         private void HandleEntering()
@@ -421,8 +437,7 @@ namespace April
             if (!(customer.foodDish is Dish usedDish))
                 return;
 
-            usedDish.RemoveItem(customer.myFood);
-            Destroy(customer.myFood.gameObject);
+            RemoveFoodFromDish(usedDish, customer.myFood);
 
             customer.myFood = null;
             customer.myTable.dishes.Push(customer.foodDish);
@@ -431,6 +446,13 @@ namespace April
 
             customer.SetCustomerState(CustomerState.Leaving);
         }
+
+        private void RemoveFoodFromDish(Dish usedDish, Food food)
+        {
+            usedDish.RemoveItem(food);
+            Destroy(food.gameObject);
+        }
+
         IEnumerator ActivateSpeechBubble()
         {
             speechBubble.gameObject.SetActive(true);
@@ -477,13 +499,14 @@ namespace April
             if (character.item.TryGetComponent(out Dish dish) && dish.ContainedFoodItems.Count > 0)
             {
                 Food foodItem = dish.ContainedFoodItems[0];
-                if (orderedMenuType == foodItem.MenuType && orderedMenuStateType == foodItem.CookingState)
+                if (orderedMenuType == (int)foodItem.MenuType && orderedMenuStateType == foodItem.CookingState)
                 {
                     AssignFoodToCustomer(foodItem);
                 }
             }
         }
 
+        
         private void AssignFoodToCustomer(Food foodItem)
         {
             orderImageDisplay.gameObject.SetActive(false);

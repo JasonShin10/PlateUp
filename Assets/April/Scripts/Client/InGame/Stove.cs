@@ -21,7 +21,6 @@ namespace April
         public Transform spawnPoint;
         [SerializeField] private float offSet = 2.2f;
 
-        //public static event Action<Beef> OnBeefCreated;
         protected override void Awake()
         {
             base.Awake();
@@ -34,9 +33,6 @@ namespace April
         }
 
 
-        // public float burningPower = 3f;
-
-
         void Update()
         {
             if (foodComponent != null)
@@ -47,14 +43,6 @@ namespace April
                 }
             }
         }
-
-        //private void PassItem(Transform itemTransform)
-        //{
-        //    itemTransform.SetParent(this.transform);
-        //    Collider collider = GetComponent<Collider>();
-        //    float height = collider.bounds.size.y;
-        //    itemTransform.position = itemTransform.position + new Vector3(0, height, 0);
-        //}
 
 
         void StoveInteract()

@@ -18,7 +18,7 @@ namespace April
       
         
         public float speed = 10f;
-        // Start is called before the first frame update
+
         void Start()
         {
 
@@ -42,7 +42,7 @@ namespace April
             slider.gameObject.SetActive(false);
         }
 
-        // Update is called once per frame
+
         void Update()
         {
             if (slider != null)

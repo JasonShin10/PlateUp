@@ -8,6 +8,14 @@ using UnityEngine;
 
 namespace April
 {
+    [Serializable]
+    public class CharacterJobTaskBase
+    {
+        public Vector3 destination;
+        public Action executeAction;
+    }
+
+
 
 
     public class Character_Waitress : CharacterBase
@@ -44,7 +52,7 @@ namespace April
         {
             base.Start();
 
-            OnInsertedJob += OnReceivedNewJob;
+            
             waitressTable.OnFoodArrived += HandleFoodArrived;
             GetOrder();
         }
@@ -61,13 +69,7 @@ namespace April
                 visualization.SetMovement(0);
             }
         }
-        private void OnReceivedNewJob()
-        {
-            if (currentJob != null)
-                return;
 
-            ExecuteJob();
-        }
 
         protected override void OnDestroy()
         {
@@ -153,6 +155,7 @@ namespace April
             }
         }
 
+
         private void OnWaitressArrivedTable()
         {
             waitressTable.WaitressInteract(this);
@@ -185,15 +188,19 @@ namespace April
             };
             jobTasks.Enqueue(newJob);
 
-            Debug.Log($"Job Task Count :{jobTasks.Count}");
-
             StartCoroutine(DelayedNewJobTaskReceiveNotify());
             IEnumerator DelayedNewJobTaskReceiveNotify()
             {
                 yield return new WaitForEndOfFrame();
-
-                OnInsertedJob?.Invoke();
+                OnReceivedNewJob();
             }
+        }
+        private void OnReceivedNewJob()
+        {
+            if (currentJob != null)
+                return;
+
+            ExecuteJob();
         }
 
         public void ExecuteJob()
@@ -224,7 +231,6 @@ namespace April
             currentJob = job;
             this.SetDestination(job.destination, job.executeAction);
         }
-
     }
 }
 

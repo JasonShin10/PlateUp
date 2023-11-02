@@ -26,26 +26,47 @@ Each menu item has its own recipe.
 ## Customer 
 
 ### Group System
+
+People sit with their own group. If someone comes alone, they sit by themselves and do not share a seat with others.
+
 <img src="https://github.com/JasonShin10/april/assets/101558745/7cf2337e-9bef-4180-a173-e479d3be91c8" width ="50%" height="50%">
 
 ### Order
+
+When customers take their seats, they wait to order. Their patience gauge decreases from the moment they sit down.
+
 <img src="https://github.com/JasonShin10/april/assets/101558745/65605207-8395-4770-86f8-2a093ba479c8" width ="50%" height="50%">
 
 ### Get Food
+
+When the player approaches a customer to take their order, the customer selects a food item from the menu. An image of the chosen food then appears as a UI element above their head.
+
 <img src="https://github.com/JasonShin10/april/assets/101558745/0d1a0fb8-f1b2-44f4-a86a-66b022b62e27" width ="50%" height="50%">
 
 ### Leave
+
+When the player prepares the correct food and serves it to the customer, the customer eats, pays the bill, and then leaves the restaurant.
+
 <img src="https://github.com/JasonShin10/april/assets/101558745/5c5225bb-777e-4498-ba68-9150dfbc2d5a" width ="50%" height="50%">
 
 ### Waiting Cycle
+
+If the tables are full, customers must wait outside. When space becomes available, the waiting customers come in, and those in line move forward to fill empty spaces.
+
 <img src="https://github.com/JasonShin10/april/assets/101558745/d2d07f35-0aab-4df7-a945-8fd809e197d3" width ="50%" height="50%">
 
 ## Waitress System
 
 ### Take Order
+
+Waitress takes order instead of player
+
 <img src="https://github.com/JasonShin10/april/assets/101558745/3b559634-4b7c-476f-b38d-9271d2c5b642" width ="50%" height="50%">
 
 ### Serve Food
+
+If the player places food on the waitress's table, the waitress comes to get it, determines which customer ordered it, and then serves the food.
+
 <img src="https://github.com/JasonShin10/april/assets/101558745/af5e76f7-b03b-42c1-a4c5-f659b639c980" width ="50%" height="50%">
 <br/><br/><br/><br/>
 * Study With redforce01@naver.com ([redforce01](https://github.com/redforce01))

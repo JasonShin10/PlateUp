@@ -29,7 +29,7 @@ Each menu item has its own recipe.
 
 People sit with their own group. If someone comes alone, they sit by themselves and do not share a seat with others.
 
-<img src="https://github.com/JasonShin10/april/assets/101558745/7cf2337e-9bef-4180-a173-e479d3be91c8" width ="50%" height="50%">
+<img src="https://github.com/JasonShin10/april/assets/101558745/7cf2337e-9bef-4180-a173-e479d3be91c8" width ="75%" height="75%">
 
 ### Order
 

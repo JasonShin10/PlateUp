@@ -47,6 +47,5 @@ Each menu item has its own recipe.
 
 ### Serve Food
 <img src="https://github.com/JasonShin10/april/assets/101558745/af5e76f7-b03b-42c1-a4c5-f659b639c980" width ="50%" height="50%">
-
-
+<br/><br/><br/><br/>
 * Study With redforce01@naver.com ([redforce01](https://github.com/redforce01))

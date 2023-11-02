@@ -59,7 +59,7 @@ If the tables are full, customers wait outside. When space becomes available, th
 
 ### Take Order
 
-Waitress takes order instead of player
+Waitress takes order instead of player.
 
 <img src="https://github.com/JasonShin10/april/assets/101558745/3b559634-4b7c-476f-b38d-9271d2c5b642" width ="75%" height="75%">
 

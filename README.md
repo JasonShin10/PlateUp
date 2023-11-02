@@ -51,9 +51,9 @@ When the player prepares the correct food and serves it to the customer, the cus
 
 ### Waiting Cycle
 
-If the tables are full, customers must wait outside. When space becomes available, the waiting customers come in, and those in line move forward to fill empty spaces.
+If the tables are full, customers wait outside. When space becomes available, the waiting customers come in, and those in line move forward to fill empty spaces.
 
-<img src="https://github.com/JasonShin10/april/assets/101558745/d2d07f35-0aab-4df7-a945-8fd809e197d3" width ="50%" height="50%">
+<img src="https://github.com/JasonShin10/april/assets/101558745/d2d07f35-0aab-4df7-a945-8fd809e197d3" width ="75%" height="75%">
 
 ## Waitress System
 
@@ -61,12 +61,12 @@ If the tables are full, customers must wait outside. When space becomes availabl
 
 Waitress takes order instead of player
 
-<img src="https://github.com/JasonShin10/april/assets/101558745/3b559634-4b7c-476f-b38d-9271d2c5b642" width ="50%" height="50%">
+<img src="https://github.com/JasonShin10/april/assets/101558745/3b559634-4b7c-476f-b38d-9271d2c5b642" width ="75%" height="75%">
 
 ### Serve Food
 
 If the player places food on the waitress's table, the waitress comes to get it, determines which customer ordered it, and then serves the food.
 
-<img src="https://github.com/JasonShin10/april/assets/101558745/af5e76f7-b03b-42c1-a4c5-f659b639c980" width ="50%" height="50%">
+<img src="https://github.com/JasonShin10/april/assets/101558745/af5e76f7-b03b-42c1-a4c5-f659b639c980" width ="75%" height="75%">
 <br/><br/><br/><br/>
 * Study With redforce01@naver.com ([redforce01](https://github.com/redforce01))

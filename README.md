@@ -14,6 +14,9 @@ The genre of the game I created is a 'Restaurant Management Game'. I took inspir
 
 ## Cooking System
 
+Player must prepare the food the customer desires and bring it to them.  
+Each menu item has its own recipe.  
+
 ### Beef
 
 ### Salad

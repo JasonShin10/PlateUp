@@ -68,5 +68,14 @@ Waitress takes order instead of player.
 If the player places food on the waitress's table, the waitress comes to get it, determines which customer ordered it, and then serves the food.
 
 <img src="https://github.com/JasonShin10/april/assets/101558745/af5e76f7-b03b-42c1-a4c5-f659b639c980" width ="75%" height="75%">
+
+### Discard Food
+
+If a player leaves food that no one has ordered on the waitress table, the waiter will throw away the food and return the dish to the dish table.
+
+<img src="https://github.com/JasonShin10/april/assets/101558745/4b9e0bdc-c6a8-4ee7-8ffc-47b9e011708a" width ="75%" height="75%">
+
+
+
 <br/><br/><br/><br/>
 * Study With redforce01@naver.com ([redforce01](https://github.com/redforce01))

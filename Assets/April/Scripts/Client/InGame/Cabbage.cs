@@ -14,7 +14,7 @@ namespace April
         public Slider slider;
 
 
-        [SerializeField] private float maxValue;
+        [SerializeField] private float mxValue;
       
         
         public float speed = 10f;
@@ -31,7 +31,7 @@ namespace April
 
         public override void ButtonInteract()
         {
-            if (ProgressValue < maxValue)
+            if (ProgressValue < mxValue)
             {
             ProgressValue += speed * Time.deltaTime;
             }

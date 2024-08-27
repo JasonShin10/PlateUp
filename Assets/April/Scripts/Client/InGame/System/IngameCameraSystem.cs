@@ -80,28 +80,22 @@ namespace April
                     break;
             }
         }
-
-
-
+        
         //[Sirenix.OdinInspector.Button("Change Camera")]
         public void ChangeCamera(CameraModeType cameraMode)
         {
             if (currentCameraMode == cameraMode)
             {
-
                 return;
             }
 
             if (Cameras.TryGetValue(currentCameraMode, out var currentCamera))
             {
-
                 currentCamera.gameObject.SetActive(false);
             }
-
-
+            
             if (Cameras.TryGetValue(cameraMode, out var targetCamera))
             {
-
                 targetCamera.gameObject.SetActive(true);
             }
 

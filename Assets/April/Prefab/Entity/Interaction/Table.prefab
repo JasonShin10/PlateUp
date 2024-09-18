@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4603983260314195018}
   - component: {fileID: 3237833178323894629}
   - component: {fileID: 7571961448609113789}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: April.Visualization.Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 1863779861076010214}
   - component: {fileID: 6781281768785795521}
   - component: {fileID: 1151459205215435213}
-  - component: {fileID: 1515131575294140448}
+  - component: {fileID: 7985033757627970884}
   m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
@@ -149,7 +149,7 @@ Transform:
   - {fileID: 6874917850153745889}
   - {fileID: 6821676941499819295}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &6781281768785795521
 BoxCollider:
@@ -189,7 +189,7 @@ MonoBehaviour:
   player: {fileID: 0}
   spawnPoint: {fileID: 6874917850153745889}
   dish: {fileID: 0}
---- !u!208 &1515131575294140448
+--- !u!208 &7985033757627970884
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

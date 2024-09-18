@@ -187,10 +187,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sliced: 0
+  maxValue: 30
   slicedTomato: {fileID: 5187178654195404700}
   tomato: {fileID: 5123654537593829807}
   slider: {fileID: 7680931643837771515}
-  maxValue: 30
+  mxValue: 30
   speed: 10
 --- !u!1 &2837315828166870494
 GameObject:

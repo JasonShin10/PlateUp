@@ -27,7 +27,7 @@ namespace April
         public DishTable dishTable;
         public TrashCan trashCan;
         public WaitressTable waitressTable;
-
+        public Action onUpgradeComplete;
         private void Awake()
         {
             Instance = this;
@@ -46,6 +46,11 @@ namespace April
             RuntimeStoveData.Initialize();
         }
 
+        public void onFireUpgrade()
+        {
+            onUpgradeComplete?.Invoke();
+        }
+        
         public void PickRandomOption(out string text1, out string text2)
         {
             int random1 = UnityEngine.Random.Range(0, buttonFunctions.Count);
@@ -70,6 +75,7 @@ namespace April
         private void UpgradeStove()
         {
             RuntimeStoveData.BurningPower *= 2;
+            onFireUpgrade();
         }
 
         private void IncreasePatience()

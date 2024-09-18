@@ -8,7 +8,7 @@ namespace April
     public class StoveData : ScriptableObject
     {
         public float BurningPower;
-
+        public Color[] fireColor = new Color[4];
 
         public void Initialize()
         {

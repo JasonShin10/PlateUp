@@ -376,10 +376,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sliced: 0
+  maxValue: 30
   slicedCabbage: {fileID: 5321888143070337114}
   cabbage: {fileID: 7956039150461865879}
   slider: {fileID: 3030009221228826991}
-  maxValue: 30
+  mxValue: 30
   speed: 10
 --- !u!1 &7608110946748699002
 GameObject:

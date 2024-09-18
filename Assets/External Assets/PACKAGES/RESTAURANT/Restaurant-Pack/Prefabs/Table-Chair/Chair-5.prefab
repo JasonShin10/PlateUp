@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7559441636800068838}
   - component: {fileID: 5696067628004739116}
   - component: {fileID: 2197961342729961}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Chair-5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7559441636800068838
 MeshFilter:

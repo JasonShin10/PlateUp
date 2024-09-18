@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b9de07e7165c4df89f036c99093ebf7975dc99d2d0cfa5d2c8caf49459c99d42
-size 967
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19be8d87b091c174b975cec94f11af01, type: 3}
+  m_Name: Runtime Collection
+  m_EditorClassIdentifier: 
+  normalBeefSprites:
+  - {fileID: 21300000, guid: 5522f7331e98f3e4d800eb0e6bad004a, type: 3}
+  - {fileID: 21300000, guid: 0740d951755f73548ae4b65b739e4de0, type: 3}
+  - {fileID: 21300000, guid: ec761603b7c37f149abba41a39e5b808, type: 3}
+  thickBeefSprites:
+  - {fileID: 21300000, guid: 989447c72f0416f4192758d7a19016fe, type: 3}
+  - {fileID: 21300000, guid: ae49b887f72164c40b1b9926c7e59029, type: 3}
+  - {fileID: 21300000, guid: 47f707cfc006d044390e8a3153685835, type: 3}
+  saladSprite:
+  - {fileID: 21300000, guid: 2a8f49030759b31448c29c6cdacab525, type: 3}

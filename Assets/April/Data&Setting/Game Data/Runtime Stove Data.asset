@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c2a88bd2ada30f340a0a6f2ce08a417411a537238c49d9aa0efbc319f32a3c69
-size 633
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d14b0812995a86a41805c11d0effe3f1, type: 3}
+  m_Name: Runtime Stove Data
+  m_EditorClassIdentifier: 
+  BurningPower: 5
+  fireColor:
+  - {r: 1, g: 0.7801, b: 0.08909851, a: 0}
+  - {r: 1, g: 0.46414497, b: 0.28721172, a: 0}
+  - {r: 0.8962264, g: 0.020667696, b: 0.042927906, a: 0}
+  - {r: 0.032494724, g: 0.27738038, b: 1, a: 0}
